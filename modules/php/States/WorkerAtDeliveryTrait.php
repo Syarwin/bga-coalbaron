@@ -23,7 +23,6 @@ trait WorkerAtDeliveryTrait
             SPACE_DELIVERY_ENGINE,
         );
 
-        //TODO JSA FILTER on available meeples 
         //TODO JSA FILTER on player filled Orders (type)
         
         return $spaces;

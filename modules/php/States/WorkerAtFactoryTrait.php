@@ -32,7 +32,6 @@ trait WorkerAtFactoryTrait
             $spaces[] = SPACE_FACTORY_8;
         }
 
-        //TODO JSA FILTER on available meeples 
         //TODO JSA FILTER on available money VS cost 
         return $spaces;
     }

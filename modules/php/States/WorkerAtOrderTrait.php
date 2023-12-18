@@ -25,7 +25,6 @@ trait WorkerAtOrderTrait
         if($nbPlayers>=4){
             $spaces[] = SPACE_ORDER_1;
         }
-        //TODO JSA FILTER on available meeples 
         return $spaces;
     }
 }

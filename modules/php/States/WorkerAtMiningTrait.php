@@ -25,7 +25,6 @@ trait WorkerAtMiningTrait
         if($nbPlayers>=4){
             $spaces[] = SPACE_MINING_4;
         }
-        //TODO JSA FILTER on available meeples 
         return $spaces;
     }
 }

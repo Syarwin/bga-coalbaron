@@ -5,7 +5,6 @@ namespace COAL\States;
 use COAL\Core\Game;
 use COAL\Core\Globals;
 use COAL\Core\Notifications;
-use COAL\Managers\Players;
 
 /*
 functions about workers at the bank / money spaces
@@ -27,7 +26,7 @@ trait WorkerAtBankTrait
         if($nbPlayers>=4){
             $spaces[] = SPACE_BANK_3;
         }
-        //TODO JSA FILTER on available meeples 
         return $spaces;
     }
+
 }

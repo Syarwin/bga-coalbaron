@@ -7,6 +7,7 @@ use COAL\Core\Globals;
 use COAL\Core\Notifications;
 use COAL\Core\Engine;
 use COAL\Core\Stats;
+use COAL\Helpers\UserException;
 use COAL\Helpers\Utils;
 use COAL\Managers\Meeples;
 use COAL\Managers\Players;
@@ -19,6 +20,32 @@ trait PlaceWorkerTrait
     use WorkerAtFactoryTrait;
     use WorkerAtMiningTrait;
     use WorkerAtOrderTrait;
+
+    /**
+     * @return bool true if $space is possible to play, 
+     *       false otherwise
+     */
+    function isPossibleSpace($pId, $nbPlayers,$space) {
+        $spaces = $this->getPossibleSpaces($pId, $nbPlayers);
+        foreach($spaces as $type => $typeSpaces){
+            foreach($typeSpaces as $possibleSpace){
+                if($space == $possibleSpace){
+                    self::trace("isPossibleSpace($pId, $nbPlayers,$space)... : OK $space in $type array");
+                    return true;
+                }
+            }
+            /* KO
+            if(array_search($space,array_values($typeSpaces))){
+                self::trace("isPossibleSpace($pId, $nbPlayers,$space)... : $space in $type array");
+                return true;
+            }
+            */
+            self::trace("isPossibleSpace($pId, $nbPlayers,$space)... : ko $space NOT in $type array");
+            self::dump("isPossibleSpace($pId, $nbPlayers,$space)...",$typeSpaces);
+            
+        }
+        return false;
+    }
 
     /**
      * List all possible Worker Spaces to play by player $pId
@@ -66,6 +93,23 @@ trait PlaceWorkerTrait
         };
         foreach($spaces as $type => $typeSpaces){
             $spaces[$type] = array_values(array_filter($typeSpaces,$filter));
+        }
+    }
+
+    function placeWorker($player, $space){
+        self::trace("placeWorker($space)...");
+        switch($space)
+        {
+            case SPACE_BANK_1: 
+            case SPACE_BANK_3: 
+            case SPACE_BANK_4: 
+            case SPACE_BANK_5: 
+            case SPACE_BANK_6: 
+                $this->placeWorkerInBank($player,$space);
+                break;
+            //TODO JSA placeWorker ALL TYPES
+            default:
+                throw new \BgaVisibleSystemException("Not supported worker space : $space");
         }
     }
 }

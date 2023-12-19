@@ -45,6 +45,12 @@ class Meeples extends \COAL\Helpers\Pieces
     self::create($meeples);
   }
   
+  public static function getNbAvailableWorkers($player)
+  {
+    $pId = $player->getId();
+    return Meeples::countInLocation("reserve-$pId");
+  }
+  
   public static function placeWorkersInSpace($player,$toLocation)
   {
     $pId = $player->getId();

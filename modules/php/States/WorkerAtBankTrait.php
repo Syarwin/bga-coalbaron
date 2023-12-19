@@ -5,7 +5,6 @@ namespace COAL\States;
 use COAL\Core\Game;
 use COAL\Core\Globals;
 use COAL\Core\Notifications;
-use COAL\Helpers\UserException;
 use COAL\Managers\Meeples;
 use COAL\Managers\Players;
 
@@ -52,7 +51,7 @@ trait WorkerAtBankTrait
                 $money = 1; 
                 break;
             default:
-                throw new UserException("Unknown bank worker space : $space");
+                throw new \BgaVisibleSystemException("Not supported bank worker space : $space");
         }
         Meeples::placeWorkersInSpace($player,$space);
         Players::giveMoney($player,$money);

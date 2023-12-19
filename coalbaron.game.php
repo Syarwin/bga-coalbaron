@@ -3,7 +3,7 @@
 /**
  *------
  * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
- * CoalBaron implementation : Timothée Pecatte <tim.pecatte@gmail.com> & Mathieu Chatrain <EMAIL>
+ * CoalBaron implementation : Timothée Pecatte <tim.pecatte@gmail.com> & joesimpson <1324811+joesimpson@users.noreply.github.com>
  *
  * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
@@ -100,6 +100,35 @@ class CoalBaron extends Table
   function actChangePreference($pref, $value)
   {
     Preferences::set($this->getCurrentPId(), $pref, $value);
+  }
+  
+  function argPlaceWorker(){
+    $player = Players::getActive();
+    $spaces = self::getPossibleSpaces($player->getId(), Players::count());
+    $nbAvailableWorkers = Meeples::getNbAvailableWorkers($player);
+
+    return array(
+      'spaces' => $spaces,
+      'nbAvailableWorkers' => $nbAvailableWorkers,
+    );
+  }
+
+  function actPlaceWorker($space)
+  {
+    self::checkAction( 'actPlaceWorker' ); 
+
+    $player = Players::getCurrent();
+    $nbPlayers = Players::count();
+
+    // ANTICHEATS : available workers >0 + possible space
+    $nbAvailableWorkers = Meeples::getNbAvailableWorkers($player);
+    if($nbAvailableWorkers == 0) 
+      throw new \BgaVisibleSystemException("Not enough workers to play");
+    if(! $this->isPossibleSpace($player->getId(), $nbPlayers,$space) )
+      throw new \BgaVisibleSystemException("Incorrect place to place a worker : $space");
+
+    $this->placeWorker($player,$space);
+    //TODO JSA go to next state
   }
 
   ////////////////////////////////////

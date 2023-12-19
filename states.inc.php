@@ -3,7 +3,7 @@
 /**
  *------
  * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
- * CoalBaron implementation : © Timothée Pecatte <tim.pecatte@gmail.com>, Mathieu Chatrain <EMAIL>
+ * CoalBaron implementation : © Timothée Pecatte <tim.pecatte@gmail.com> & joesimpson <1324811+joesimpson@users.noreply.github.com>
  *
  * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
@@ -23,7 +23,7 @@ $machinestates = [
     'type' => 'manager',
     'action' => 'stGameSetup',
     // 'transitions' => ['' => ST_NEXT_ROUND],
-    'transitions' => ['' => 2],
+    'transitions' => ['' => ST_PLACE_WORKER],
   ],
 
   2 => [
@@ -64,7 +64,7 @@ $machinestates = [
     'name' => 'placeWorker',
     'description' => clienttranslate('${actplayer} must place their worker(s)'),
     'descriptionmyturn' => clienttranslate('${you} must place your worker(s)'),
-    'args' => 'argChooseBiome',
+    'args' => 'argPlaceWorker',
     'type' => 'activeplayer',
     'possibleactions' => ['actPlaceWorker'],
     'transitions' => [

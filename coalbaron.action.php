@@ -3,7 +3,7 @@
 /**
  *------
  * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
- * CoalBaron implementation : Timothée Pecatte <tim.pecatte@gmail.com>, Mathieu Chatrain <EMAIL>
+ * CoalBaron implementation : Timothée Pecatte <tim.pecatte@gmail.com>, joesimpson <1324811+joesimpson@users.noreply.github.com>
  *
  * This code has been produced on the BGA studio platform for use on https://boardgamearena.com.
  * See http://en.doc.boardgamearena.com/Studio for more information.
@@ -40,7 +40,7 @@ class action_coalbaron extends APP_GameAction
   {
     self::setAjaxMode();
     $spaceId = self::getArg('spaceId', AT_alphanum, true);
-    $this->game->actPlaceWorker($biomeId);
+    $this->game->actPlaceWorker($spaceId);
     self::ajaxResponse();
   }
 

@@ -4,9 +4,9 @@
  * Game Constants
  */
 
-const YELLOW_COAL = 'yellow-coal';
-const BLACK_COAL = 'black-coal';
-const GREY_COAL = 'grey-coal';
+const YELLOW_COAL = 'yellow_coal';
+const BLACK_COAL = 'black_coal';
+const GREY_COAL = 'grey_coal';
 const BROWN_COAL = 'brown_coal';
 const WORKER = 'worker';
 const CARDS_START_NB = 3;//3 per player

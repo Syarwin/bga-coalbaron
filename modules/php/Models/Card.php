@@ -32,6 +32,12 @@ class Card extends \COAL\Helpers\DB_Model
     }
   }
 
+  public function getUiData()
+  {
+    $data = parent::getUiData();
+    return $data;
+  }
+
   public function moveToOutstanding($player)
   {
     $this->setLocation(CARD_LOCATION_OUTSTANDING);

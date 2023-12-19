@@ -6,10 +6,26 @@ use COAL\Core\Notifications;
 use COAL\Managers\Players;
 use COAL\Managers\Tiles;
 use COAL\Helpers\Utils;
+use COAL\Managers\Cards;
 use COAL\Managers\Meeples;
 
 trait DebugTrait
 {
+
+  function testSimulateDraft()
+  {
+    $players = Players::getAll();
+    //RESET cards to deck
+    Cards::moveAllInLocation(CARD_LOCATION_OUTSTANDING, CARD_LOCATION_DECK);
+
+    foreach($players as $player){
+      for($k =0; $k< CARDS_START_NB;$k++){
+        $card = Cards::getTopOf(CARD_LOCATION_DECK);
+        Cards::giveCardTo($player,$card);
+      }
+    }
+  }
+
   function test()
   {
     $this->testReplaceMeeplesInReserve();

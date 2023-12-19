@@ -9,6 +9,7 @@ const BLACK_COAL = 'black-coal';
 const GREY_COAL = 'grey-coal';
 const BROWN_COAL = 'brown_coal';
 const WORKER = 'worker';
+const CARDS_START_NB = 3;//3 per player
 
 /** Worker spaces */
 const SPACE_FACTORY = 'factory';
@@ -46,11 +47,15 @@ const SPACE_ORDER_DRAW = 'order_draw';
 
 const SPACE_CANTEEN = "canteen";
 
-/* CARDS TYPE */
+/* CARDS TYPES */
 const TRANSPORT_BARROW = "barrow";
 const TRANSPORT_CARRIAGE = "carriage";
 const TRANSPORT_MOTORCAR = "motorcar";
 const TRANSPORT_ENGINE = "engine";
+
+/* CARDS LOCATIONS */
+const CARD_LOCATION_DECK = "deck";
+const CARD_LOCATION_OUTSTANDING = "outstanding";
 
 /*
  * Game options

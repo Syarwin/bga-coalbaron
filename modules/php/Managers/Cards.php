@@ -2,11 +2,7 @@
 
 namespace COAL\Managers;
 
-use COAL\Core\Globals;
-use COAL\Helpers\Utils;
-use COAL\Helpers\Collection;
 use COAL\Core\Notifications;
-use COAL\Core\Stats;
 
 /* Class to manage all the god cards for CoalBaron */
 
@@ -20,14 +16,18 @@ class Cards extends \COAL\Helpers\Pieces
 
   protected static function cast($row)
   {
-    return $row;
-    // $data = self::getCards()[$row['god_id']];
-    // return new \COAL\Models\GodCard($row, $data);
+    $data = self::getCards()[$row['type']];
+    return new \COAL\Models\Card($row, $data);
   }
 
   public static function getUiData()
   {
     return [];
+  }
+
+  public static function giveCardTo($player,$card){
+    $card->moveToOutstanding($player);
+    Notifications::giveCardTo($player,$card);
   }
 
   /* Creation of the cards */
@@ -37,7 +37,7 @@ class Cards extends \COAL\Helpers\Pieces
 
     foreach (self::getCards() as $type => $card) {
       $cards[] = [
-        'location' => 'deck',
+        'location' => CARD_LOCATION_DECK,
         'type' => $type,
       ];
     }

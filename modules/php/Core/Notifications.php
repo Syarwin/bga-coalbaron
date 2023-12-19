@@ -42,6 +42,13 @@ class Notifications
       'n' => $nbWorkers,
     ]);
   }
+  
+  public static function giveCardTo($player,$card){
+    self::notifyAll('giveCardTo', clienttranslate('${player_name} receives a new order card'), [
+      'player' => $player,
+      'card' => $card,
+    ]);
+  }
 
   /*************************
    **** GENERIC METHODS ****

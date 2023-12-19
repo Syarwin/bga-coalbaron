@@ -46,6 +46,11 @@ const SPACE_ORDER_DRAW = 'order_draw';
 
 const SPACE_CANTEEN = "canteen";
 
+/* CARDS TYPE */
+const TRANSPORT_BARROW = "barrow";
+const TRANSPORT_CARRIAGE = "carriage";
+const TRANSPORT_MOTORCAR = "motorcar";
+const TRANSPORT_ENGINE = "engine";
 
 /*
  * Game options

@@ -57,8 +57,8 @@ trait PlaceWorkerTrait
             $workersAtWork = $allWorkers->filter(function ($meeple) use ($space){
                 return $meeple['type'] == WORKER && $meeple['meeple_location'] == $space;
             })->count();
-            if($nbAvailableWorkers < $workersAtWork){
-                //IMPOSSIBLE => delete from array
+            if($nbAvailableWorkers < $workersAtWork + 1){
+                //IMPOSSIBLE to add a worker => delete from array
                 self::trace("filterAvailableWorkers($nbAvailableWorkers)... Impossible $space because $workersAtWork workers are there");
                 return false;
             }

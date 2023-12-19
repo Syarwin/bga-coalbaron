@@ -55,7 +55,7 @@ $machinestates = [
     'action' => 'stNextPlayer',
     'updateGameProgression' => false,
     'transitions' => [
-      // 'next_player_action' => ST_PLACE_BIOME,
+      'next' => ST_PLACE_WORKER,
       // 'end_turn' => ST_MOVE_AVATARS,
     ],
   ],
@@ -68,7 +68,8 @@ $machinestates = [
     'type' => 'activeplayer',
     'possibleactions' => ['actPlaceWorker'],
     'transitions' => [
-      '' => ST_CONFIRM_CHOICES,
+      //'' => ST_CONFIRM_CHOICES,
+      'next' => ST_NEXT_PLAYER,
     ],
   ],
 

@@ -45,6 +45,7 @@ class CoalBaron extends Table
 {
   use COAL\DebugTrait;
   use COAL\States\SetupTrait;
+  use COAL\States\NextPlayerTrait;
   use COAL\States\NewRoundTrait;
   use COAL\States\PlaceWorkerTrait;
   use COAL\States\EndRoundScoringTrait;
@@ -128,7 +129,7 @@ class CoalBaron extends Table
       throw new \BgaVisibleSystemException("Incorrect place to place a worker : $space");
 
     $this->placeWorker($player,$space);
-    //TODO JSA go to next state
+    $this->gamestate->nextState( 'next' );
   }
 
   ////////////////////////////////////

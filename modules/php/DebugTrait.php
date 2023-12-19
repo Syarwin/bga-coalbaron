@@ -71,8 +71,14 @@ trait DebugTrait
   function testActionBank()
   {
     $this->testReplaceMeeplesInReserve();
+    $this->actPlaceWorker(SPACE_BANK_4);
+  }
 
-    $this->actPlaceWorker(SPACE_BANK_1);
+  function testMultiplesActionBank()
+  {
+    $this->testReplaceMeeplesInReserve();
+
+    //MULTIPLES POSSIBLES without the last line "next state"
     //KO in 2 PLAYERS game
     //$this->actPlaceWorker(SPACE_BANK_3);
     $this->actPlaceWorker(SPACE_BANK_4);
@@ -82,6 +88,7 @@ trait DebugTrait
     $this->actPlaceWorker(SPACE_BANK_6);
     
     $this->actPlaceWorker(SPACE_BANK_4);
+    $this->actPlaceWorker(SPACE_BANK_1);
     
     //$this->actPlaceWorker("FAKE_BANK_SPACE");
   }

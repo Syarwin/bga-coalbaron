@@ -127,4 +127,10 @@ class Players extends \COAL\Helpers\DB_Manager
   {
     Game::get()->gamestate->changeActivePlayer($pId);
   }
+
+  public static function giveMoney($player,$money){
+    $pId = $player->getId();
+    self::DB()->inc(['money' => $money], $pId);
+    Notifications::giveMoney($player,$money);
+  }
 }

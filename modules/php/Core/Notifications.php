@@ -28,6 +28,20 @@ class Notifications
       'spaces' => $spaces,
     ]);
   }
+  
+  public static function giveMoney($player,$money){
+    self::notify($player,'giveMoney', clienttranslate('${player_name} receives ${n} Francs'), [
+      'player' => $player,
+      'n' => $money,
+    ]);
+  }
+  public static function placeWorkersInSpace($player,$toLocation,$nbWorkers){
+    self::notifyAll('placeWorkers', clienttranslate('${player_name} places ${n} workers in ${space}'), [
+      'player' => $player,
+      'space' => $toLocation,
+      'n' => $nbWorkers,
+    ]);
+  }
 
   /*************************
    **** GENERIC METHODS ****

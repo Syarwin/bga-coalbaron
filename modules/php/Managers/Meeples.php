@@ -37,10 +37,27 @@ class Meeples extends \COAL\Helpers\Pieces
       $meeples[] = [
         'type' => WORKER,
         'location' => "reserve-$pId",
+        'player_id' => $pId,
         'nbr' => $nWorkers[count($players)],
       ];
     }
 
     self::create($meeples);
+  }
+  
+  public static function placeWorkersInSpace($player,$toLocation)
+  {
+    $pId = $player->getId();
+    $nbNeededWorkers = Meeples::countInLocation($toLocation) +1;
+    $fromLocation = "reserve-$pId";
+    /*
+    $workers = self::getTopOf($fromLocation, $nbNeededWorkers  );
+    foreach ($workers as $worker) {
+      self::DB()->update(['meeple_location' => addslashes($toLocation)], $worker->getId());
+    }
+    */
+    self::pickForLocation($nbNeededWorkers,$fromLocation,$toLocation);
+
+    Notifications::placeWorkersInSpace($player,$toLocation,$nbNeededWorkers);
   }
 }

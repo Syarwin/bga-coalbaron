@@ -56,12 +56,8 @@ class Meeples extends \COAL\Helpers\Pieces
     $pId = $player->getId();
     $nbNeededWorkers = Meeples::countInLocation($toLocation) +1;
     $fromLocation = "reserve-$pId";
-    /*
-    $workers = self::getTopOf($fromLocation, $nbNeededWorkers  );
-    foreach ($workers as $worker) {
-      self::DB()->update(['meeple_location' => addslashes($toLocation)], $worker->getId());
-    }
-    */
+    //MOVE PREVIOUS WORKERS to the CANTEEN before placing new workers !
+    self::moveAllInLocation($toLocation ,SPACE_CANTEEN  );
     self::pickForLocation($nbNeededWorkers,$fromLocation,$toLocation);
 
     Notifications::placeWorkersInSpace($player,$toLocation,$nbNeededWorkers);

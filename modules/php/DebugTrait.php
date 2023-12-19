@@ -26,7 +26,7 @@ trait DebugTrait
     }
   }
 
-  function test()
+  function testPWS()
   {
     $this->testReplaceMeeplesInReserve();
     Notifications::message("START DEBUG TEST 1");
@@ -34,7 +34,7 @@ trait DebugTrait
     $pId = Players::getCurrentId();
     $nbPlayers = 2;
     $spaces = self::getPossibleSpaces($pId, $nbPlayers);
-    Notifications::notifyPossibleWorkerSpaces($pId,$spaces);
+    Notifications::possibleWorkerSpaces($pId,$spaces);
 
     Notifications::message("END DEBUG TEST 1");
     
@@ -42,7 +42,7 @@ trait DebugTrait
 
     $nbPlayers = 3;
     $spaces = self::getPossibleSpaces($pId, $nbPlayers);
-    Notifications::notifyPossibleWorkerSpaces($pId,$spaces);
+    Notifications::possibleWorkerSpaces($pId,$spaces);
 
     Notifications::message("END DEBUG TEST 2");
     
@@ -50,7 +50,7 @@ trait DebugTrait
 
     $nbPlayers = 4;
     $spaces = self::getPossibleSpaces($pId, $nbPlayers);
-    Notifications::notifyPossibleWorkerSpaces($pId,$spaces);
+    Notifications::possibleWorkerSpaces($pId,$spaces);
 
     Notifications::message("END DEBUG TEST 3");
   }

@@ -19,10 +19,8 @@ class Notifications
     ]);
   }
 
-  public static function notifyPossibleWorkerSpaces($pId, $spaces)
+  public static function possibleWorkerSpaces($pId, $spaces)
   {
-    //TODO JSA see if best placed in args of chose action state ?
-
     self::notify($pId,'possibleWorkerSpaces', '', [
       'pId' => $pId,
       'spaces' => $spaces,

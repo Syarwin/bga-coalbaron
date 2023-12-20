@@ -50,26 +50,39 @@ class Tiles extends \COAL\Helpers\Pieces
 
     self::drawTilesToFactory();
   }
+  
+  /**
+   * Draw N new tiles and place them each unlocked factory space 
+   */
   public static function drawTilesToFactory() {
     //DRAW 6 or 8 tiles:
-    $spaces = self::getPossibleSpacesInFactory();
+    $spaces = self::getUnlockedSpacesInFactory();
     foreach($spaces as $space){
       if($space == SPACE_FACTORY_DRAW ) continue;
       self::refillFactorySpace($space);
     }
   }
   
+  /**
+   * Draw a new tile and place it in the factory $space 
+   */
   public static function refillFactorySpace($space) {
     $newTile = self::pickOneForLocation(TILE_LOCATION_DECK,$space,TILE_STATE_VISIBLE,false);
     return $newTile;
   }
   
+  /**
+   * Read the tile in a specified factory space
+   */
   public static function getTileInFactory($space) {
     $tile = self::getTopOf($space);
     return $tile;
   }
 
-  public static function getPossibleSpacesInFactory() {
+  /**
+   * Return all unlocked spaces in factory
+   */
+  public static function getUnlockedSpacesInFactory() {
     $nbPlayers = Players::count();
     $spaces = array(
         SPACE_FACTORY_1,

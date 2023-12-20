@@ -58,7 +58,8 @@ const TRANSPORT_ENGINE = "engine";
 /* CARDS LOCATIONS */
 const CARD_LOCATION_DECK = "deck";
 const CARD_LOCATION_OUTSTANDING = "outstanding";
-const TILE_DECK = "deck";
+const TILE_LOCATION_DECK = "deck";
+const TILE_LOCATION_BOARD = "player";
 const TILE_STATE_VISIBLE = 1;
 
 /*

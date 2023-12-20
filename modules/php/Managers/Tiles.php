@@ -2,6 +2,8 @@
 
 namespace COAL\Managers;
 
+use COAL\Models\TileCard;
+
 /* Class to manage all the tile cards for CoalBaron */
 
 class Tiles extends \COAL\Helpers\Pieces
@@ -23,7 +25,7 @@ class Tiles extends \COAL\Helpers\Pieces
   {
     //FILTER VISIBLE Locations ONLY
     return self::getSelectWhere(null,null,TILE_STATE_VISIBLE)
-      ->whereNotIn(static::$prefix.'location',[TILE_DECK])->get()
+      ->whereNotIn(static::$prefix.'location',[TILE_LOCATION_DECK])->get()
       ->map(function ($tile) {
         return $tile->getUiData();
       })
@@ -38,13 +40,13 @@ class Tiles extends \COAL\Helpers\Pieces
     foreach (self::getTiles() as $type => $tile) {
       $tiles[] = [
         'type' => $type,
-        'location' => TILE_DECK,
+        'location' => TILE_LOCATION_DECK,
         'nbr' => TILES_EACH_NB,
       ];
     }
 
     self::create($tiles);
-    self::shuffle(TILE_DECK);
+    self::shuffle(TILE_LOCATION_DECK);
 
     self::drawTilesToFactory();
   }
@@ -53,8 +55,18 @@ class Tiles extends \COAL\Helpers\Pieces
     $spaces = self::getPossibleSpacesInFactory();
     foreach($spaces as $space){
       if($space == SPACE_FACTORY_DRAW ) continue;
-      self::pickOneForLocation(TILE_DECK,$space,TILE_STATE_VISIBLE,false);
+      self::refillFactorySpace($space);
     }
+  }
+  
+  public static function refillFactorySpace($space) {
+    $newTile = self::pickOneForLocation(TILE_LOCATION_DECK,$space,TILE_STATE_VISIBLE,false);
+    return $newTile;
+  }
+  
+  public static function getTileInFactory($space) {
+    $tile = self::getTopOf($space);
+    return $tile;
   }
 
   public static function getPossibleSpacesInFactory() {

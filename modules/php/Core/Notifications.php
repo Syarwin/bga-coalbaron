@@ -28,7 +28,13 @@ class Notifications
   }
   
   public static function giveMoney($player,$money){
-    self::notify($player,'giveMoney', clienttranslate('${player_name} receives ${n} Francs'), [
+    self::notifyAll('giveMoney', clienttranslate('${player_name} receives ${n} Francs'), [
+      'player' => $player,
+      'n' => $money,
+    ]);
+  }
+  public static function spendMoney($player,$money){
+    self::notifyAll('spendMoney', clienttranslate('${player_name} spends ${n} Francs'), [
       'player' => $player,
       'n' => $money,
     ]);
@@ -41,10 +47,23 @@ class Notifications
     ]);
   }
   
+  public static function refillFactorySpace($newTile){
+    self::notifyAll('refillFactorySpace', clienttranslate('The game draws a new tile'), [
+      'tile' => $newTile,
+      //Space info is in the tile location
+    ]);
+  }
+  
   public static function giveCardTo($player,$card){
     self::notifyAll('giveCardTo', clienttranslate('${player_name} receives a new order card'), [
       'player' => $player,
       'card' => $card,
+    ]);
+  }
+  public static function giveTileTo($player,$tile){
+    self::notifyAll('giveTileTo', clienttranslate('${player_name} receives a new tunnel tile'), [
+      'player' => $player,
+      'tile' => $tile,
     ]);
   }
 

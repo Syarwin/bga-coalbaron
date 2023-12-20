@@ -109,6 +109,10 @@ class CoalBaron extends Table
     $nbAvailableWorkers = Meeples::getNbAvailableWorkers($player);
 
     return array(
+      'turn' => Globals::getTurn(),
+      'meeples' => Meeples::getUiData(),
+      'cards' => Cards::getUiData(),
+      'tiles' => Tiles::getUiData(),
       'spaces' => $spaces,
       'nbAvailableWorkers' => $nbAvailableWorkers,
     );

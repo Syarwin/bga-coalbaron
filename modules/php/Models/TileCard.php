@@ -2,6 +2,8 @@
 
 namespace COAL\Models;
 
+use COAL\Core\Notifications;
+
 /*
  * TileCard: all utility functions concerning a tile
  */
@@ -58,4 +60,17 @@ class TileCard extends \COAL\Helpers\DB_Model
     }
     return 0;
   }
+
+  public function moveToPlayerBoard($player)
+  {
+    $this->setLocation(TILE_LOCATION_BOARD);
+    $this->setState(TILE_STATE_VISIBLE);
+    $this->setPId($player->getId());
+    //TODO JSA compute tile COORD
+    $this->setX(1);
+    $this->setY(1);
+
+    Notifications::giveTileTo($player, $this);
+  }
+
 }

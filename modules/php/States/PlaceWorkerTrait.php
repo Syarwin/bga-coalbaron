@@ -103,6 +103,17 @@ trait PlaceWorkerTrait
             case SPACE_BANK_6: 
                 $this->placeWorkerInBank($player,$space);
                 break;
+                
+            case SPACE_FACTORY_1: 
+            case SPACE_FACTORY_2: 
+            case SPACE_FACTORY_3: 
+            case SPACE_FACTORY_4: 
+            case SPACE_FACTORY_5: 
+            case SPACE_FACTORY_6: 
+            case SPACE_FACTORY_7: 
+            case SPACE_FACTORY_8: 
+                $this->placeWorkerInFactory($player,$space);
+                break;
             //TODO JSA placeWorker ALL TYPES
             default:
                 throw new \BgaVisibleSystemException("Not supported worker space : $space");

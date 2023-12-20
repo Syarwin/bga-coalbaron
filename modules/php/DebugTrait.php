@@ -108,6 +108,12 @@ trait DebugTrait
     
     //$this->actPlaceWorker("FAKE_BANK_SPACE");
   }
+  
+  function testActionFactory()
+  {
+    $this->testReplaceMeeplesInReserve();
+    $this->actPlaceWorker(SPACE_FACTORY_1);
+  }
 
   /* Replace meeples in reserve : */
   function testReplaceMeeplesInReserve()

@@ -16,22 +16,8 @@ trait WorkerAtFactoryTrait
     /**
      * List all possible Worker Spaces to play by player $pId and specified action "Factory"
      */
-    function getPossibleSpacesInFactory($pId, $nbPlayers) {
-        $spaces = array(
-            SPACE_FACTORY_1,
-            SPACE_FACTORY_2,
-            SPACE_FACTORY_3,
-            SPACE_FACTORY_5,
-            SPACE_FACTORY_6,
-            SPACE_FACTORY_7,
-            SPACE_FACTORY_DRAW,
-        );
-        
-        if($nbPlayers>=4){
-            $spaces[] = SPACE_FACTORY_4;
-            $spaces[] = SPACE_FACTORY_8;
-        }
-
+    function getPossibleSpacesInFactory($pId) {
+        $spaces = Tiles::getPossibleSpacesInFactory();
         //TODO JSA FILTER on available money VS cost 
         return $spaces;
     }

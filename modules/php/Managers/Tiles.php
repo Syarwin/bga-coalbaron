@@ -2,11 +2,6 @@
 
 namespace COAL\Managers;
 
-use COAL\Helpers\Utils;
-use COAL\Helpers\Collection;
-use COAL\Core\Notifications;
-use COAL\Core\Stats;
-
 /* Class to manage all the tile cards for CoalBaron */
 
 class Tiles extends \COAL\Helpers\Pieces
@@ -26,8 +21,9 @@ class Tiles extends \COAL\Helpers\Pieces
 
   public static function getUiData()
   {
-    //TODO JSA FILTER VISIBLE Locations ONLY
-    return self::getInLocation("deck")
+    //FILTER VISIBLE Locations ONLY
+    return self::getSelectWhere(null,null,TILE_STATE_VISIBLE)
+      ->whereNotIn(static::$prefix.'location',[TILE_DECK])->get()
       ->map(function ($tile) {
         return $tile->getUiData();
       })
@@ -42,12 +38,42 @@ class Tiles extends \COAL\Helpers\Pieces
     foreach (self::getTiles() as $type => $tile) {
       $tiles[] = [
         'type' => $type,
-        'location' => 'deck',
+        'location' => TILE_DECK,
         'nbr' => TILES_EACH_NB,
       ];
     }
 
     self::create($tiles);
+    self::shuffle(TILE_DECK);
+
+    self::drawTilesToFactory();
+  }
+  public static function drawTilesToFactory() {
+    //DRAW 6 or 8 tiles:
+    $spaces = self::getPossibleSpacesInFactory();
+    foreach($spaces as $space){
+      if($space == SPACE_FACTORY_DRAW ) continue;
+      self::pickOneForLocation(TILE_DECK,$space,TILE_STATE_VISIBLE,false);
+    }
+  }
+
+  public static function getPossibleSpacesInFactory() {
+    $nbPlayers = Players::count();
+    $spaces = array(
+        SPACE_FACTORY_1,
+        SPACE_FACTORY_2,
+        SPACE_FACTORY_3,
+        SPACE_FACTORY_5,
+        SPACE_FACTORY_6,
+        SPACE_FACTORY_7,
+        SPACE_FACTORY_DRAW,
+    );
+  
+    if($nbPlayers>=4){
+        $spaces[] = SPACE_FACTORY_4;
+        $spaces[] = SPACE_FACTORY_8;
+    }
+    return $spaces;
   }
 
   public function getTiles()
@@ -55,6 +81,7 @@ class Tiles extends \COAL\Helpers\Pieces
     $f = function ($t) {
       return [
         'color' => $t[0],
+        //Number of minecarts on the tile:
         'number' => $t[1],
         'light' => $t[2],
       ];

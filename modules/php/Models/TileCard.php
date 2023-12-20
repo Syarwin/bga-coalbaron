@@ -22,6 +22,7 @@ class TileCard extends \COAL\Helpers\DB_Model
   protected $staticAttributes = [
     ['type', 'int'],
     'color',
+    //Number of minecarts on the tile:
     ['number', 'int'],
     ['light', 'bool'],
   ];

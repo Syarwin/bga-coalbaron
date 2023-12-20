@@ -56,7 +56,7 @@ trait PlaceWorkerTrait
         $nbAvailableWorkers = Meeples::findAvailableWorkersInCollection($allWorkers,$pId)->count();
 
         $spaces = array(
-            SPACE_FACTORY => $this->getPossibleSpacesInFactory($pId, $nbPlayers),
+            SPACE_FACTORY => $this->getPossibleSpacesInFactory($pId),
             SPACE_MINING => $this->getPossibleSpacesInMining($pId, $nbPlayers),
             SPACE_DELIVERY => $this->getPossibleSpacesInDelivery($pId),
             SPACE_BANK => $this->getPossibleSpacesInBank($pId, $nbPlayers),

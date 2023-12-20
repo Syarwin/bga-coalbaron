@@ -10,6 +10,7 @@ const GREY_COAL = 'grey_coal';
 const BROWN_COAL = 'brown_coal';
 const WORKER = 'worker';
 const CARDS_START_NB = 3;//3 per player
+const TILES_EACH_NB = 3; //3 tiles of each
 
 /** Worker spaces */
 const SPACE_FACTORY = 'factory';

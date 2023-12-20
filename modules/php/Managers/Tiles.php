@@ -19,14 +19,19 @@ class Tiles extends \COAL\Helpers\Pieces
 
   protected static function cast($row)
   {
-    return $row;
-    // $data = self::getTiles()[$row['data_id']];
-    // return new \COAL\Models\TileCard($row, $data);
+    $data = self::getTiles()[$row['type']];
+    $data['type'] = $row['type'];
+    return new \COAL\Models\TileCard($row, $data);
   }
 
   public static function getUiData()
   {
-    return [];
+    //TODO JSA FILTER VISIBLE Locations ONLY
+    return self::getInLocation("deck")
+      ->map(function ($tile) {
+        return $tile->getUiData();
+      })
+      ->toAssoc();
   }
 
   /* Creation of the tiles */
@@ -38,6 +43,7 @@ class Tiles extends \COAL\Helpers\Pieces
       $tiles[] = [
         'type' => $type,
         'location' => 'deck',
+        'nbr' => TILES_EACH_NB,
       ];
     }
 
@@ -54,6 +60,25 @@ class Tiles extends \COAL\Helpers\Pieces
       ];
     };
 
-    return [$f(['yellow', 2, true])];
+    //48 tiles : 16 different tiles * 3 of each
+    return [
+      1 => $f([YELLOW_COAL, 1, false]),
+      2 => $f([YELLOW_COAL, 2, false]),
+      3 => $f([BROWN_COAL, 1, false]),
+      4 => $f([BROWN_COAL, 2, false]),
+      5 => $f([GREY_COAL, 1, false]),
+      6 => $f([GREY_COAL, 2, false]),
+      7 => $f([BLACK_COAL, 1, false]),
+      8 => $f([BLACK_COAL, 2, false]),
+
+      9 => $f([YELLOW_COAL, 1, true]),
+      10 => $f([YELLOW_COAL, 2, true]),
+      11 => $f([BROWN_COAL, 1, true]),
+      12 => $f([BROWN_COAL, 2, true]),
+      13 => $f([GREY_COAL, 1, true]),
+      14 => $f([GREY_COAL, 2, true]),
+      15 => $f([BLACK_COAL, 1, true]),
+      16 => $f([BLACK_COAL, 2, true]),
+    ];
   }
 }

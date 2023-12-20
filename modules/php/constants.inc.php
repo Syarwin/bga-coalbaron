@@ -45,6 +45,7 @@ const SPACE_ORDER_3 = 'order_3';
 const SPACE_ORDER_4 = 'order_4';
 const SPACE_ORDER_DRAW = 'order_draw';
 
+const SPACE_RESERVE = "reserve";
 const SPACE_CANTEEN = "canteen";
 
 /* CARDS TYPES */

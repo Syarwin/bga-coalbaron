@@ -18,7 +18,7 @@ class Card extends \COAL\Helpers\DB_Model
   ];
   
   protected $staticAttributes = [
-    'type',
+    ['type', 'int'],
     'transport',
     ['points', 'int'],
     'coals', //array of strings

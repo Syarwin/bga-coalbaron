@@ -88,7 +88,7 @@ class Players extends \COAL\Helpers\DB_Manager
   /*
    * Return the number of players
    */
-  public function count()
+  public static function count()
   {
     return self::DB()->count();
   }

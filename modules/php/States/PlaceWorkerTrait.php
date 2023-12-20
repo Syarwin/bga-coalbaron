@@ -53,11 +53,7 @@ trait PlaceWorkerTrait
     function getPossibleSpaces($pId, $nbPlayers) {
         self::trace("getPossibleSpaces($pId, $nbPlayers)");
         $allWorkers = Meeples::getAll();
-        //self::dump("getPossibleSpaces($pId, $nbPlayers)  allWorkers",$allWorkers);
-        //$nbAvailableWorkers = Meeples::countInLocation("reserve-$pId");
-        $nbAvailableWorkers = $allWorkers->filter(function ($meeple) use ($pId){
-                return $meeple['type'] == WORKER && $meeple['meeple_location'] == "reserve-$pId";
-            })->count();
+        $nbAvailableWorkers = Meeples::findAvailableWorkersInCollection($allWorkers,$pId)->count();
 
         $spaces = array(
             SPACE_FACTORY => $this->getPossibleSpacesInFactory($pId, $nbPlayers),

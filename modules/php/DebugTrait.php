@@ -94,7 +94,7 @@ trait DebugTrait
   {
     $this->testReplaceMeeplesInReserve();
 
-    //MULTIPLES POSSIBLES without the last line "next state"
+    //MULTIPLES POSSIBLES without the last line "next state" in action actPlaceWorker
     //KO in 2 PLAYERS game
     //$this->actPlaceWorker(SPACE_BANK_3);
     $this->actPlaceWorker(SPACE_BANK_4);
@@ -119,7 +119,7 @@ trait DebugTrait
     foreach ($workers as $worker) {
       if($worker['type'] == WORKER && $worker['player_id'] == $pId ) $workersIds[] = $worker['meeple_id'];
     }
-    Meeples::move($workersIds,"reserve-$pId" );
+    Meeples::move($workersIds,SPACE_RESERVE );
     $nbAv = count($workersIds);
     Notifications::message("$nbAv workers are available");
   }

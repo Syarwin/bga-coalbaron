@@ -17,6 +17,10 @@ trait DebugTrait
     $players = Players::getAll();
     //RESET cards to deck
     Cards::moveAllInLocation(CARD_LOCATION_OUTSTANDING, CARD_LOCATION_DECK);
+    Cards::moveAllInLocation(SPACE_ORDER_1, CARD_LOCATION_DECK);
+    Cards::moveAllInLocation(SPACE_ORDER_2, CARD_LOCATION_DECK);
+    Cards::moveAllInLocation(SPACE_ORDER_3, CARD_LOCATION_DECK);
+    Cards::moveAllInLocation(SPACE_ORDER_4, CARD_LOCATION_DECK);
 
     foreach($players as $player){
       for($k =0; $k< CARDS_START_NB;$k++){
@@ -24,6 +28,11 @@ trait DebugTrait
         Cards::giveCardTo($player,$card);
       }
     }
+
+    Cards::pickOneForLocation(CARD_LOCATION_DECK,SPACE_ORDER_1);
+    Cards::pickOneForLocation(CARD_LOCATION_DECK,SPACE_ORDER_2);
+    Cards::pickOneForLocation(CARD_LOCATION_DECK,SPACE_ORDER_3);
+    Cards::pickOneForLocation(CARD_LOCATION_DECK,SPACE_ORDER_4);
   }
 
   function testPWS()

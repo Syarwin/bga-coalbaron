@@ -24,6 +24,7 @@ class Cards extends \COAL\Helpers\Pieces
   public static function getUiData()
   {
     return self::getInLocation(CARD_LOCATION_OUTSTANDING)
+      ->merge(self::getInLocation(SPACE_ORDER."_%"))
       ->map(function ($card) {
         return $card->getUiData();
       })

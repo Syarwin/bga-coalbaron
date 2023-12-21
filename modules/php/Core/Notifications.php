@@ -66,6 +66,13 @@ class Notifications
       'tile' => $tile,
     ]);
   }
+  public static function moveCoalTo($player,$tile,$coal){
+    self::notifyAll('moveCoalTo', clienttranslate('${player_name} receives a new coal on the new tunnel tile'), [
+      'player' => $player,
+      'tile' => $tile,
+      'coal' => $coal,
+    ]);
+  }
 
   /*************************
    **** GENERIC METHODS ****

@@ -158,4 +158,32 @@ class Meeples extends \COAL\Helpers\Pieces
 
     Notifications::placeWorkersInSpace($player,$toLocation,$nbNeededWorkers);
   }
+  
+  public static function getFirstAvailableCoals($color, $number)
+  {
+    return self::getFilteredQuery(null, SPACE_RESERVE, $color)->limit($number)->get();
+  }
+  /**
+   * ADD 1 COAL in each minecart on the tile 
+   */
+  public static function placeCoalsOnTile($player,$tile)
+  {
+    $nb = $tile->getNumber();
+    $coals = self::getFirstAvailableCoals($tile->getColor(),$nb);
+    foreach($coals as $coal){
+      $coal->moveToTile($player,$tile);
+    }
+
+    $missingCoals = $nb - count($coals);
+    if($missingCoals>0){
+        
+      //TODO JSA SPECIFIC STATE to choose a coal
+      /*
+      If, when a player acquires a tunnel tile, the supply contains fewer coal cubes of the color he needs to fill the minecarts on that tile, the player may place 1 coal cube of
+      any color onto each minecart on that tile which he cannot fill properly. This does not affect any costs paid for the tile.
+      */
+      throw new \BgaVisibleSystemException("Not supported feature : choose coal");
+    }
+
+  }
 }

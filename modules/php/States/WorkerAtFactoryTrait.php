@@ -44,7 +44,9 @@ trait WorkerAtFactoryTrait
         $tile = Tiles::getTileInFactory($space);
         Players::spendMoney($player,$tile->getCost());
         $tile->moveToPlayerBoard($player);
-        //TODO JSA ADD 1 COAL in each minecart on the tile
+        Meeples::placeCoalsOnTile($player,$tile);
+
+        //TODO JSA refillFactorySpace only when player confirmed the turn 
         $newTile = Tiles::refillFactorySpace($space);
         Notifications::refillFactorySpace($newTile);
     }

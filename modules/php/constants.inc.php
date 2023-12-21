@@ -64,6 +64,7 @@ const CARD_LOCATION_OUTSTANDING = "outstanding";
 const TILE_LOCATION_DECK = "deck";
 const TILE_LOCATION_BOARD = "player";
 const TILE_STATE_VISIBLE = 1;
+const COAL_LOCATION_TILE = "tile_";
 
 /*
  * Game options

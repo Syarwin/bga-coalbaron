@@ -123,7 +123,7 @@ trait DebugTrait
     $workers = Meeples::getAll();
     $workersIds = array();
     foreach ($workers as $worker) {
-      if($worker['type'] == WORKER && $worker['player_id'] == $pId ) $workersIds[] = $worker['meeple_id'];
+      if($worker->getType() == WORKER && $worker->getPId() == $pId ) $workersIds[] = $worker->getId();
     }
     Meeples::move($workersIds,SPACE_RESERVE );
     $nbAv = count($workersIds);

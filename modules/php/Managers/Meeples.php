@@ -19,12 +19,26 @@ class Meeples extends \COAL\Helpers\Pieces
 
   protected static function cast($row)
   {
-    return $row;
+    $data['type'] = $row['type'];
+    switch($row['type']){
+      case WORKER:
+        return new \COAL\Models\Worker($row, $data);
+      case YELLOW_COAL: 
+      case BROWN_COAL: 
+      case BLACK_COAL: 
+      case GREY_COAL:
+        return new \COAL\Models\CoalCube($row, $data);
+    }
+    return new \COAL\Models\Meeple($row, $data);
   }
 
   public static function getUiData()
   {
-    return self::DB()->get();
+    return self::DB()->get()
+      ->map(function ($card) {
+        return $card->getUiData();
+      })
+      ->toAssoc();
   }
 
   /* Creation of the tiles */
@@ -40,8 +54,59 @@ class Meeples extends \COAL\Helpers\Pieces
         'player_id' => $pId,
         'nbr' => $nWorkers[count($players)],
       ];
+      //Fill each player's starting minecarts with 1 coal cube :
+      $meeples[] = [
+        'type' => YELLOW_COAL,
+        'location' => SPACE_PIT_TILE."_1_1",
+        'player_id' => $pId,
+        'nbr' => 1,
+      ];
+      $meeples[] = [
+        'type' => BROWN_COAL,
+        'location' => SPACE_PIT_TILE."_2_-1",
+        'player_id' => $pId,
+        'nbr' => 1,
+      ];
+      $meeples[] = [
+        'type' => GREY_COAL,
+        'location' => SPACE_PIT_TILE."_3_-1",
+        'player_id' => $pId,
+        'nbr' => 1,
+      ];
+      $meeples[] = [
+        'type' => BLACK_COAL,
+        'location' => SPACE_PIT_TILE."_4_1",
+        'player_id' => $pId,
+        'nbr' => 1,
+      ];
     }
-
+    //Place all other Coal Cubes in reserve : 16 exist in each color 
+    $nbCubesOfEach = 16 - count($players);
+    $meeples[] = [
+      'type' => YELLOW_COAL,
+      'location' => SPACE_RESERVE,
+      'player_id' => null,
+      'nbr' => $nbCubesOfEach,
+    ];
+    $meeples[] = [
+      'type' => BROWN_COAL,
+      'location' => SPACE_RESERVE,
+      'player_id' => null,
+      'nbr' => $nbCubesOfEach,
+    ];
+    $meeples[] = [
+      'type' => GREY_COAL,
+      'location' => SPACE_RESERVE,
+      'player_id' => null,
+      'nbr' => $nbCubesOfEach,
+    ];
+    $meeples[] = [
+      'type' => BLACK_COAL,
+      'location' => SPACE_RESERVE,
+      'player_id' => null,
+      'nbr' => $nbCubesOfEach,
+    ];
+    
     self::create($meeples);
   }
   
@@ -67,9 +132,9 @@ class Meeples extends \COAL\Helpers\Pieces
   public static function findAvailableWorkersInCollection($allWorkers,$pId)
   { 
     $availableWorkers = $allWorkers->filter(function ($meeple) use ($pId){
-      return $meeple['type'] == WORKER
-          && $meeple['meeple_location'] == SPACE_RESERVE
-          && $meeple['player_id'] == $pId ;
+      return $meeple->getType() == WORKER
+          && $meeple->getLocation() == SPACE_RESERVE
+          && $meeple->getPId() == $pId ;
     });
     return $availableWorkers;
   }
@@ -84,7 +149,7 @@ class Meeples extends \COAL\Helpers\Pieces
     //self::pickForLocation($nbNeededWorkers,SPACE_RESERVE,$toLocation);
     $workersToMove = self::getFirstAvailableWorkers($pId,$nbNeededWorkers);
     foreach ($workersToMove as $worker) {
-      $workersIds[] = $worker['meeple_id'];
+      $workersIds[] = $worker->getId();
     }
     $nbAv = count($workersIds);
     if($nbAv < $nbNeededWorkers ) //Should not happen

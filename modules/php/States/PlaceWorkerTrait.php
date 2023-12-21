@@ -78,7 +78,7 @@ trait PlaceWorkerTrait
             if($space == SPACE_BANK_1) return true;//don't remove default space SPACE_BANK_1
 
             $workersAtWork = $allWorkers->filter(function ($meeple) use ($space){
-                return $meeple['type'] == WORKER && $meeple['meeple_location'] == $space;
+                return $meeple->getType() == WORKER && $meeple->getLocation() == $space;
             })->count();
             if($nbAvailableWorkers < $workersAtWork + 1){
                 //IMPOSSIBLE to add a worker => delete from array

@@ -49,6 +49,9 @@ const SPACE_ORDER_DRAW = 'order_draw';
 const SPACE_RESERVE = "reserve";
 const SPACE_CANTEEN = "canteen";
 
+const SPACE_PIT_CAGE = "pit_cage";
+const SPACE_PIT_TILE = "pit_tile";//TO  be followed by "_y_x" with coordinates y (row) and x (col) 
+
 /* CARDS TYPES */
 const TRANSPORT_BARROW = "barrow";
 const TRANSPORT_CARRIAGE = "carriage";

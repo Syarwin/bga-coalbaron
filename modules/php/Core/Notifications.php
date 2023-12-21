@@ -54,6 +54,13 @@ class Notifications
     ]);
   }
   
+  public static function refillOrderSpace($newCard){
+    self::notifyAll('refillOrderSpace', clienttranslate('The game draws a new card'), [
+      'card' => $newCard,
+      //Space info is in the card location
+    ]);
+  }
+  
   public static function giveCardTo($player,$card){
     self::notifyAll('giveCardTo', clienttranslate('${player_name} receives a new order card'), [
       'player' => $player,

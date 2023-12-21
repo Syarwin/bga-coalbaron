@@ -114,6 +114,12 @@ trait PlaceWorkerTrait
             case SPACE_FACTORY_8: 
                 $this->placeWorkerInFactory($player,$space);
                 break;
+            case SPACE_ORDER_1: 
+            case SPACE_ORDER_2: 
+            case SPACE_ORDER_3: 
+            case SPACE_ORDER_4: 
+                $this->placeWorkerInOrder($player,$space);
+                break;
             //TODO JSA placeWorker ALL TYPES
             default:
                 throw new \BgaVisibleSystemException("Not supported worker space : $space");

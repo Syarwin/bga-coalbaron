@@ -23,6 +23,7 @@ trait WorkerAtFactoryTrait
         $money = Players::get($pId)->getMoney();
 
         // FILTER on available money VS cost 
+        // & FILTER EMPTY TILE (because deck may be empty )
         $filter = function ($space) use ($money) {
             $tile = Tiles::getTileInFactory($space);
             if($tile == null || $tile->getCost()> $money){

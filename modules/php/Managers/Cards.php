@@ -30,10 +30,41 @@ class Cards extends \COAL\Helpers\Pieces
       })
       ->toAssoc();
   }
+  
+  /**
+   * Draw a new card and place it in the board order $space 
+   */
+  public static function refillOrderSpace($space) {
+    $newTile = self::pickOneForLocation(CARD_LOCATION_DECK,$space,0,false);
+    return $newTile;
+  }
+  /**
+   * Read the card in a specified board space
+   */
+  public static function getCardInOrder($space) {
+    $card = self::getTopOf($space);
+    return $card;
+  }
 
   public static function giveCardTo($player,$card){
     $card->moveToOutstanding($player);
     Notifications::giveCardTo($player,$card);
+  }
+  
+  /**
+   * Return all unlocked ORDER spaces on board
+   */
+  public static function getUnlockedOrderSpaces($nbPlayers) {
+    $spaces = array(
+      SPACE_ORDER_2,
+      SPACE_ORDER_3,
+      SPACE_ORDER_4,
+      SPACE_ORDER_DRAW,
+    );
+    if($nbPlayers>=3){
+        $spaces[] = SPACE_ORDER_1;
+    }
+    return $spaces;
   }
 
   /* Creation of the cards */

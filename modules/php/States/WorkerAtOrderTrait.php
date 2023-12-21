@@ -2,10 +2,9 @@
 
 namespace COAL\States;
 
-use COAL\Core\Game;
-use COAL\Core\Globals;
-
-use COAL\Managers\Players;
+use COAL\Core\Notifications;
+use COAL\Managers\Cards;
+use COAL\Managers\Meeples;
 
 /*
 functions about workers at the Order Cards spaces
@@ -15,16 +14,34 @@ trait WorkerAtOrderTrait
     /**
      * List all possible Worker Spaces to play by player $pId and specified action "Order"
      */
-    function getPossibleSpacesInOrder($pId, $nbPlayers) {
-        $spaces = array(
-            SPACE_ORDER_2,
-            SPACE_ORDER_3,
-            SPACE_ORDER_4,
-            SPACE_ORDER_DRAW,
-        );
-        if($nbPlayers>=4){
-            $spaces[] = SPACE_ORDER_1;
-        }
+    function getPossibleSpacesInOrder($pId,$nbPlayers) {
+        $spaces = Cards::getUnlockedOrderSpaces($nbPlayers);
+        //TODO JSA PERFS ? could be more efficient to get all distinct "order_%" location in cards in order to filter
+        //FILTER EMPTY ORDERS (because deck may be empty )
+        $filter = function ($space) {
+            $card = Cards::getCardInOrder($space);
+            if(!isset($card)){
+                return false;
+            }
+            return true;
+        };
+
+        $spaces = array_values(array_filter($spaces,$filter));
+
         return $spaces;
+    }
+    
+    /**
+     * FOLLOW THE RULES of ACTION 5 
+     */
+    function placeWorkerInOrder($player, $space){
+        self::trace("placeWorkerInOrder($space)...");
+        Meeples::placeWorkersInSpace($player,$space);
+        $card = Cards::getCardInOrder($space);
+        Cards::giveCardTo($player,$card);
+
+        //TODO JSA refillOrderSpace only when player confirmed the turn 
+        $newCard = Cards::refillOrderSpace($space);
+        Notifications::refillOrderSpace($newCard);
     }
 }

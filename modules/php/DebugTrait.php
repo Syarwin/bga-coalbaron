@@ -29,12 +29,13 @@ trait DebugTrait
       }
     }
 
-    Cards::pickOneForLocation(CARD_LOCATION_DECK,SPACE_ORDER_1);
-    Cards::pickOneForLocation(CARD_LOCATION_DECK,SPACE_ORDER_2);
-    Cards::pickOneForLocation(CARD_LOCATION_DECK,SPACE_ORDER_3);
-    Cards::pickOneForLocation(CARD_LOCATION_DECK,SPACE_ORDER_4);
+    //Cards::refillOrderSpace(SPACE_ORDER_1);
+    Cards::refillOrderSpace(SPACE_ORDER_2);
+    Cards::refillOrderSpace(SPACE_ORDER_3);
+    Cards::refillOrderSpace(SPACE_ORDER_4);
   }
 
+  //notif possible worker spaces : less useful now because the args send it now
   function testPWS()
   {
     $this->testReplaceMeeplesInReserve();
@@ -122,6 +123,12 @@ trait DebugTrait
   {
     $this->testReplaceMeeplesInReserve();
     $this->actPlaceWorker(SPACE_FACTORY_1);
+  }
+
+  function testActionOrder()
+  {
+    $this->testReplaceMeeplesInReserve();
+    $this->actPlaceWorker(SPACE_ORDER_2);
   }
 
   /* Replace meeples in reserve : */

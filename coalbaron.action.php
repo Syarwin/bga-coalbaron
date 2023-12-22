@@ -43,6 +43,14 @@ class action_coalbaron extends APP_GameAction
     $this->game->actPlaceWorker($spaceId);
     self::ajaxResponse();
   }
+  
+  public function actMovePitCage()
+  {
+    self::setAjaxMode();
+    $toLevel = self::getArg('level', AT_posint, true);
+    $this->game->actMovePitCage($toLevel);
+    self::ajaxResponse();
+  }
 
 
   ///////////////////

@@ -136,6 +136,21 @@ trait DebugTrait
     $this->testReplaceMeeplesInReserve();
     $this->actPlaceWorker(SPACE_MINING_6);
   }
+  
+  function testActionMovePitCage()
+  {
+    //RESET for the test :
+    $player = Players::getCurrent();
+    $player->setCageLevel(LEVEL_SURFACE);
+    Globals::setMiningMoves(6);
+
+    $this->actMovePitCage(1);
+    $this->actMovePitCage(2);
+    $this->actMovePitCage(1);
+    $this->actMovePitCage(LEVEL_TUNNEL_MAX);
+    $this->actMovePitCage(1);
+    $this->actMovePitCage(2);
+  }
 
   /* Replace meeples in reserve : */
   function testReplaceMeeplesInReserve()

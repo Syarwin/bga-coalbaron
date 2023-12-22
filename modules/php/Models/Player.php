@@ -50,4 +50,13 @@ class Player extends \COAL\Helpers\DB_Model
     $name = 'get' . \ucfirst($name);
     return Stats::$name($this->id);
   }
+
+  public function movePitCageTo($toLevel){
+    $from = $this->getCageLevel();
+    if($from == $toLevel)
+      throw new \BgaVisibleSystemException("Incorrect destination : your pit cage must move to a different level");
+    $this->setCageLevel($toLevel);
+    Globals::incMiningMoves(-1);
+    Notifications::movePitCage($this,$from,$toLevel);
+  }
 }

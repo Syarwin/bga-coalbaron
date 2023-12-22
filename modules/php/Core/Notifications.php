@@ -87,6 +87,14 @@ class Notifications
     ]);
   }
 
+  public static function movePitCage($player,$fromLevel,$toLevel){
+    self::notifyAll('movePitCage', clienttranslate('${player_name} moves the pit cage from ${a} to ${b}'), [
+      'player' => $player,
+      'a' => $fromLevel,
+      'b' => $toLevel,
+    ]);
+  }
+
   /*************************
    **** GENERIC METHODS ****
    *************************/

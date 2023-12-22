@@ -3,10 +3,12 @@ namespace COAL\States;
 
 use COAL\Core\Globals;
 use COAL\Core\Engine;
+use COAL\Core\Notifications;
 use COAL\Core\Stats;
 
 trait NextPlayerTrait
 {
+  
   function stNextPlayer()
   {
     // Active next player
@@ -17,5 +19,11 @@ trait NextPlayerTrait
     //TODO JSA END ROUND CoNDITIONS
 
     $this->gamestate->nextState('next');
+  }
+
+  function stConfirmChoices()
+  {
+    Notifications::message("TODO JSA stConfirmChoices");
+    $this->gamestate->nextState('');
   }
 }

@@ -76,8 +76,8 @@ $machinestates = [
   
   ST_MINING => [
     'name' => 'miningSteps',
-    'description' => clienttranslate('${actplayer} may perform work steps'),
-    'descriptionmyturn' => clienttranslate('${you} may perform work steps'),
+    'description' => clienttranslate('${actplayer} may perform ${moves} work steps'),
+    'descriptionmyturn' => clienttranslate('${you} may perform ${moves} work steps'),
     'args' => 'argMiningSteps',
     'type' => 'activeplayer',
     'possibleactions' => ['actMovePitCage', 'actMoveCoals'],

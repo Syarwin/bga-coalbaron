@@ -132,7 +132,7 @@ class CoalBaron extends Table
   {
     self::checkAction( 'actPlaceWorker' ); 
 
-    $player = Players::getCurrent();
+    $player = Players::getActive();
     $nbPlayers = Players::count();
 
     // ANTICHEATS : available workers >0 + possible space
@@ -147,6 +147,31 @@ class CoalBaron extends Table
       //GO TO NEXT STATE ONLY IF not already changed by the previous method
       $this->gamestate->nextState( 'next' );
     }
+  }
+  
+  function actMovePitCage($toLevel)
+  {
+    self::checkAction( 'actMovePitCage' ); 
+
+    $moves = Globals::getMiningMoves();
+
+    // ANTICHEATS :
+    if($moves <= 0) 
+      throw new \BgaVisibleSystemException("Not enough work steps to play");
+    if($toLevel <LEVEL_SURFACE && $toLevel > LEVEL_TUNNEL_MAX)
+      throw new \BgaVisibleSystemException("Incorrect destination for your pit cage : $toLevel");
+
+    $player = Players::getActive();
+    $player->movePitCageTo($toLevel);
+    
+    $moves = Globals::getMiningMoves();
+    if( $moves == 0){
+      //END MINING STEPS
+      $this->gamestate->nextState( 'end' );
+      return;
+    }
+    //ELSE continue mining and resend args datas
+    $this->gamestate->nextState( 'continue' );
   }
 
   ////////////////////////////////////

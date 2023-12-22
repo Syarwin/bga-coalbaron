@@ -19,11 +19,13 @@ trait WorkerAtMiningTrait
     function getPossibleSpacesInMining($pId, $nbPlayers) {
         $spaces = array(
             SPACE_MINING_6,
-            SPACE_MINING_8,
             SPACE_MINING_10,
         );
         if($nbPlayers>=4){
             $spaces[] = SPACE_MINING_4;
+        }
+        if($nbPlayers>=3){
+            $spaces[] = SPACE_MINING_8;
         }
         return $spaces;
     }

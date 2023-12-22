@@ -28,6 +28,7 @@ class Player extends \COAL\Helpers\DB_Model
     'score' => ['player_score', 'int'],
     'scoreAux' => ['player_score_aux', 'int'],
     'money' => ['money', 'int'],
+    'cageLevel' => ['cage_level', 'int'],
     'zombie' => 'player_zombie',
   ];
 

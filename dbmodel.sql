@@ -36,9 +36,10 @@ CREATE TABLE IF NOT EXISTS `tiles` (
   PRIMARY KEY (`tile_id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
---ADD a money count to each player
+-- ADD a money count to each player
 ALTER TABLE `player` ADD `money` INT(3) DEFAULT 0;
-
+-- Indicator of the current level of the pit cage, counting from the surface 0,1,2,3 or 4
+ALTER TABLE `player` ADD `cage_level` INT(2) DEFAULT 0 COMMENT 'Indicator of the current level of the pit cage, counting from the surface 0 to the deepest tunnel 4';
 
 -- CORE TABLES --
 CREATE TABLE IF NOT EXISTS `global_variables` (

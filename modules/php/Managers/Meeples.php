@@ -32,14 +32,31 @@ class Meeples extends \COAL\Helpers\Pieces
     return new \COAL\Models\Meeple($row, $data);
   }
 
+  /**
+   * Return Workers and COALS
+   */
   public static function getUiData()
   {
     return self::DB()->get()
-      ->map(function ($card) {
-        return $card->getUiData();
+      ->map(function ($coal) {
+        return $coal->getUiData();
       })
       ->toAssoc();
   }
+  
+
+  /**
+   * Return COALS from parametered player
+   */
+  public static function getCoalsUiData($pId)
+  {
+    return self::getPlayerCoals($pId)
+      ->map(function ($coal) {
+        return $coal->getUiData();
+      })
+      ->toAssoc();
+  }
+
 
   /* Creation of the tiles */
   public static function setupNewGame($players, $options)
@@ -162,6 +179,14 @@ class Meeples extends \COAL\Helpers\Pieces
   public static function getFirstAvailableCoals($color, $number)
   {
     return self::getFilteredQuery(null, SPACE_RESERVE, $color)->limit($number)->get();
+  }
+  
+  /**
+   * Return all coals currently owned by this player
+   */
+  public static function getPlayerCoals($pId)
+  {
+    return self::getFilteredQuery($pId, null, "%_coal")->get();
   }
   /**
    * ADD 1 COAL in each minecart on the tile 

@@ -117,6 +117,16 @@ class CoalBaron extends Table
       'nbAvailableWorkers' => $nbAvailableWorkers,
     );
   }
+  
+  function argMiningSteps(){
+    $player = Players::getActive();
+
+    return array(
+      'cageLevel' => $player->getCageLevel(),
+      'meeples' => Meeples::getCoalsUiData($player->getId()),
+      'moves' => Globals::getMiningMoves(),
+    );
+  }
 
   function actPlaceWorker($space)
   {
@@ -133,7 +143,10 @@ class CoalBaron extends Table
       throw new \BgaVisibleSystemException("Incorrect place to place a worker : $space");
 
     $this->placeWorker($player,$space);
-    $this->gamestate->nextState( 'next' );
+    if( ST_PLACE_WORKER == $this->gamestate->state_id()){
+      //GO TO NEXT STATE ONLY IF not already changed by the previous method
+      $this->gamestate->nextState( 'next' );
+    }
   }
 
   ////////////////////////////////////

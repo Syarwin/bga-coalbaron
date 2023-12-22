@@ -69,7 +69,21 @@ $machinestates = [
     'possibleactions' => ['actPlaceWorker'],
     'transitions' => [
       //'' => ST_CONFIRM_CHOICES,
+      'startMining' => ST_MINING,
       'next' => ST_NEXT_PLAYER,
+    ],
+  ],
+  
+  ST_MINING => [
+    'name' => 'miningSteps',
+    'description' => clienttranslate('${actplayer} may perform work steps'),
+    'descriptionmyturn' => clienttranslate('${you} may perform work steps'),
+    'args' => 'argMiningSteps',
+    'type' => 'activeplayer',
+    'possibleactions' => ['actMovePitCage', 'actMoveCoals'],
+    'transitions' => [
+      'continue' => ST_MINING,
+      'end' => ST_CONFIRM_CHOICES,
     ],
   ],
 

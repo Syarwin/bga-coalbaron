@@ -121,6 +121,12 @@ trait PlaceWorkerTrait
                 $this->placeWorkerInOrder($player,$space);
                 break;
             //TODO JSA placeWorker ALL TYPES
+            case SPACE_MINING_4: 
+            case SPACE_MINING_6: 
+            case SPACE_MINING_8: 
+            case SPACE_MINING_10: 
+                $this->placeWorkerInMining($player,$space);
+                break;
             default:
                 throw new \BgaVisibleSystemException("Not supported worker space : $space");
         }

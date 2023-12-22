@@ -90,6 +90,8 @@ const ST_PLACE_WORKER = 11;
 
 const ST_CONFIRM_CHOICES = 20;
 
+const ST_MINING = 30;
+
 const ST_PRE_END_OF_GAME = 98;
 const ST_END_GAME = 99;
 

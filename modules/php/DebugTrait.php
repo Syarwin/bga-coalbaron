@@ -131,6 +131,12 @@ trait DebugTrait
     $this->actPlaceWorker(SPACE_ORDER_2);
   }
 
+  function testActionMining()
+  {
+    $this->testReplaceMeeplesInReserve();
+    $this->actPlaceWorker(SPACE_MINING_6);
+  }
+
   /* Replace meeples in reserve : */
   function testReplaceMeeplesInReserve()
   {

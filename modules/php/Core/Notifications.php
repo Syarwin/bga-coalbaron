@@ -46,6 +46,12 @@ class Notifications
       'n' => $nbWorkers,
     ]);
   }
+  public static function startMining($player,$nbMoves){
+    self::notifyAll('startMining', clienttranslate('${player_name} gets ${n} mining work steps to perform'), [
+      'player' => $player,
+      'n' => $nbMoves,
+    ]);
+  }
   
   public static function refillFactorySpace($newTile){
     self::notifyAll('refillFactorySpace', clienttranslate('The game draws a new tile'), [

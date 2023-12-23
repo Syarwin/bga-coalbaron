@@ -1,0 +1,189 @@
+#coalbaron-main-container {
+    #coalbaron-board {
+        width: 1650px;
+        height: 786px;
+        background-image: url("img/board.jpg");
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+        border-radius: 10px;
+        border: 2px solid black;
+        box-shadow: 1px 1px 10px black;
+
+        display: flex;
+        flex-wrap: wrap;
+
+        .board-space {
+            width: 100px;
+            height: 100px;
+            // width: 160px;
+            // height: 200px;
+            margin: 10px;
+            background: rgba(255, 255, 255, 0.548);
+            position: absolute;
+            top: 400px;
+
+            &::before {
+                content: "";
+                position: absolute;
+                top: -5px;
+                left: -8px;
+                right: -8px;
+                bottom: -5px;
+                border: 1px solid transparent;
+                border-image-slice: 64 88 64 88;
+                border-image-width: 20px 20px 20px 20px;
+                border-image-outset: 0px 0px 0px 0px;
+                border-image-repeat: stretch stretch;
+                border-image-source: url("img/frame.png");
+                pointer-events: none;
+            }
+
+            &#factory_1,
+            &#factory_2,
+            &#factory_3,
+            &#factory_4,
+            &#factory_5,
+            &#factory_6,
+            &#factory_7,
+            &#factory_8 {
+                width: 140px;
+                height: 250px;
+            }
+
+            &#factory_1 {
+                top: 0px;
+                left: 0px;
+            }
+            &#factory_2 {
+                top: 0px;
+                left: 160px;
+            }
+            &#factory_3 {
+                top: 0px;
+                left: 320px;
+            }
+            &#factory_4 {
+                top: 0px;
+                left: 480px;
+            }
+            &#factory_5 {
+                top: 470px;
+                left: 0px;
+            }
+            &#factory_6 {
+                top: 470px;
+                left: 160px;
+            }
+            &#factory_7 {
+                top: 470px;
+                left: 320px;
+            }
+            &#factory_8 {
+                top: 470px;
+                left: 480px;
+            }
+            &#factory_draw {
+                width: 100px;
+                height: 140px;
+                left: 20px;
+                top: 280px;
+            }
+
+            &#mining_4,
+            &#mining_6,
+            &#mining_8,
+            &#mining_10 {
+                top: 80px;
+            }
+            &#mining_4 {
+                left: 660px;
+            }
+            &#mining_6 {
+                left: 780px;
+            }
+            &#mining_8 {
+                left: 900px;
+            }
+            &#mining_10 {
+                left: 1020px;
+            }
+
+            &#bank_3,
+            &#bank_4,
+            &#bank_5,
+            &#bank_6 {
+                top: 0px;
+            }
+            &#bank_3 {
+                left: 1160px;
+            }
+            &#bank_4 {
+                left: 1280px;
+            }
+            &#bank_5 {
+                left: 1400px;
+            }
+            &#bank_6 {
+                left: 1520px;
+            }
+
+            &#delivery_1,
+            &#delivery_2,
+            &#delivery_3,
+            &#delivery_4 {
+                top: 580px;
+            }
+            &#delivery_1 {
+                left: 640px;
+            }
+            &#delivery_2 {
+                left: 760px;
+            }
+            &#delivery_3 {
+                left: 880px;
+            }
+            &#delivery_4 {
+                left: 1000px;
+            }
+
+            &#order_1,
+            &#order_2,
+            &#order_3,
+            &#order_4 {
+                top: 450px;
+                width: 120px;
+                height: 270px;
+            }
+            &#order_1 {
+                left: 1120px;
+            }
+            &#order_2 {
+                left: 1260px;
+            }
+            &#order_3 {
+                left: 1380px;
+            }
+            &#order_4 {
+                left: 1520px;
+            }
+
+            &#order_draw {
+                top: 300px;
+                left: 1300px;
+                width: 120px;
+                height: 120px;
+            }
+
+            &#canteen {
+                top: 280px;
+                left: 275px;
+                width: 300px;
+                height: 150px;
+                background: none;
+                &::before {
+                    display: none;
+                }
+            }
+        }
+    }
+}

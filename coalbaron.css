@@ -16,6 +16,126 @@
 .player-info {
   display: flex; }
 
+#coalbaron-main-container #coalbaron-board {
+  width: 1650px;
+  height: 786px;
+  background-image: url("img/board.jpg");
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  border-radius: 10px;
+  border: 2px solid black;
+  box-shadow: 1px 1px 10px black;
+  display: flex;
+  flex-wrap: wrap; }
+  #coalbaron-main-container #coalbaron-board .board-space {
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+    background: rgba(255, 255, 255, 0.548);
+    position: absolute;
+    top: 400px; }
+    #coalbaron-main-container #coalbaron-board .board-space::before {
+      content: "";
+      position: absolute;
+      top: -5px;
+      left: -8px;
+      right: -8px;
+      bottom: -5px;
+      border: 1px solid transparent;
+      border-image-slice: 64 88 64 88;
+      border-image-width: 20px 20px 20px 20px;
+      border-image-outset: 0px 0px 0px 0px;
+      border-image-repeat: stretch stretch;
+      border-image-source: url("img/frame.png");
+      pointer-events: none; }
+    #coalbaron-main-container #coalbaron-board .board-space#factory_1, #coalbaron-main-container #coalbaron-board .board-space#factory_2, #coalbaron-main-container #coalbaron-board .board-space#factory_3, #coalbaron-main-container #coalbaron-board .board-space#factory_4, #coalbaron-main-container #coalbaron-board .board-space#factory_5, #coalbaron-main-container #coalbaron-board .board-space#factory_6, #coalbaron-main-container #coalbaron-board .board-space#factory_7, #coalbaron-main-container #coalbaron-board .board-space#factory_8 {
+      width: 140px;
+      height: 250px; }
+    #coalbaron-main-container #coalbaron-board .board-space#factory_1 {
+      top: 0px;
+      left: 0px; }
+    #coalbaron-main-container #coalbaron-board .board-space#factory_2 {
+      top: 0px;
+      left: 160px; }
+    #coalbaron-main-container #coalbaron-board .board-space#factory_3 {
+      top: 0px;
+      left: 320px; }
+    #coalbaron-main-container #coalbaron-board .board-space#factory_4 {
+      top: 0px;
+      left: 480px; }
+    #coalbaron-main-container #coalbaron-board .board-space#factory_5 {
+      top: 470px;
+      left: 0px; }
+    #coalbaron-main-container #coalbaron-board .board-space#factory_6 {
+      top: 470px;
+      left: 160px; }
+    #coalbaron-main-container #coalbaron-board .board-space#factory_7 {
+      top: 470px;
+      left: 320px; }
+    #coalbaron-main-container #coalbaron-board .board-space#factory_8 {
+      top: 470px;
+      left: 480px; }
+    #coalbaron-main-container #coalbaron-board .board-space#factory_draw {
+      width: 100px;
+      height: 140px;
+      left: 20px;
+      top: 280px; }
+    #coalbaron-main-container #coalbaron-board .board-space#mining_4, #coalbaron-main-container #coalbaron-board .board-space#mining_6, #coalbaron-main-container #coalbaron-board .board-space#mining_8, #coalbaron-main-container #coalbaron-board .board-space#mining_10 {
+      top: 80px; }
+    #coalbaron-main-container #coalbaron-board .board-space#mining_4 {
+      left: 660px; }
+    #coalbaron-main-container #coalbaron-board .board-space#mining_6 {
+      left: 780px; }
+    #coalbaron-main-container #coalbaron-board .board-space#mining_8 {
+      left: 900px; }
+    #coalbaron-main-container #coalbaron-board .board-space#mining_10 {
+      left: 1020px; }
+    #coalbaron-main-container #coalbaron-board .board-space#bank_3, #coalbaron-main-container #coalbaron-board .board-space#bank_4, #coalbaron-main-container #coalbaron-board .board-space#bank_5, #coalbaron-main-container #coalbaron-board .board-space#bank_6 {
+      top: 0px; }
+    #coalbaron-main-container #coalbaron-board .board-space#bank_3 {
+      left: 1160px; }
+    #coalbaron-main-container #coalbaron-board .board-space#bank_4 {
+      left: 1280px; }
+    #coalbaron-main-container #coalbaron-board .board-space#bank_5 {
+      left: 1400px; }
+    #coalbaron-main-container #coalbaron-board .board-space#bank_6 {
+      left: 1520px; }
+    #coalbaron-main-container #coalbaron-board .board-space#delivery_1, #coalbaron-main-container #coalbaron-board .board-space#delivery_2, #coalbaron-main-container #coalbaron-board .board-space#delivery_3, #coalbaron-main-container #coalbaron-board .board-space#delivery_4 {
+      top: 580px; }
+    #coalbaron-main-container #coalbaron-board .board-space#delivery_1 {
+      left: 640px; }
+    #coalbaron-main-container #coalbaron-board .board-space#delivery_2 {
+      left: 760px; }
+    #coalbaron-main-container #coalbaron-board .board-space#delivery_3 {
+      left: 880px; }
+    #coalbaron-main-container #coalbaron-board .board-space#delivery_4 {
+      left: 1000px; }
+    #coalbaron-main-container #coalbaron-board .board-space#order_1, #coalbaron-main-container #coalbaron-board .board-space#order_2, #coalbaron-main-container #coalbaron-board .board-space#order_3, #coalbaron-main-container #coalbaron-board .board-space#order_4 {
+      top: 450px;
+      width: 120px;
+      height: 270px; }
+    #coalbaron-main-container #coalbaron-board .board-space#order_1 {
+      left: 1120px; }
+    #coalbaron-main-container #coalbaron-board .board-space#order_2 {
+      left: 1260px; }
+    #coalbaron-main-container #coalbaron-board .board-space#order_3 {
+      left: 1380px; }
+    #coalbaron-main-container #coalbaron-board .board-space#order_4 {
+      left: 1520px; }
+    #coalbaron-main-container #coalbaron-board .board-space#order_draw {
+      top: 300px;
+      left: 1300px;
+      width: 120px;
+      height: 120px; }
+    #coalbaron-main-container #coalbaron-board .board-space#canteen {
+      top: 280px;
+      left: 275px;
+      width: 300px;
+      height: 150px;
+      background: none; }
+      #coalbaron-main-container #coalbaron-board .board-space#canteen::before {
+        display: none; }
+
 #player_board_config {
   position: relative;
   border-image: none; }

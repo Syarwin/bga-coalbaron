@@ -56,6 +56,7 @@ define([
     setup(gamedatas) {
       debug('SETUP', gamedatas);
 
+      this.setupCentralBoard();
       this.setupPlayers();
       this.setupInfoPanel();
 
@@ -64,6 +65,43 @@ define([
       this.updateTurn();
 
       this.inherited(arguments);
+    },
+
+    setupCentralBoard() {
+      let container = $('coalbaron-board');
+      const SPACES = [
+        'factory_1',
+        'factory_2',
+        'factory_3',
+        'factory_4',
+        'factory_5',
+        'factory_6',
+        'factory_7',
+        'factory_8',
+        'factory_draw',
+        'mining_4',
+        'mining_6',
+        'mining_8',
+        'mining_10',
+        'delivery_1',
+        'delivery_2',
+        'delivery_3',
+        'delivery_4',
+        'bank_3',
+        'bank_4',
+        'bank_5',
+        'bank_6',
+        'order_1',
+        'order_2',
+        'order_3',
+        'order_4',
+        'order_draw',
+        'canteen',
+      ];
+
+      SPACES.forEach((spaceId) => {
+        container.insertAdjacentHTML('beforeend', `<div class='board-space' id='${spaceId}'></div>`);
+      });
     },
 
     setupPlayers() {
@@ -231,27 +269,25 @@ define([
     },
 
     updateTurn() {
-      $('game_play_area').dataset.step = this.gamedatas.turn;
-      let round = parseInt(this.gamedatas.turn / 4) + 1;
-      if (round > 4) round = 4;
-      let turn = this.gamedatas.turn % 4;
-
-      if (this.prefs && this.prefs[105].value == 1) {
-        this._roundCounter.toValue(this.gamedatas.turn);
-        $('round-counter-total').innerHTML = 16;
-        $('round-phase').innerHTML = turn == 0 ? _('Scoring phase') : '';
-      } else {
-        $('round-counter-total').innerHTML = 4;
-        this._roundCounter.toValue(round);
-
-        let msgs = {
-          0: _('Scoring phase'),
-          1: _('First turn'),
-          2: _('Second turn'),
-          3: _('Third turn'),
-        };
-        $('round-phase').innerHTML = msgs[turn];
-      }
+      // $('game_play_area').dataset.step = this.gamedatas.turn;
+      // let round = parseInt(this.gamedatas.turn / 4) + 1;
+      // if (round > 4) round = 4;
+      // let turn = this.gamedatas.turn % 4;
+      // if (this.prefs && this.prefs[105].value == 1) {
+      //   this._roundCounter.toValue(this.gamedatas.turn);
+      //   $('round-counter-total').innerHTML = 16;
+      //   $('round-phase').innerHTML = turn == 0 ? _('Scoring phase') : '';
+      // } else {
+      //   $('round-counter-total').innerHTML = 4;
+      //   this._roundCounter.toValue(round);
+      //   let msgs = {
+      //     0: _('Scoring phase'),
+      //     1: _('First turn'),
+      //     2: _('Second turn'),
+      //     3: _('Third turn'),
+      //   };
+      //   $('round-phase').innerHTML = msgs[turn];
+      // }
     },
 
     notif_newTurn(n) {

@@ -48,6 +48,9 @@
             &#factory_8 {
                 width: 140px;
                 height: 250px;
+                .space-title-container::before {
+                    background-position: 33.3333% 100%;
+                }
             }
 
             &#factory_1 {
@@ -87,6 +90,10 @@
                 height: 140px;
                 left: 20px;
                 top: 280px;
+
+                .space-title-container::before {
+                    background-position: 66.6666% 100%;
+                }
             }
 
             &#mining_4,
@@ -97,15 +104,27 @@
             }
             &#mining_4 {
                 left: 660px;
+                .space-title-container::before {
+                    background-position: 0% 0%;
+                }
             }
             &#mining_6 {
                 left: 780px;
+                .space-title-container::before {
+                    background-position: 33.3333% 0%;
+                }
             }
             &#mining_8 {
                 left: 900px;
+                .space-title-container::before {
+                    background-position: 66.6666% 0%;
+                }
             }
             &#mining_10 {
                 left: 1020px;
+                .space-title-container::before {
+                    background-position: 100% 0%;
+                }
             }
 
             &#bank_3,
@@ -116,15 +135,27 @@
             }
             &#bank_3 {
                 left: 1160px;
+                .space-title-container::before {
+                    background-position: 0% 33.3333%;
+                }
             }
             &#bank_4 {
                 left: 1280px;
+                .space-title-container::before {
+                    background-position: 33.3333% 33.3333%;
+                }
             }
             &#bank_5 {
                 left: 1400px;
+                .space-title-container::before {
+                    background-position: 66.6666% 33.3333%;
+                }
             }
             &#bank_6 {
                 left: 1520px;
+                .space-title-container::before {
+                    background-position: 100% 33.3333%;
+                }
             }
 
             &#delivery_1,
@@ -135,15 +166,27 @@
             }
             &#delivery_1 {
                 left: 640px;
+                .space-title-container::before {
+                    background-position: 33.3333% 66.6666%;
+                }
             }
             &#delivery_2 {
                 left: 760px;
+                .space-title-container::before {
+                    background-position: 66.6666% 66.6666%;
+                }
             }
             &#delivery_3 {
                 left: 880px;
+                .space-title-container::before {
+                    background-position: 100% 66.6666%;
+                }
             }
             &#delivery_4 {
                 left: 1000px;
+                .space-title-container::before {
+                    background-position: 0% 100%;
+                }
             }
 
             &#order_1,
@@ -153,6 +196,9 @@
                 top: 450px;
                 width: 120px;
                 height: 270px;
+                .space-title-container::before {
+                    background-position: 0% 66.6666%;
+                }
             }
             &#order_1 {
                 left: 1120px;
@@ -172,6 +218,9 @@
                 left: 1300px;
                 width: 120px;
                 height: 120px;
+                .space-title-container::before {
+                    background-position: 100% 100%;
+                }
             }
 
             &#canteen {
@@ -182,6 +231,29 @@
                 background: none;
                 &::before {
                     display: none;
+                }
+            }
+
+            .space-title-container {
+                width: 100px;
+                height: 36px;
+                background-image: url("img/frame-title.png");
+                background-size: 100% auto;
+                background-repeat: no-repeat;
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                &::before {
+                    content: "";
+                    display: inline-block;
+                    width: 70px;
+                    height: 36px;
+
+                    background-image: url("img/frame-titles.png");
+                    background-size: 400% 400%;
+                    background-repeat: no-repeat;
                 }
             }
         }

@@ -51,6 +51,8 @@
     #coalbaron-main-container #coalbaron-board .board-space#factory_1, #coalbaron-main-container #coalbaron-board .board-space#factory_2, #coalbaron-main-container #coalbaron-board .board-space#factory_3, #coalbaron-main-container #coalbaron-board .board-space#factory_4, #coalbaron-main-container #coalbaron-board .board-space#factory_5, #coalbaron-main-container #coalbaron-board .board-space#factory_6, #coalbaron-main-container #coalbaron-board .board-space#factory_7, #coalbaron-main-container #coalbaron-board .board-space#factory_8 {
       width: 140px;
       height: 250px; }
+      #coalbaron-main-container #coalbaron-board .board-space#factory_1 .space-title-container::before, #coalbaron-main-container #coalbaron-board .board-space#factory_2 .space-title-container::before, #coalbaron-main-container #coalbaron-board .board-space#factory_3 .space-title-container::before, #coalbaron-main-container #coalbaron-board .board-space#factory_4 .space-title-container::before, #coalbaron-main-container #coalbaron-board .board-space#factory_5 .space-title-container::before, #coalbaron-main-container #coalbaron-board .board-space#factory_6 .space-title-container::before, #coalbaron-main-container #coalbaron-board .board-space#factory_7 .space-title-container::before, #coalbaron-main-container #coalbaron-board .board-space#factory_8 .space-title-container::before {
+        background-position: 33.3333% 100%; }
     #coalbaron-main-container #coalbaron-board .board-space#factory_1 {
       top: 0px;
       left: 0px; }
@@ -80,40 +82,68 @@
       height: 140px;
       left: 20px;
       top: 280px; }
+      #coalbaron-main-container #coalbaron-board .board-space#factory_draw .space-title-container::before {
+        background-position: 66.6666% 100%; }
     #coalbaron-main-container #coalbaron-board .board-space#mining_4, #coalbaron-main-container #coalbaron-board .board-space#mining_6, #coalbaron-main-container #coalbaron-board .board-space#mining_8, #coalbaron-main-container #coalbaron-board .board-space#mining_10 {
       top: 80px; }
     #coalbaron-main-container #coalbaron-board .board-space#mining_4 {
       left: 660px; }
+      #coalbaron-main-container #coalbaron-board .board-space#mining_4 .space-title-container::before {
+        background-position: 0% 0%; }
     #coalbaron-main-container #coalbaron-board .board-space#mining_6 {
       left: 780px; }
+      #coalbaron-main-container #coalbaron-board .board-space#mining_6 .space-title-container::before {
+        background-position: 33.3333% 0%; }
     #coalbaron-main-container #coalbaron-board .board-space#mining_8 {
       left: 900px; }
+      #coalbaron-main-container #coalbaron-board .board-space#mining_8 .space-title-container::before {
+        background-position: 66.6666% 0%; }
     #coalbaron-main-container #coalbaron-board .board-space#mining_10 {
       left: 1020px; }
+      #coalbaron-main-container #coalbaron-board .board-space#mining_10 .space-title-container::before {
+        background-position: 100% 0%; }
     #coalbaron-main-container #coalbaron-board .board-space#bank_3, #coalbaron-main-container #coalbaron-board .board-space#bank_4, #coalbaron-main-container #coalbaron-board .board-space#bank_5, #coalbaron-main-container #coalbaron-board .board-space#bank_6 {
       top: 0px; }
     #coalbaron-main-container #coalbaron-board .board-space#bank_3 {
       left: 1160px; }
+      #coalbaron-main-container #coalbaron-board .board-space#bank_3 .space-title-container::before {
+        background-position: 0% 33.3333%; }
     #coalbaron-main-container #coalbaron-board .board-space#bank_4 {
       left: 1280px; }
+      #coalbaron-main-container #coalbaron-board .board-space#bank_4 .space-title-container::before {
+        background-position: 33.3333% 33.3333%; }
     #coalbaron-main-container #coalbaron-board .board-space#bank_5 {
       left: 1400px; }
+      #coalbaron-main-container #coalbaron-board .board-space#bank_5 .space-title-container::before {
+        background-position: 66.6666% 33.3333%; }
     #coalbaron-main-container #coalbaron-board .board-space#bank_6 {
       left: 1520px; }
+      #coalbaron-main-container #coalbaron-board .board-space#bank_6 .space-title-container::before {
+        background-position: 100% 33.3333%; }
     #coalbaron-main-container #coalbaron-board .board-space#delivery_1, #coalbaron-main-container #coalbaron-board .board-space#delivery_2, #coalbaron-main-container #coalbaron-board .board-space#delivery_3, #coalbaron-main-container #coalbaron-board .board-space#delivery_4 {
       top: 580px; }
     #coalbaron-main-container #coalbaron-board .board-space#delivery_1 {
       left: 640px; }
+      #coalbaron-main-container #coalbaron-board .board-space#delivery_1 .space-title-container::before {
+        background-position: 33.3333% 66.6666%; }
     #coalbaron-main-container #coalbaron-board .board-space#delivery_2 {
       left: 760px; }
+      #coalbaron-main-container #coalbaron-board .board-space#delivery_2 .space-title-container::before {
+        background-position: 66.6666% 66.6666%; }
     #coalbaron-main-container #coalbaron-board .board-space#delivery_3 {
       left: 880px; }
+      #coalbaron-main-container #coalbaron-board .board-space#delivery_3 .space-title-container::before {
+        background-position: 100% 66.6666%; }
     #coalbaron-main-container #coalbaron-board .board-space#delivery_4 {
       left: 1000px; }
+      #coalbaron-main-container #coalbaron-board .board-space#delivery_4 .space-title-container::before {
+        background-position: 0% 100%; }
     #coalbaron-main-container #coalbaron-board .board-space#order_1, #coalbaron-main-container #coalbaron-board .board-space#order_2, #coalbaron-main-container #coalbaron-board .board-space#order_3, #coalbaron-main-container #coalbaron-board .board-space#order_4 {
       top: 450px;
       width: 120px;
       height: 270px; }
+      #coalbaron-main-container #coalbaron-board .board-space#order_1 .space-title-container::before, #coalbaron-main-container #coalbaron-board .board-space#order_2 .space-title-container::before, #coalbaron-main-container #coalbaron-board .board-space#order_3 .space-title-container::before, #coalbaron-main-container #coalbaron-board .board-space#order_4 .space-title-container::before {
+        background-position: 0% 66.6666%; }
     #coalbaron-main-container #coalbaron-board .board-space#order_1 {
       left: 1120px; }
     #coalbaron-main-container #coalbaron-board .board-space#order_2 {
@@ -127,6 +157,8 @@
       left: 1300px;
       width: 120px;
       height: 120px; }
+      #coalbaron-main-container #coalbaron-board .board-space#order_draw .space-title-container::before {
+        background-position: 100% 100%; }
     #coalbaron-main-container #coalbaron-board .board-space#canteen {
       top: 280px;
       left: 275px;
@@ -135,6 +167,23 @@
       background: none; }
       #coalbaron-main-container #coalbaron-board .board-space#canteen::before {
         display: none; }
+    #coalbaron-main-container #coalbaron-board .board-space .space-title-container {
+      width: 100px;
+      height: 36px;
+      background-image: url("img/frame-title.png");
+      background-size: 100% auto;
+      background-repeat: no-repeat;
+      display: flex;
+      justify-content: center;
+      align-items: center; }
+      #coalbaron-main-container #coalbaron-board .board-space .space-title-container::before {
+        content: "";
+        display: inline-block;
+        width: 70px;
+        height: 36px;
+        background-image: url("img/frame-titles.png");
+        background-size: 400% 400%;
+        background-repeat: no-repeat; }
 
 #player_board_config {
   position: relative;

@@ -69,38 +69,41 @@ define([
 
     setupCentralBoard() {
       let container = $('coalbaron-board');
-      const SPACES = [
-        'factory_1',
-        'factory_2',
-        'factory_3',
-        'factory_4',
-        'factory_5',
-        'factory_6',
-        'factory_7',
-        'factory_8',
-        'factory_draw',
-        'mining_4',
-        'mining_6',
-        'mining_8',
-        'mining_10',
-        'delivery_1',
-        'delivery_2',
-        'delivery_3',
-        'delivery_4',
-        'bank_3',
-        'bank_4',
-        'bank_5',
-        'bank_6',
-        'order_1',
-        'order_2',
-        'order_3',
-        'order_4',
-        'order_draw',
-        'canteen',
-      ];
+      const SPACES = {
+        factory_1: ['tile', 'workers', 'title'],
+        factory_2: ['tile', 'workers', 'title'],
+        factory_3: ['tile', 'workers', 'title'],
+        factory_4: ['tile', 'workers', 'title'],
+        factory_5: ['title', 'workers', 'tite'],
+        factory_6: ['title', 'workers', 'tite'],
+        factory_7: ['title', 'workers', 'tite'],
+        factory_8: ['title', 'workers', 'tite'],
+        factory_draw: ['title', 'workers'],
+        mining_4: ['title', 'workers'],
+        mining_6: ['title', 'workers'],
+        mining_8: ['title', 'workers'],
+        mining_10: ['title', 'workers'],
+        delivery_1: ['title', 'workers'],
+        delivery_2: ['title', 'workers'],
+        delivery_3: ['title', 'workers'],
+        delivery_4: ['title', 'workers'],
+        bank_3: ['workers', 'title'],
+        bank_4: ['workers', 'title'],
+        bank_5: ['workers', 'title'],
+        bank_6: ['workers', 'title'],
+        order_1: ['title', 'workers', 'order'],
+        order_2: ['title', 'workers', 'order'],
+        order_3: ['title', 'workers', 'order'],
+        order_4: ['title', 'workers', 'order'],
+        order_draw: ['title', 'workers'],
+        canteen: ['workers'],
+      };
 
-      SPACES.forEach((spaceId) => {
-        container.insertAdjacentHTML('beforeend', `<div class='board-space' id='${spaceId}'></div>`);
+      Object.keys(SPACES).forEach((spaceId) => {
+        let space = `<div class='board-space' id='${spaceId}'>`;
+        SPACES[spaceId].forEach((content) => (space += `<div class='space-${content}-container'></div>`));
+        space += '</div>';
+        container.insertAdjacentHTML('beforeend', space);
       });
     },
 

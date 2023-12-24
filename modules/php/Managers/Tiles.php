@@ -24,12 +24,13 @@ class Tiles extends \COAL\Helpers\Pieces
   public static function getUiData()
   {
     //FILTER VISIBLE Locations ONLY
-    return self::getSelectWhere(null,null,TILE_STATE_VISIBLE)
-      ->whereNotIn(static::$prefix.'location',[TILE_LOCATION_DECK])->get()
+    return self::getSelectWhere(null, null, TILE_STATE_VISIBLE)
+      ->whereNotIn(static::$prefix . 'location', [TILE_LOCATION_DECK])
+      ->get()
       ->map(function ($tile) {
         return $tile->getUiData();
       })
-      ->toAssoc();
+      ->toArray();
   }
 
   /* Creation of the tiles */
@@ -50,31 +51,36 @@ class Tiles extends \COAL\Helpers\Pieces
 
     self::drawTilesToFactory();
   }
-  
+
   /**
-   * Draw N new tiles and place them each unlocked factory space 
+   * Draw N new tiles and place them each unlocked factory space
    */
-  public static function drawTilesToFactory() {
+  public static function drawTilesToFactory()
+  {
     //DRAW 6 or 8 tiles:
     $spaces = self::getUnlockedSpacesInFactory();
-    foreach($spaces as $space){
-      if($space == SPACE_FACTORY_DRAW ) continue;
+    foreach ($spaces as $space) {
+      if ($space == SPACE_FACTORY_DRAW) {
+        continue;
+      }
       self::refillFactorySpace($space);
     }
   }
-  
+
   /**
-   * Draw a new tile and place it in the factory $space 
+   * Draw a new tile and place it in the factory $space
    */
-  public static function refillFactorySpace($space) {
-    $newTile = self::pickOneForLocation(TILE_LOCATION_DECK,$space,TILE_STATE_VISIBLE,false);
+  public static function refillFactorySpace($space)
+  {
+    $newTile = self::pickOneForLocation(TILE_LOCATION_DECK, $space, TILE_STATE_VISIBLE, false);
     return $newTile;
   }
-  
+
   /**
    * Read the tile in a specified factory space
    */
-  public static function getTileInFactory($space) {
+  public static function getTileInFactory($space)
+  {
     $tile = self::getTopOf($space);
     return $tile;
   }
@@ -82,21 +88,22 @@ class Tiles extends \COAL\Helpers\Pieces
   /**
    * Return all unlocked spaces in factory
    */
-  public static function getUnlockedSpacesInFactory() {
+  public static function getUnlockedSpacesInFactory()
+  {
     $nbPlayers = Players::count();
-    $spaces = array(
-        SPACE_FACTORY_1,
-        SPACE_FACTORY_2,
-        SPACE_FACTORY_3,
-        SPACE_FACTORY_5,
-        SPACE_FACTORY_6,
-        SPACE_FACTORY_7,
-        SPACE_FACTORY_DRAW,
-    );
-  
-    if($nbPlayers>=4){
-        $spaces[] = SPACE_FACTORY_4;
-        $spaces[] = SPACE_FACTORY_8;
+    $spaces = [
+      SPACE_FACTORY_1,
+      SPACE_FACTORY_2,
+      SPACE_FACTORY_3,
+      SPACE_FACTORY_5,
+      SPACE_FACTORY_6,
+      SPACE_FACTORY_7,
+      SPACE_FACTORY_DRAW,
+    ];
+
+    if ($nbPlayers >= 4) {
+      $spaces[] = SPACE_FACTORY_4;
+      $spaces[] = SPACE_FACTORY_8;
     }
     return $spaces;
   }

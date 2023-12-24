@@ -1,0 +1,16 @@
+.coalbaron-tile {
+    width: 120px;
+    height: 120px;
+    background-image: url("img/tiles.jpg");
+    background-size: 400% 500%;
+    border: 1px solid black;
+    box-shadow: 1px 1px 5px black;
+    border-radius: 2px;
+
+    @for $i from 0 through 15 {
+        &[data-type="#{$i + 1}"] {
+            background-position-x: ($i % 4) * 100% / 3;
+            background-position-y: (($i - ($i % 4)) / 4) * 100% / 4;
+        }
+    }
+}

@@ -21,6 +21,8 @@
             background: rgba(255, 255, 255, 0.548);
             position: absolute;
             top: 400px;
+            box-shadow: 1px 1px 5px 1px black;
+            border-radius: 7px;
 
             &::before {
                 content: "";
@@ -48,8 +50,42 @@
             &#factory_8 {
                 width: 140px;
                 height: 250px;
-                .space-title-container::before {
-                    background-position: 33.3333% 100%;
+                .space-title-container {
+                    position: absolute;
+                    width: 105px;
+                    height: 46px;
+                    bottom: -14px;
+                    left: 17px;
+                    &::before {
+                        background-position: 33.3333% 100%;
+                    }
+                }
+
+                .space-tile-container {
+                    height: 140px;
+                    border-bottom: 1px solid black;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                .space-workers-container {
+                    height: 109px;
+                }
+            }
+            &#factory_5,
+            &#factory_6,
+            &#factory_7,
+            &#factory_8 {
+                .space-title-container {
+                    position: absolute;
+                    top: -14px;
+                    bottom: auto;
+                }
+
+                .space-tile-container {
+                    border-bottom: none;
+                    border-top: 1px solid black;
                 }
             }
 
@@ -91,8 +127,16 @@
                 left: 20px;
                 top: 280px;
 
-                .space-title-container::before {
-                    background-position: 66.6666% 100%;
+                .space-title-container {
+                    position: absolute;
+                    transform: rotate(-90deg);
+                    left: 73px;
+                    transform-origin: top left;
+                    top: 120px;
+
+                    &::before {
+                        background-position: 66.6666% 100%;
+                    }
                 }
             }
 
@@ -101,6 +145,10 @@
             &#mining_8,
             &#mining_10 {
                 top: 80px;
+                .space-title-container {
+                    position: absolute;
+                    top: -12px;
+                }
             }
             &#mining_4 {
                 left: 660px;
@@ -132,6 +180,10 @@
             &#bank_5,
             &#bank_6 {
                 top: 0px;
+                .space-title-container {
+                    position: absolute;
+                    top: -12px;
+                }
             }
             &#bank_3 {
                 left: 1160px;
@@ -162,6 +214,10 @@
             &#delivery_2,
             &#delivery_3,
             &#delivery_4 {
+                .space-title-container {
+                    position: absolute;
+                    top: -12px;
+                }
                 top: 580px;
             }
             &#delivery_1 {
@@ -196,6 +252,11 @@
                 top: 450px;
                 width: 120px;
                 height: 270px;
+                .space-title-container {
+                    position: absolute;
+                    top: -12px;
+                    left: 8px;
+                }
                 .space-title-container::before {
                     background-position: 0% 66.6666%;
                 }
@@ -218,6 +279,11 @@
                 left: 1300px;
                 width: 120px;
                 height: 120px;
+                .space-title-container {
+                    position: absolute;
+                    top: -12px;
+                    left: 10px;
+                }
                 .space-title-container::before {
                     background-position: 100% 100%;
                 }
@@ -229,6 +295,7 @@
                 width: 300px;
                 height: 150px;
                 background: none;
+                box-shadow: none;
                 &::before {
                     display: none;
                 }
@@ -236,7 +303,7 @@
 
             .space-title-container {
                 width: 100px;
-                height: 36px;
+                height: 40px;
                 background-image: url("img/frame-title.png");
                 background-size: 100% auto;
                 background-repeat: no-repeat;

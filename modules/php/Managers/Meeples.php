@@ -20,12 +20,12 @@ class Meeples extends \COAL\Helpers\Pieces
   protected static function cast($row)
   {
     $data['type'] = $row['type'];
-    switch($row['type']){
+    switch ($row['type']) {
       case WORKER:
         return new \COAL\Models\Worker($row, $data);
-      case YELLOW_COAL: 
-      case BROWN_COAL: 
-      case BLACK_COAL: 
+      case YELLOW_COAL:
+      case BROWN_COAL:
+      case BLACK_COAL:
       case GREY_COAL:
         return new \COAL\Models\CoalCube($row, $data);
     }
@@ -37,13 +37,13 @@ class Meeples extends \COAL\Helpers\Pieces
    */
   public static function getUiData()
   {
-    return self::DB()->get()
+    return self::DB()
+      ->get()
       ->map(function ($coal) {
         return $coal->getUiData();
       })
-      ->toAssoc();
+      ->toArray();
   }
-  
 
   /**
    * Return COALS from parametered player
@@ -56,7 +56,6 @@ class Meeples extends \COAL\Helpers\Pieces
       })
       ->toAssoc();
   }
-
 
   /* Creation of the tiles */
   public static function setupNewGame($players, $options)
@@ -74,30 +73,30 @@ class Meeples extends \COAL\Helpers\Pieces
       //Fill each player's starting minecarts with 1 coal cube :
       $meeples[] = [
         'type' => YELLOW_COAL,
-        'location' => SPACE_PIT_TILE."_1_1",
+        'location' => SPACE_PIT_TILE . '_1_1',
         'player_id' => $pId,
         'nbr' => 1,
       ];
       $meeples[] = [
         'type' => BROWN_COAL,
-        'location' => SPACE_PIT_TILE."_2_-1",
+        'location' => SPACE_PIT_TILE . '_2_-1',
         'player_id' => $pId,
         'nbr' => 1,
       ];
       $meeples[] = [
         'type' => GREY_COAL,
-        'location' => SPACE_PIT_TILE."_3_-1",
+        'location' => SPACE_PIT_TILE . '_3_-1',
         'player_id' => $pId,
         'nbr' => 1,
       ];
       $meeples[] = [
         'type' => BLACK_COAL,
-        'location' => SPACE_PIT_TILE."_4_1",
+        'location' => SPACE_PIT_TILE . '_4_1',
         'player_id' => $pId,
         'nbr' => 1,
       ];
     }
-    //Place all other Coal Cubes in reserve : 16 exist in each color 
+    //Place all other Coal Cubes in reserve : 16 exist in each color
     $nbCubesOfEach = 16 - count($players);
     $meeples[] = [
       'type' => YELLOW_COAL,
@@ -123,10 +122,10 @@ class Meeples extends \COAL\Helpers\Pieces
       'player_id' => null,
       'nbr' => $nbCubesOfEach,
     ];
-    
+
     self::create($meeples);
   }
-  
+
   /**
    * Return number of available workers for this player, by reading the DB
    */
@@ -135,80 +134,82 @@ class Meeples extends \COAL\Helpers\Pieces
     $pId = $player->getId();
     return self::getFilteredQuery($pId, SPACE_RESERVE, WORKER)->count();
   }
-  
+
   /**
    * Return 0 to N available workers for this player, by reading the DB
    */
-  public static function getFirstAvailableWorkers($pId,$number)
+  public static function getFirstAvailableWorkers($pId, $number)
   {
-    return self::getFilteredQuery($pId, SPACE_RESERVE, WORKER)->limit($number)->get();
+    return self::getFilteredQuery($pId, SPACE_RESERVE, WORKER)
+      ->limit($number)
+      ->get();
   }
   /**
    * Return all available workers for this player, by filtering the array in parameter
    */
-  public static function findAvailableWorkersInCollection($allWorkers,$pId)
-  { 
-    $availableWorkers = $allWorkers->filter(function ($meeple) use ($pId){
-      return $meeple->getType() == WORKER
-          && $meeple->getLocation() == SPACE_RESERVE
-          && $meeple->getPId() == $pId ;
+  public static function findAvailableWorkersInCollection($allWorkers, $pId)
+  {
+    $availableWorkers = $allWorkers->filter(function ($meeple) use ($pId) {
+      return $meeple->getType() == WORKER && $meeple->getLocation() == SPACE_RESERVE && $meeple->getPId() == $pId;
     });
     return $availableWorkers;
   }
-  
-  public static function placeWorkersInSpace($player,$toLocation)
+
+  public static function placeWorkersInSpace($player, $toLocation)
   {
     $pId = $player->getId();
-    $nbNeededWorkers = Meeples::countInLocation($toLocation) +1;
+    $nbNeededWorkers = Meeples::countInLocation($toLocation) + 1;
     //MOVE PREVIOUS WORKERS to the CANTEEN before placing new workers !
-    self::moveAllInLocation($toLocation ,SPACE_CANTEEN  );
+    self::moveAllInLocation($toLocation, SPACE_CANTEEN);
     //pickForLocation is good for location but doesnt filter pid...
     //self::pickForLocation($nbNeededWorkers,SPACE_RESERVE,$toLocation);
-    $workersToMove = self::getFirstAvailableWorkers($pId,$nbNeededWorkers);
+    $workersToMove = self::getFirstAvailableWorkers($pId, $nbNeededWorkers);
     foreach ($workersToMove as $worker) {
       $workersIds[] = $worker->getId();
     }
     $nbAv = count($workersIds);
-    if($nbAv < $nbNeededWorkers ) //Should not happen
+    if ($nbAv < $nbNeededWorkers) {
+      //Should not happen
       throw new \BgaVisibleSystemException("Not enough workers ($nbAv < $nbNeededWorkers)");
-    Meeples::move($workersIds,$toLocation );
+    }
+    Meeples::move($workersIds, $toLocation);
 
-    Notifications::placeWorkersInSpace($player,$toLocation,$nbNeededWorkers);
+    Notifications::placeWorkersInSpace($player, $toLocation, $nbNeededWorkers);
   }
-  
+
   public static function getFirstAvailableCoals($color, $number)
   {
-    return self::getFilteredQuery(null, SPACE_RESERVE, $color)->limit($number)->get();
+    return self::getFilteredQuery(null, SPACE_RESERVE, $color)
+      ->limit($number)
+      ->get();
   }
-  
+
   /**
    * Return all coals currently owned by this player
    */
   public static function getPlayerCoals($pId)
   {
-    return self::getFilteredQuery($pId, null, "%_coal")->get();
+    return self::getFilteredQuery($pId, null, '%_coal')->get();
   }
   /**
-   * ADD 1 COAL in each minecart on the tile 
+   * ADD 1 COAL in each minecart on the tile
    */
-  public static function placeCoalsOnTile($player,$tile)
+  public static function placeCoalsOnTile($player, $tile)
   {
     $nb = $tile->getNumber();
-    $coals = self::getFirstAvailableCoals($tile->getColor(),$nb);
-    foreach($coals as $coal){
-      $coal->moveToTile($player,$tile);
+    $coals = self::getFirstAvailableCoals($tile->getColor(), $nb);
+    foreach ($coals as $coal) {
+      $coal->moveToTile($player, $tile);
     }
 
     $missingCoals = $nb - count($coals);
-    if($missingCoals>0){
-        
+    if ($missingCoals > 0) {
       //TODO JSA SPECIFIC STATE to choose a coal
       /*
       If, when a player acquires a tunnel tile, the supply contains fewer coal cubes of the color he needs to fill the minecarts on that tile, the player may place 1 coal cube of
       any color onto each minecart on that tile which he cannot fill properly. This does not affect any costs paid for the tile.
       */
-      throw new \BgaVisibleSystemException("Not supported feature : choose coal");
+      throw new \BgaVisibleSystemException('Not supported feature : choose coal');
     }
-
   }
 }

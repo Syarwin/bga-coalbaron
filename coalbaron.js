@@ -59,6 +59,8 @@ define([
       this.setupCentralBoard();
       this.setupPlayers();
       this.setupInfoPanel();
+      this.setupTiles();
+      this.setupMeeples();
 
       // Create round counter
       this._roundCounter = this.createCounter('round-counter');
@@ -74,10 +76,10 @@ define([
         factory_2: ['tile', 'workers', 'title'],
         factory_3: ['tile', 'workers', 'title'],
         factory_4: ['tile', 'workers', 'title'],
-        factory_5: ['title', 'workers', 'tite'],
-        factory_6: ['title', 'workers', 'tite'],
-        factory_7: ['title', 'workers', 'tite'],
-        factory_8: ['title', 'workers', 'tite'],
+        factory_5: ['title', 'workers', 'tile'],
+        factory_6: ['title', 'workers', 'tile'],
+        factory_7: ['title', 'workers', 'tile'],
+        factory_8: ['title', 'workers', 'tile'],
         factory_draw: ['title', 'workers'],
         mining_4: ['title', 'workers'],
         mining_6: ['title', 'workers'],
@@ -151,6 +153,10 @@ define([
       // });
     },
 
+    getPlayerColor(pId) {
+      return this.gamedatas.players[pId].color;
+    },
+
     notif_updateFirstPlayer(n) {
       debug('Notif: updating first player', n);
       this.gamedatas.firstPlayer = n.args.pId;
@@ -172,8 +178,23 @@ define([
     tplPlayerPanel(player) {
       return `<div class='coalbaron-panel'>
         <div class="first-player-holder"></div>
-        <div class='coalbaron-player-infos'></div>
+        <div class='coalbaron-player-infos'>
+          ${this.tplResourceCounter(player, 'worker')}
+        </div>
       </div>`;
+    },
+
+    /**
+     * Use this tpl for any counters that represent qty of meeples in "reserve", eg xtokens
+     */
+    tplResourceCounter(player, res, prefix = '') {
+      return this.formatString(`
+        <div class='player-resource resource-${res}'>
+          <span id='${prefix}counter-${player.id}-${res}' 
+            class='${prefix}resource-${res}'></span>${this.formatIcon(res)}
+          <div class='reserve' id='${prefix}reserve-${player.id}-${res}'></div>
+        </div>
+      `);
     },
 
     // gainPayCrystal(pId, n, targetSource = null) {
@@ -203,6 +224,264 @@ define([
     //     });
     //   }
     // },
+
+    ////////////////////////////////////////////////////////
+    //  _____ _ _
+    // |_   _(_) | ___  ___
+    //   | | | | |/ _ \/ __|
+    //   | | | | |  __/\__ \
+    //   |_| |_|_|\___||___/
+    //////////////////////////////////////////////////////////
+
+    setupTiles() {
+      // This function is refreshUI compatible
+      let tileIds = this.gamedatas.tiles.map((tile) => {
+        if (!$(`tile-${tile.id}`)) {
+          this.addTile(tile);
+        }
+
+        let o = $(`tile-${tile.id}`);
+        if (!o) return null;
+
+        let container = this.getTileContainer(tile);
+        if (o.parentNode != $(container)) {
+          dojo.place(o, container);
+        }
+        o.dataset.state = tile.state;
+
+        return tile.id;
+      });
+      document.querySelectorAll('.coalbaron-tile[id^="tile-"]').forEach((oTile) => {
+        if (!tileIds.includes(parseInt(oTile.getAttribute('data-id')))) {
+          this.destroy(oTile);
+        }
+      });
+    },
+
+    addTile(tile, location = null) {
+      if ($('tile-' + tile.id)) return;
+
+      let o = this.place('tplTile', tile, location == null ? this.getTileContainer(tile) : location);
+      let tooltipDesc = this.getTileTooltip(tile);
+      if (tooltipDesc != null) {
+        this.addCustomTooltip(o.id, tooltipDesc.map((t) => this.formatString(t)).join('<br/>'));
+      }
+
+      return o;
+    },
+
+    getTileTooltip(tile) {
+      return null;
+    },
+
+    tplTile(tile) {
+      let type = tile.type.charAt(0).toLowerCase() + tile.type.substr(1);
+      let color = ` data-color="${tile.color}" data-type="${tile.type}"`;
+      return `<div class="coalbaron-tile coalbaron-icon icon-${type}" id="tile-${tile.id}" data-id="${tile.id}" data-type="${type}" ${color}></div>`;
+    },
+
+    getTileContainer(tile) {
+      let t = tile.location.split('_');
+      if (t[0] == 'factory') {
+        return $(tile.location).querySelector('.space-tile-container');
+      }
+
+      console.error('Trying to get container of a tile', tile);
+      return 'game_play_area';
+    },
+
+    ////////////////////////////////////////////////////////
+    //  __  __                 _
+    // |  \/  | ___  ___ _ __ | | ___  ___
+    // | |\/| |/ _ \/ _ \ '_ \| |/ _ \/ __|
+    // | |  | |  __/  __/ |_) | |  __/\__ \
+    // |_|  |_|\___|\___| .__/|_|\___||___/
+    //                  |_|
+    //////////////////////////////////////////////////////////
+
+    setupMeeples() {
+      // This function is refreshUI compatible
+      let meepleIds = this.gamedatas.meeples.map((meeple) => {
+        if (!$(`meeple-${meeple.id}`)) {
+          this.addMeeple(meeple);
+        }
+
+        let o = $(`meeple-${meeple.id}`);
+        if (!o) return null;
+
+        let container = this.getMeepleContainer(meeple);
+        if (o.parentNode != $(container)) {
+          dojo.place(o, container);
+        }
+        o.dataset.state = meeple.state;
+
+        return meeple.id;
+      });
+      document.querySelectorAll('.coalbaron-meeple[id^="meeple-"]').forEach((oMeeple) => {
+        if (!meepleIds.includes(parseInt(oMeeple.getAttribute('data-id')))) {
+          this.destroy(oMeeple);
+        }
+      });
+    },
+
+    addMeeple(meeple, location = null) {
+      if ($('meeple-' + meeple.id)) return;
+
+      let o = this.place('tplMeeple', meeple, location == null ? this.getMeepleContainer(meeple) : location);
+      let tooltipDesc = this.getMeepleTooltip(meeple);
+      if (tooltipDesc != null) {
+        this.addCustomTooltip(o.id, tooltipDesc.map((t) => this.formatString(t)).join('<br/>'));
+      }
+
+      return o;
+    },
+
+    getMeepleTooltip(meeple) {
+      return null;
+    },
+
+    tplMeeple(meeple) {
+      let type = meeple.type.charAt(0).toLowerCase() + meeple.type.substr(1);
+      const PERSONAL = ['worker'];
+      let color = PERSONAL.includes(type) ? ` data-color="${this.getPlayerColor(meeple.pId)}" ` : '';
+      return `<div class="coalbaron-meeple coalbaron-icon icon-${type}" id="meeple-${meeple.id}" data-id="${meeple.id}" data-type="${type}" ${color}></div>`;
+    },
+
+    getMeepleContainer(meeple) {
+      let t = meeple.location.split('_');
+      // Workers in reserve
+      if (meeple.location == 'reserve') {
+        return $(`reserve-${meeple.pId}-worker`);
+      }
+
+      console.error('Trying to get container of a meeple', meeple);
+      return 'game_play_area';
+    },
+
+    ////////////////////////////////////////////////////////
+    //    ____              _
+    //   / ___|__ _ _ __ __| |___
+    //  | |   / _` | '__/ _` / __|
+    //  | |__| (_| | | | (_| \__ \
+    //   \____\__,_|_|  \__,_|___/
+    //////////////////////////////////////////////////////////
+
+    setupCards() {
+      // This function is refreshUI compatible
+      let cardIds = this.gamedatas.cards.map((card) => {
+        if (!$(`card-${card.id}`)) {
+          this.addCard(card);
+        }
+
+        let o = $(`card-${card.id}`);
+        if (!o) return null;
+
+        let container = this.getCardContainer(card);
+        if (o.parentNode != $(container)) {
+          dojo.place(o, container);
+        }
+        o.dataset.state = card.state;
+
+        return card.id;
+      });
+      document.querySelectorAll('.coalbaron-card[id^="card-"]').forEach((oCard) => {
+        if (!cardIds.includes(parseInt(oCard.getAttribute('data-id')))) {
+          this.destroy(oCard);
+        }
+      });
+    },
+
+    addCard(card, location = null) {
+      if ($('card-' + card.id)) return;
+
+      let o = this.place('tplCard', card, location == null ? this.getCardContainer(card) : location);
+      let tooltipDesc = this.getCardTooltip(card);
+      if (tooltipDesc != null) {
+        this.addCustomTooltip(o.id, tooltipDesc.map((t) => this.formatString(t)).join('<br/>'));
+      }
+
+      return o;
+    },
+
+    getCardTooltip(card) {
+      return null;
+    },
+
+    tplCard(card) {
+      let type = card.type.charAt(0).toLowerCase() + card.type.substr(1);
+      let color = ` data-color="${card.color}" data-type="${card.type}"`;
+      return `<div class="coalbaron-card" id="card-${card.id}" data-id="${card.id}" data-type="${type}"></div>`;
+    },
+
+    getCardContainer(card) {
+      let t = card.location.split('_');
+      if (t[0] == 'factory') {
+        return $(card.location).querySelector('.space-card-container');
+      }
+
+      console.error('Trying to get container of a card', card);
+      return 'game_play_area';
+    },
+
+    ////////////////////////////////////////////////////////////
+    // _____                          _   _   _
+    // |  ___|__  _ __ _ __ ___   __ _| |_| |_(_)_ __   __ _
+    // | |_ / _ \| '__| '_ ` _ \ / _` | __| __| | '_ \ / _` |
+    // |  _| (_) | |  | | | | | | (_| | |_| |_| | | | | (_| |
+    // |_|  \___/|_|  |_| |_| |_|\__,_|\__|\__|_|_| |_|\__, |
+    //                                                 |___/
+    ////////////////////////////////////////////////////////////
+
+    /**
+     * Replace some expressions by corresponding html formating
+     */
+    formatIcon(name, n = null, lowerCase = true) {
+      let type = lowerCase ? name.toLowerCase() : name;
+      const NO_TEXT_ICONS = [];
+      let noText = NO_TEXT_ICONS.includes(name);
+      let text = n == null ? '' : `<span>${n}</span>`;
+      return `${noText ? text : ''}<div class="icon-container icon-container-${type}">
+            <div class="coalbaron-icon icon-${type}">${noText ? '' : text}</div>
+          </div>`;
+    },
+
+    formatString(str) {
+      const ICONS = ['WORKER'];
+
+      ICONS.forEach((name) => {
+        // WITHOUT BONUS / WITH TEXT
+        const regex = new RegExp('<' + name + ':([^>]+)>', 'g');
+        str = str.replaceAll(regex, this.formatIcon(name, '$1'));
+        // WITHOUT TEXT
+        str = str.replaceAll(new RegExp('<' + name + '>', 'g'), this.formatIcon(name));
+      });
+      str = str.replace(/__([^_]+)__/g, '<span class="action-card-name-reference">$1</span>');
+      str = str.replace(/\*\*([^\*]+)\*\*/g, '<b>$1</b>');
+
+      return str;
+    },
+
+    /**
+     * Format log strings
+     *  @Override
+     */
+    format_string_recursive(log, args) {
+      try {
+        if (log && args && !args.processed) {
+          args.processed = true;
+
+          log = this.formatString(_(log));
+
+          // if (args.amount_money !== undefined) {
+          //   args.amount_money = this.formatIcon('money', args.amount_money);
+          // }
+        }
+      } catch (e) {
+        console.error(log, args, 'Exception thrown', e.stack);
+      }
+
+      return this.inherited(arguments);
+    },
 
     ////////////////////////////////////////////////////////
     //  ___        __         ____                  _

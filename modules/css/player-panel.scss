@@ -21,5 +21,47 @@
                 display: none;
             }
         }
+
+        .icon-container {
+            display: inline-block;
+            .icon-worker {
+                width: 1.6em;
+                height: 2em;
+                background-image: url("img/workers.png");
+                background-size: 1100% 100%;
+
+                #player_board_inner_895783 & {
+                    background-position-x: 0%;
+                }
+                #player_board_inner_cea92b & {
+                    background-position-x: 10%;
+                }
+                #player_board_inner_ffffff & {
+                    background-position-x: 20%;
+                }
+                #player_board_inner_d22725 & {
+                    background-position-x: 30%;
+                }
+                #player_board_inner_2b4e99 & {
+                    background-position-x: 40%;
+                }
+                #player_board_inner_000000 & {
+                    background-position-x: 50%;
+                }
+                #player_board_inner_418138 & {
+                    background-position-x: 60%;
+                }
+                #player_board_inner_cf5404 & {
+                    background-position-x: 70%;
+                }
+            }
+
+            .icon-money {
+                width: 3em;
+                height: 1.7em;
+                background-image: url("img/money.png");
+                background-size: 100% auto;
+            }
+        }
     }
 }

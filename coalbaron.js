@@ -168,6 +168,27 @@ define([
 
       return `<div class='coalbaron-board' id='board-${player.id}' data-color='${player.color}'>
          <div class='player-name' style='color:#${player.color}'>${player.name}</div>
+         <div class='board-left-side'>
+            <div class='completed-orders' id='completed-orders-${player.id}'></div>
+            <div class='left-pit'>
+              <div class='pit-level' id='left-pit-${player.id}-1'></div>
+              <div class='pit-level' id='left-pit-${player.id}-2'><div class='pit-tile'></div></div>
+              <div class='pit-level' id='left-pit-${player.id}-3'><div class='pit-tile'></div></div>
+              <div class='pit-level' id='left-pit-${player.id}-4'></div>
+            </div>
+         </div>
+         <div class='board-elevator'>
+           <div class='elevator' id='elevator-${player.id}' data-y="0"></div>
+         </div>
+         <div class='board-right-side'>
+            <div class='pending-orders' id='pending-orders-${player.id}'></div>
+            <div class='right-pit'>
+              <div class='pit-level' id='right-pit-${player.id}-1'><div class='pit-tile'></div></div>
+              <div class='pit-level' id='right-pit-${player.id}-2'></div>
+              <div class='pit-level' id='right-pit-${player.id}-3'></div>
+              <div class='pit-level' id='right-pit-${player.id}-4'><div class='pit-tile'></div></div>
+            </div>
+         </div>
       </div>`;
     },
 
@@ -180,6 +201,7 @@ define([
         <div class="first-player-holder"></div>
         <div class='coalbaron-player-infos'>
           ${this.tplResourceCounter(player, 'worker')}
+          ${this.tplResourceCounter(player, 'money')}
         </div>
       </div>`;
     },
@@ -352,6 +374,11 @@ define([
       // Workers in reserve
       if (meeple.location == 'reserve') {
         return $(`reserve-${meeple.pId}-worker`);
+      }
+      // Coal on pit tile
+      if (t[0] == 'pit' && t[1] == 'tile') {
+        let side = t[3] == '-1' ? 'left' : 'right';
+        return $(`${side}-pit-${meeple.pId}-${t[2]}`).querySelector('.pit-tile');
       }
 
       console.error('Trying to get container of a meeple', meeple);

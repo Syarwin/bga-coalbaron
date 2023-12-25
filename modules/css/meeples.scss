@@ -4,4 +4,26 @@
     background: black;
     border-radius: 50%;
     box-shadow: 1px 1px 3px black;
+
+    &.icon-yellow_coal,
+    &.icon-brown_coal,
+    &.icon-grey_coal,
+    &.icon-black_coal {
+        background: url("img/cubes.png");
+        background-size: 400% 100%;
+        border-radius: 0;
+        box-shadow: none;
+        width: 40px;
+        height: 40px;
+
+        &.icon-brown_coal {
+            background-position-x: 33.3333%;
+        }
+        &.icon-grey_coal {
+            background-position-x: 66.6666%;
+        }
+        &.icon-black_coal {
+            background-position-x: 100%;
+        }
+    }
 }

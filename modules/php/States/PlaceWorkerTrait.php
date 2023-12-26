@@ -9,6 +9,7 @@ use COAL\Core\Engine;
 use COAL\Core\Stats;
 use COAL\Helpers\UserException;
 use COAL\Helpers\Utils;
+use COAL\Managers\Cards;
 use COAL\Managers\Meeples;
 use COAL\Managers\Players;
 use COAL\Managers\Tiles;
@@ -20,6 +21,42 @@ trait PlaceWorkerTrait
     use WorkerAtFactoryTrait;
     use WorkerAtMiningTrait;
     use WorkerAtOrderTrait;
+
+    function argPlaceWorker(){
+        $player = Players::getActive();
+        $spaces = self::getPossibleSpaces($player->getId(), Players::count());
+        $nbAvailableWorkers = Meeples::getNbAvailableWorkers($player);
+    
+        return array(
+          'turn' => Globals::getTurn(),
+          'meeples' => Meeples::getUiData(),
+          'cards' => Cards::getUiData(),
+          'tiles' => Tiles::getUiData(),
+          'spaces' => $spaces,
+          'nbAvailableWorkers' => $nbAvailableWorkers,
+        );
+    }
+      
+    function actPlaceWorker($space)
+    {
+        self::checkAction( 'actPlaceWorker' ); 
+
+        $player = Players::getActive();
+        $nbPlayers = Players::count();
+
+        // ANTICHEATS : available workers >0 + possible space
+        $nbAvailableWorkers = Meeples::getNbAvailableWorkers($player);
+        if($nbAvailableWorkers == 0) 
+        throw new \BgaVisibleSystemException("Not enough workers to play");
+        if(! $this->isPossibleSpace($player->getId(), $nbPlayers,$space) )
+        throw new \BgaVisibleSystemException("Incorrect place to place a worker : $space");
+
+        $this->placeWorker($player,$space);
+        if( ST_PLACE_WORKER == $this->gamestate->state_id()){
+        //GO TO NEXT STATE ONLY IF not already changed by the previous method
+        $this->gamestate->nextState( 'next' );
+        }
+    }
 
     /**
      * @return bool true if $space is possible to play, 

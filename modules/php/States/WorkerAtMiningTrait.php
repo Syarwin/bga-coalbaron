@@ -94,7 +94,28 @@ trait WorkerAtMiningTrait
                         }
                     }
                     $coal->moveToCage($player);
+                    Globals::incMiningMoves(-1);
                     Notifications::moveCoalToCage($player,$coalId);
+                }
+                break;
+            case COAL_LOCATION_STORAGE:
+                if(count($coalIdArray) > 1)
+                    throw new \BgaVisibleSystemException("Only 1 coal cube at a time can be moved to the storage");
+                if($player->getCageLevel() > LEVEL_SURFACE){
+                    throw new \BgaVisibleSystemException("The pit cage is not at the surface level");
+                }
+                foreach($coalIdArray as $coalId){
+                    $coal = Meeples::get($coalId);
+                    if($coal->getPId() != $player->getId() ) {
+                        throw new \BgaVisibleSystemException("Coal cube doesn't belong to you");
+                    }
+                    $location = $coal->getLocation(); 
+                    if($location != SPACE_PIT_CAGE){
+                        throw new \BgaVisibleSystemException("Coal cube is not in the pit cage");
+                    }
+                    $coal->moveToStorage($player);
+                    Globals::incMiningMoves(-1);
+                    Notifications::moveCoalToStorage($player,$coalId);
                 }
                 break;
             default:

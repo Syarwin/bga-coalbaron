@@ -172,6 +172,8 @@ trait DebugTrait
 
     $this->actMovePitCage(1);
     $this->actMoveCoals($coalIds,SPACE_PIT_CAGE);
+    $this->actMovePitCage(LEVEL_SURFACE);
+    $this->actMoveCoals($coalIds,COAL_LOCATION_STORAGE); 
   }
 
   /* Replace meeples in reserve : */

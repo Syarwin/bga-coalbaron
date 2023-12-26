@@ -56,12 +56,14 @@ class action_coalbaron extends APP_GameAction
     self::setAjaxMode();
     $spaceId = self::getArg('spaceId', AT_alphanum, true);
     // ---------- ----------  array of COALS'ids  --------------------
-    $coal_ids_raw = self::getArg( "coalId", AT_alphanum, true );
-    $coal_ids_raw = trim($coal_ids_raw);
+    $coal_ids_raw = self::getArg( "coalId", AT_numberlist, true );
+    // Removing last ';' if exists
+    if( substr( $coal_ids_raw, -1 ) == ';' )
+       $coal_ids_raw = substr( $coal_ids_raw, 0, -1 );
     if( $coal_ids_raw == '' )
         $coalIdArray = array();
     else
-        $coalIdArray = explode( ' ', $coal_ids_raw );
+        $coalIdArray = explode( ';', $coal_ids_raw );
     // ---------- ---------- -------------------- --------------------
     $this->game->actMoveCoals($coalIdArray,$spaceId);
     self::ajaxResponse();

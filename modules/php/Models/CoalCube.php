@@ -18,4 +18,10 @@ class CoalCube extends \COAL\Models\Meeple
 
     Notifications::moveCoalTo($player,$tile, $this);
   }
+  
+  public function moveToCage($player)
+  {
+    //pid must be already known because coals are owned before going to cage
+    $this->setLocation(SPACE_PIT_CAGE);
+  }
 }

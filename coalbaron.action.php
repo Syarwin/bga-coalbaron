@@ -51,6 +51,21 @@ class action_coalbaron extends APP_GameAction
     $this->game->actMovePitCage($toLevel);
     self::ajaxResponse();
   }
+  public function actMoveCoals()
+  {
+    self::setAjaxMode();
+    $spaceId = self::getArg('spaceId', AT_alphanum, true);
+    // ---------- ----------  array of COALS'ids  --------------------
+    $coal_ids_raw = self::getArg( "coalId", AT_alphanum, true );
+    $coal_ids_raw = trim($coal_ids_raw);
+    if( $coal_ids_raw == '' )
+        $coalIdArray = array();
+    else
+        $coalIdArray = explode( ' ', $coal_ids_raw );
+    // ---------- ---------- -------------------- --------------------
+    $this->game->actMoveCoals($coalIdArray,$spaceId);
+    self::ajaxResponse();
+  }
 
 
   ///////////////////

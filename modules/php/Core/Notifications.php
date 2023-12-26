@@ -86,6 +86,12 @@ class Notifications
       'coal' => $coal,
     ]);
   }
+  public static function moveCoalToCage($player,$coal){
+    self::notifyAll('moveCoalTo', clienttranslate('${player_name} moves a coal to the pit cage'), [
+      'player' => $player,
+      'coal' => $coal,
+    ]);
+  }
 
   public static function movePitCage($player,$fromLevel,$toLevel){
     self::notifyAll('movePitCage', clienttranslate('${player_name} moves the pit cage from ${a} to ${b}'), [

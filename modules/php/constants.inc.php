@@ -14,6 +14,7 @@ const TILES_EACH_NB = 3; //3 tiles of each
 //possible LEVEL of player's pit cage :
 const LEVEL_SURFACE = 0;
 const LEVEL_TUNNEL_MAX = 4;
+const SPACE_PIT_CAGE_MAX = 5;//5 coals max in the cage
 
 /** Worker spaces */
 const SPACE_FACTORY = 'factory';

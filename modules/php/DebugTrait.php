@@ -8,6 +8,7 @@ use COAL\Managers\Tiles;
 use COAL\Helpers\Utils;
 use COAL\Managers\Cards;
 use COAL\Managers\Meeples;
+use COAL\Models\CoalCube;
 
 trait DebugTrait
 {
@@ -150,6 +151,27 @@ trait DebugTrait
     $this->actMovePitCage(LEVEL_TUNNEL_MAX);
     $this->actMovePitCage(1);
     $this->actMovePitCage(2);
+  }
+  
+  function testActionMoveCoal()
+  {
+    //RESET for the test :
+    $player = Players::getCurrent();
+    $player->setCageLevel(LEVEL_SURFACE);
+    Globals::setMiningMoves(6);
+    $coals = Meeples::getPlayerCoals($player->getId());
+    $coalIds = array( );
+    foreach($coals as $coal){
+      //if($coal->getLocation() == ( SPACE_PIT_TILE . '_1_1' )  ){
+        //ALWAYS TAKE FIRST
+        $coalIds[] = $coal->getId();
+        $coal->setLocation(SPACE_PIT_TILE . '_1_1');
+        break;
+      //}
+    }
+
+    $this->actMovePitCage(1);
+    $this->actMoveCoals($coalIds,SPACE_PIT_CAGE);
   }
 
   /* Replace meeples in reserve : */

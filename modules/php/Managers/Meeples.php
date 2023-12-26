@@ -131,7 +131,7 @@ class Meeples extends \COAL\Helpers\Pieces
    */
   public static function getNbAvailableWorkers($player)
   {
-    $pId = $player->getId();
+    $pId = is_int($player) ? $player : $player->getId();
     return self::getFilteredQuery($pId, SPACE_RESERVE, WORKER)->count();
   }
 

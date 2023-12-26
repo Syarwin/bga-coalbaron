@@ -15,10 +15,17 @@ functions about workers at the Minecarts Factory spaces
 trait WorkerAtFactoryTrait
 {
     /**
+     * List all Worker Spaces to play in "Factory"
+     */
+    function getAllSpacesInFactory() {
+        $spaces = Tiles::getUnlockedSpacesInFactory();
+        return $spaces;
+    }
+    /**
      * List all possible Worker Spaces to play by player $pId and specified action "Factory"
      */
     function getPossibleSpacesInFactory($pId) {
-        $spaces = Tiles::getUnlockedSpacesInFactory();
+        $spaces = $this->getAllSpacesInFactory();
         //TODO JSA PERFS : add $money in param to avoid another query
         $money = Players::get($pId)->getMoney();
 

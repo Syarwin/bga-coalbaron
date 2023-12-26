@@ -24,7 +24,8 @@ trait PlaceWorkerTrait
 
     function argPlaceWorker(){
         $player = Players::getActive();
-        $spaces = self::getPossibleSpaces($player->getId(), Players::count());
+        $nbPlayers = Players::count();
+        $spaces = $this->getPossibleSpaces($player->getId(), $nbPlayers);
         $nbAvailableWorkers = Meeples::getNbAvailableWorkers($player);
     
         return array(
@@ -33,6 +34,7 @@ trait PlaceWorkerTrait
           'cards' => Cards::getUiData(),
           'tiles' => Tiles::getUiData(),
           'spaces' => $spaces,
+          'nbrWorkersNeeded' => $this->getSpacesNeededWorkers($nbPlayers),
           'nbAvailableWorkers' => $nbAvailableWorkers,
         );
     }
@@ -87,10 +89,37 @@ trait PlaceWorkerTrait
     /**
      * List all possible Worker Spaces to play by player $pId
      */
+    function getSpacesNeededWorkers($nbPlayers) {
+        self::trace("getSpacesNeededWorkers($nbPlayers)");
+        $allWorkers = Meeples::getAll();
+        $nbrNeededWorkers = array();
+
+        $spaces = array(
+            SPACE_FACTORY => $this->getAllSpacesInFactory($nbPlayers),
+            SPACE_MINING => $this->getAllSpacesInMining($nbPlayers),
+            SPACE_DELIVERY => $this->getAllSpacesInDelivery(),
+            SPACE_BANK => $this->getAllSpacesInBank($nbPlayers),
+            SPACE_ORDER => $this->getAllSpacesInOrder($nbPlayers),
+        );
+        foreach($spaces as $type => $typeSpaces){
+            foreach($typeSpaces as $space){
+                $workersAtWork = $allWorkers->filter(function ($meeple) use ($space){
+                    return $meeple->getType() == WORKER && $meeple->getLocation() == $space;
+                })->count();
+                $nbrWorkersNeeded = $workersAtWork + 1;
+                $nbrNeededWorkers[$space] = $nbrWorkersNeeded;
+            }
+        }
+        return $nbrNeededWorkers;
+    }
+    /**
+     * List all possible Worker Spaces to play by player $pId
+     */
     function getPossibleSpaces($pId, $nbPlayers) {
         self::trace("getPossibleSpaces($pId, $nbPlayers)");
-        $allWorkers = Meeples::getAll();
-        $nbAvailableWorkers = Meeples::findAvailableWorkersInCollection($allWorkers,$pId)->count();
+        $nbrWorkersNeeded = $this->getSpacesNeededWorkers($nbPlayers);
+        //$nbAvailableWorkers = Meeples::findAvailableWorkersInCollection($allWorkers,$pId)->count();
+        $nbAvailableWorkers = Meeples::getNbAvailableWorkers($pId);
 
         $spaces = array(
             SPACE_FACTORY => $this->getPossibleSpacesInFactory($pId),
@@ -99,27 +128,26 @@ trait PlaceWorkerTrait
             SPACE_BANK => $this->getPossibleSpacesInBank($pId, $nbPlayers),
             SPACE_ORDER => $this->getPossibleSpacesInOrder($pId, $nbPlayers),
         );
-        $this->filterAvailableWorkers($spaces,$nbAvailableWorkers,$allWorkers);
+
+        $this->filterAvailableWorkers($spaces,$nbAvailableWorkers,$nbrWorkersNeeded);
         return $spaces;
     }
 
     /**
-     * Update list of possible Worker Spaces to play according to $nbAvailableWorkers (number) and $allWorkers (collection)
+     * Update list of possible Worker Spaces to play according to $nbAvailableWorkers (number) and $nbrWorkersNeeded (collection)
      */
-    function filterAvailableWorkers(&$spaces,$nbAvailableWorkers,$allWorkers){
+    function filterAvailableWorkers(&$spaces,$nbAvailableWorkers,$nbrWorkersNeeded){
         self::trace("filterAvailableWorkers($nbAvailableWorkers)");
         
         // FILTER on available meeples 
-        $filter = function ($value ) use ($nbAvailableWorkers, $allWorkers) {
+        $filter = function ($value ) use ($nbAvailableWorkers, $nbrWorkersNeeded) {
             $space = $value;
             if($space == SPACE_BANK_1) return true;//don't remove default space SPACE_BANK_1
 
-            $workersAtWork = $allWorkers->filter(function ($meeple) use ($space){
-                return $meeple->getType() == WORKER && $meeple->getLocation() == $space;
-            })->count();
-            if($nbAvailableWorkers < $workersAtWork + 1){
+            $nbrWorkersNeeded = $nbrWorkersNeeded[$space];
+            if($nbAvailableWorkers < $nbrWorkersNeeded){
                 //IMPOSSIBLE to add a worker => delete from array
-                self::trace("filterAvailableWorkers($nbAvailableWorkers)... Impossible $space because $workersAtWork workers are there");
+                self::trace("filterAvailableWorkers($nbAvailableWorkers)... Impossible $space because $nbrWorkersNeeded workers are needed");
                 return false;
             }
             return true;

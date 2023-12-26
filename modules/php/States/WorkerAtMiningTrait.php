@@ -49,11 +49,10 @@ trait WorkerAtMiningTrait
         //ELSE continue mining and resend args datas
         $this->gamestate->nextState( 'continue' );
     }
-
     /**
-     * List all possible Worker Spaces to play by player $pId and specified action "Mining"
+     * List all Worker Spaces to play on specified action "Mining"
      */
-    function getPossibleSpacesInMining($pId, $nbPlayers) {
+    function getAllSpacesInMining($nbPlayers) {
         $spaces = array(
             SPACE_MINING_6,
             SPACE_MINING_10,
@@ -64,6 +63,13 @@ trait WorkerAtMiningTrait
         if($nbPlayers>=3){
             $spaces[] = SPACE_MINING_8;
         }
+        return $spaces;
+    }
+    /**
+     * List all possible Worker Spaces to play by player $pId and specified action "Mining"
+     */
+    function getPossibleSpacesInMining($pId, $nbPlayers) {
+        $spaces = $this->getAllSpacesInMining($nbPlayers);
         return $spaces;
     }
     

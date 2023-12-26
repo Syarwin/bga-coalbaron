@@ -14,9 +14,9 @@ functions about workers at the bank / money spaces
 trait WorkerAtBankTrait
 {
     /**
-     * List all possible Worker Spaces to play by player $pId and specified action "bank"
+     * List all Worker Spaces to play on specified action "bank"
      */
-    function getPossibleSpacesInBank($pId, $nbPlayers) {
+    function getAllSpacesInBank($nbPlayers) {
         $spaces = array(
             SPACE_BANK_1,
             SPACE_BANK_4,
@@ -29,6 +29,12 @@ trait WorkerAtBankTrait
             $spaces[] = SPACE_BANK_3;
         }
         return $spaces;
+    }
+    /**
+     * List all possible Worker Spaces to play by player $pId and specified action "bank"
+     */
+    function getPossibleSpacesInBank($pId, $nbPlayers) {
+        return $this->getAllSpacesInBank($nbPlayers);
     }
 
     function placeWorkerInBank($player, $space){

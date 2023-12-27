@@ -199,6 +199,13 @@ class Meeples extends \COAL\Helpers\Pieces
     return self::getFilteredQuery($pId, SPACE_PIT_CAGE, '%_coal')->get();
   }
   /**
+   * Return all coals currently on a card of this player
+   */
+  public static function getPlayerCardCoals($pId,$cardId)
+  {
+    return self::getFilteredQuery($pId, COAL_LOCATION_CARD.$cardId.'%', '%_coal')->get();
+  }
+  /**
    * ADD 1 COAL in each minecart on the tile
    */
   public static function placeCoalsOnTile($player, $tile)

@@ -414,7 +414,12 @@ class Pieces extends DB_Manager
     {
         $query = self::getSelectQuery()->wherePlayer($pId);
         if ($location != null) {
-            $query = $query->where(static::$prefix . 'location', $location);
+            //$query = $query->where(static::$prefix . 'location', $location);
+            $query = $query->where(
+                static::$prefix . 'location',
+                strpos($location, '%') === false ? '=' : 'LIKE',
+                $location
+            );
         }
         if ($type != null) {
             if (is_array($type)) {

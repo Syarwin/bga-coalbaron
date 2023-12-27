@@ -5,6 +5,7 @@ namespace COAL\States;
 use COAL\Core\Game;
 use COAL\Core\Globals;
 use COAL\Core\Notifications;
+use COAL\Managers\Cards;
 use COAL\Managers\Meeples;
 use COAL\Managers\Players;
 use COAL\Managers\Tiles;
@@ -24,6 +25,7 @@ trait WorkerAtMiningTrait
         'cageLevel' => $player->getCageLevel(),
         'coals' => Meeples::getCoalsUiData($player->getId()),
         'moves' => Globals::getMiningMoves(),
+        //TODO JSA 'totalMoves' => Globals::getTotalMiningMoves(),
         );
     }
     
@@ -58,10 +60,10 @@ trait WorkerAtMiningTrait
         $moves = Globals::getMiningMoves();
 
         // ANTICHEATS :
-        if($moves <= 0) 
+        if($moves <= 0 || count($coalIdArray) > $moves) 
             throw new \BgaVisibleSystemException("Not enough work steps to play");
+        
         $player = Players::getActive();
-        //TODO JSA ANTICHEAT : 1 coal color -> to order OR 2 Different to order
         //TODO JSA CLEAN with refactor...
         switch($spaceId){
             case SPACE_PIT_CAGE:
@@ -119,7 +121,10 @@ trait WorkerAtMiningTrait
                 }
                 break;
             default:
-                throw new \BgaVisibleSystemException("Not supported destination to move your coals : $spaceId");
+                if (preg_match("/^".COAL_LOCATION_CARD."(?P<cardId>\d+)_(?P<spotIndex>(-)*\d+)$/", $spaceId, $matches ) == 1) {
+                    $this->prepareMoveCoalsToCard($player,$coalIdArray,$matches['cardId'],$matches['spotIndex']);
+                }
+                else throw new \BgaVisibleSystemException("Not supported destination to move your coals : $spaceId");
         }
         
         $moves = Globals::getMiningMoves();
@@ -131,6 +136,48 @@ trait WorkerAtMiningTrait
         //ELSE continue mining and resend args datas
         $this->gamestate->nextState( 'continue' );
     }
+
+    /**
+     * ANTICHEAT CHECKS + mining action of moving cubes to an order card
+     */
+    function prepareMoveCoalsToCard($player,$coalIdArray,$cardId,$spotIndex){
+        self::trace("prepareMoveCoalsToCard($cardId,$spotIndex)...");
+        $card = Cards::get($cardId);
+        if($card->getPId() != $player->getId() ) {
+            throw new \BgaVisibleSystemException("Card doesn't belong to you");
+        }
+        $cardCoalsStatus = Cards::getCardCoalsStatus($cardId);
+        //CHECK CARD spotIndex < SIZE because index starts at 0
+        if($spotIndex >= count($cardCoalsStatus)){
+            throw new \BgaVisibleSystemException("Incorrect spot index $spotIndex for a cube on this card");
+        }
+        //CHECK CARD EMPTY SPACES
+        $currentStatus = $cardCoalsStatus[$spotIndex];
+        $neededColor = array_key_first($currentStatus);
+        if($currentStatus[$neededColor] != COAL_EMPTY_SPOT){
+            throw new \BgaVisibleSystemException("Spot $spotIndex is not empty on this card");
+        }
+        foreach($coalIdArray as $coalId){//loop cubes (1 cube in majority, 2 cubes sometimes)
+            $coal = Meeples::get($coalId);
+            if($coal->getPId() != $player->getId() ) {
+                throw new \BgaVisibleSystemException("Coal cube doesn't belong to you");
+            }
+            //CHECK COAL ORIGIN
+            $location = $coal->getLocation(); 
+            if(!( $location == COAL_LOCATION_STORAGE || $location == SPACE_PIT_CAGE)){
+                throw new \BgaVisibleSystemException("Coal cube cannot be moved to an order card from $location");
+            }
+            //CHECK 1 moving cube MUST BE the same color on the card spot, 2 cubes are free to use any colors (even the right one)
+            $coalColor = $coal->getType();
+            if($coalColor != $neededColor && count($coalIdArray) == 1){
+                throw new \BgaVisibleSystemException("Coal cube $coalColor is not the right color : $neededColor");
+            }
+            $coal->moveToCard($cardId,$spotIndex);
+            Globals::incMiningMoves(-1);
+            Notifications::moveCoalToCard($player,$cardId,$spotIndex,$coalId);
+        }
+    }
+
     /**
      * List all Worker Spaces to play on specified action "Mining"
      */

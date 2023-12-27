@@ -50,6 +50,31 @@ class Cards extends \COAL\Helpers\Pieces
     $card->moveToOutstanding($player);
     Notifications::giveCardTo($player,$card);
   }
+
+  /**
+   * For one card, return the list of all coal spots with either the coal currently in the spot, either "EMPTY_SPOT"
+   */
+  public static function getCardCoalsStatus($cardId) {
+    $datas = array();
+    $card = self::get($cardId);
+    $wantedCoals = $card->getCoals();
+    $coalIndex = 0;
+    foreach($wantedCoals as $wantedCoal){//loop string list
+      $datas[$coalIndex] = array($wantedCoal => COAL_EMPTY_SPOT);
+      $coalIndex++;
+    }
+    $pId = $card->getPId();
+    if( !isset( $pId )) {
+      return $datas;
+    }
+    $filledCoals = Meeples::getPlayerCardCoals($pId,$cardId);
+    foreach($filledCoals as $filledCoal){//loop CoalCube list
+      $coalIndex = $filledCoal->getCoalSpotIndexOnCard();
+      $datas[$coalIndex] = array($wantedCoal => $filledCoal);
+    }
+    return $datas;
+  }
+
   
   /**
    * Return all unlocked ORDER spaces on board

@@ -86,6 +86,14 @@ class Notifications
       'coal' => $coal,
     ]);
   }
+  public static function moveCoalToCard($player,$card,$spotIndex,$coal){
+    self::notifyAll('moveCoalToCard', clienttranslate('${player_name} moves a coal to an order card'), [
+      'player' => $player,
+      'card' => $card,
+      'spotIndex' => $spotIndex,
+      'coal' => $coal,
+    ]);
+  }
   public static function moveCoalToCage($player,$coal){
     self::notifyAll('moveCoalToCage', clienttranslate('${player_name} moves a coal to the pit cage'), [
       'player' => $player,

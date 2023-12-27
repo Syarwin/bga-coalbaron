@@ -8,6 +8,7 @@ const YELLOW_COAL = 'yellow_coal';
 const BLACK_COAL = 'black_coal';
 const GREY_COAL = 'grey_coal';
 const BROWN_COAL = 'brown_coal';
+const COAL_EMPTY_SPOT = 'empty';//not saved in DB
 const WORKER = 'worker';
 const CARDS_START_NB = 3;//3 per player
 const TILES_EACH_NB = 3; //3 tiles of each
@@ -69,6 +70,7 @@ const TILE_LOCATION_DECK = "deck";
 const TILE_LOCATION_BOARD = "player";
 const TILE_STATE_VISIBLE = 1;
 const COAL_LOCATION_TILE = "tile_";
+const COAL_LOCATION_CARD = "card_";
 const COAL_LOCATION_STORAGE = "storage";
 
 /*

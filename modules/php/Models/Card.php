@@ -2,6 +2,8 @@
 
 namespace COAL\Models;
 
+use COAL\Managers\Cards;
+
 /*
  * Card: all utility functions concerning a card
  */
@@ -35,6 +37,7 @@ class Card extends \COAL\Helpers\DB_Model
   public function getUiData()
   {
     $data = parent::getUiData();
+    $data['coalsStatus'] = Cards::getCardCoalsStatus($this->getId());
     return $data;
   }
 

@@ -24,6 +24,23 @@
             box-shadow: 1px 1px 5px 1px black;
             border-radius: 7px;
 
+            &.disabled {
+                opacity: 0.4;
+            }
+
+            &.selectable {
+                cursor: pointer;
+                background: rgba(242, 125, 125, 0.55);
+
+                &:hover {
+                    background: rgba(242, 125, 125, 0.65);
+                }
+            }
+            &.selected,
+            &.selected:hover {
+                background: rgba(122, 252, 62, 0.55);
+            }
+
             &::before {
                 content: "";
                 position: absolute;
@@ -38,6 +55,12 @@
                 border-image-repeat: stretch stretch;
                 border-image-source: url("img/frame.png");
                 pointer-events: none;
+            }
+
+            .space-workers-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
 
             &#factory_1,
@@ -289,7 +312,8 @@
                 }
             }
 
-            &#canteen {
+            &#canteen,
+            &#bank_1 {
                 top: 280px;
                 left: 275px;
                 width: 300px;
@@ -299,6 +323,11 @@
                 &::before {
                     display: none;
                 }
+            }
+
+            &#bank_1 {
+                top: 112px;
+                left: 1324px;
             }
 
             .space-title-container {

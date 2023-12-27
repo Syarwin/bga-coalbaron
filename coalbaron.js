@@ -29,7 +29,7 @@ define([
 ], function (dojo, declare) {
   return declare('bgagame.coalbaron', [customgame.game], {
     constructor() {
-      this._activeStates = [];
+      this._inactiveStates = [];
       this._notifications = [
         // ["newTurn", 1000],
         // ["updateFirstPlayer", 500],
@@ -89,6 +89,7 @@ define([
         delivery_2: ['title', 'workers'],
         delivery_3: ['title', 'workers'],
         delivery_4: ['title', 'workers'],
+        bank_1: ['workers'],
         bank_3: ['workers', 'title'],
         bank_4: ['workers', 'title'],
         bank_5: ['workers', 'title'],
@@ -100,14 +101,60 @@ define([
         order_draw: ['title', 'workers'],
         canteen: ['workers'],
       };
+      const SPACES_NO_3P = ['factory_4', 'mining_8', 'bank_5', 'order_1'];
+      const SPACES_NO_2P = ['factory_4', 'factory_8', 'bank_3', 'bank_5', 'mining_4', 'mining_8', 'order_1'];
 
+      let nPlayers = Object.keys(this.gamedatas.players).length;
       Object.keys(SPACES).forEach((spaceId) => {
-        let space = `<div class='board-space' id='${spaceId}'>`;
+        let disabled = (nPlayers == 2 && SPACES_NO_2P.includes(spaceId)) || (nPlayers == 3 && SPACES_NO_3P.includes(spaceId));
+        let space = `<div class='board-space ${disabled ? 'disabled' : ''}' id='${spaceId}'>`;
         SPACES[spaceId].forEach((content) => (space += `<div class='space-${content}-container'></div>`));
         space += '</div>';
         container.insertAdjacentHTML('beforeend', space);
       });
     },
+
+    onEnteringState(stateName, args) {
+      debug('Entering state: ' + stateName, args);
+      if (this.isFastMode() && ![].includes(stateName)) return;
+
+      if (args.args && args.args.descSuffix) {
+        this.changePageTitle(args.args.descSuffix);
+      }
+
+      if (args.args && args.args.optionalAction) {
+        let base = args.args.descSuffix ? args.args.descSuffix : '';
+        this.changePageTitle(base + 'skippable');
+      }
+
+      if (!this._inactiveStates.includes(stateName) && !this.isCurrentPlayerActive()) return;
+
+      // Call appropriate method
+      var methodName = 'onEnteringState' + stateName.charAt(0).toUpperCase() + stateName.slice(1);
+      if (this[methodName] !== undefined) this[methodName](args.args);
+    },
+
+    onEnteringStatePlaceWorker(args) {
+      let selectedSpace = null;
+      Object.keys(args.nbrWorkersNeeded).forEach((spaceId) => {
+        this.onClick(spaceId, () => {
+          if (selectedSpace !== null) $(selectedSpace).classList.remove('selected');
+          selectedSpace = spaceId;
+          $(selectedSpace).classList.add('selected');
+          this.addPrimaryActionButton('btnConfirm', '', () => this.takeAction('actPlaceWorker', { spaceId: selectedSpace }));
+          $('btnConfirm').innerHTML = this.fsr(_('Confirm and place ${n} worker(s)'), { n: args.nbrWorkersNeeded[spaceId] });
+        });
+      });
+    },
+
+    ////////////////////////////////////////
+    //  ____  _
+    // |  _ \| | __ _ _   _  ___ _ __ ___
+    // | |_) | |/ _` | | | |/ _ \ '__/ __|
+    // |  __/| | (_| | |_| |  __/ |  \__ \
+    // |_|   |_|\__,_|\__, |\___|_|  |___/
+    //                |___/
+    ////////////////////////////////////////
 
     setupPlayers() {
       let currentPlayerNo = 1;
@@ -307,7 +354,9 @@ define([
       if (t[0] == 'factory') {
         return $(tile.location).querySelector('.space-tile-container');
       }
-
+      if (tile.location == 'player') {
+        return $(`${tile.light ? 'left' : 'right'}-pit-${tile.pId}-${tile.x}`);
+      }
       console.error('Trying to get container of a tile', tile);
       return 'game_play_area';
     },
@@ -379,6 +428,14 @@ define([
       if (t[0] == 'pit' && t[1] == 'tile') {
         let side = t[3] == '-1' ? 'left' : 'right';
         return $(`${side}-pit-${meeple.pId}-${t[2]}`).querySelector('.pit-tile');
+      }
+      // Worker on board
+      if (meeple.type == 'worker' && $(meeple.location)) {
+        return $(meeple.location).querySelector('.space-workers-container');
+      }
+      // Coal on tile
+      if (t[0] == 'tile') {
+        return $(`tile-${t[1]}`);
       }
 
       console.error('Trying to get container of a meeple', meeple);

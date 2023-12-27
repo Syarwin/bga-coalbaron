@@ -78,6 +78,7 @@ class CoalBaron extends Table
   public function getAllDatas()
   {
     $pId = self::getCurrentPId();
+    $nbPlayers = Players::count();
     return [
       'prefs' => Preferences::getUiData($pId),
       'players' => Players::getUiData($pId),
@@ -86,6 +87,7 @@ class CoalBaron extends Table
       'cards' => Cards::getUiData(),
       'tiles' => Tiles::getUiData(),
       'firstPlayer' => Globals::getFirstPlayer(),
+      'nbrWorkersNeeded' => $this->getSpacesNeededWorkers($nbPlayers),
     ];
   }
 

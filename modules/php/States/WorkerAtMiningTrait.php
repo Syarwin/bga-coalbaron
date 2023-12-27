@@ -25,7 +25,7 @@ trait WorkerAtMiningTrait
         'cageLevel' => $player->getCageLevel(),
         'coals' => Meeples::getCoalsUiData($player->getId()),
         'moves' => Globals::getMiningMoves(),
-        //TODO JSA 'totalMoves' => Globals::getTotalMiningMoves(),
+        'totalMoves' => Globals::getMiningMovesTotal(),
         );
     }
     
@@ -64,65 +64,17 @@ trait WorkerAtMiningTrait
             throw new \BgaVisibleSystemException("Not enough work steps to play");
         
         $player = Players::getActive();
-        //TODO JSA CLEAN with refactor...
         switch($spaceId){
             case SPACE_PIT_CAGE:
-                $coalsInCage = Meeples::getPlayerCageCoals($player->getId());
-                if(count($coalIdArray) > 1)
-                    throw new \BgaVisibleSystemException("Only 1 coal cube at a time can be moved to the pit cage");
-                if(count($coalsInCage) > SPACE_PIT_CAGE_MAX)
-                    throw new \BgaVisibleSystemException("The pit cage is full");
-                foreach($coalIdArray as $coalId){
-                    $coal = Meeples::get($coalId);
-                    if($coal->getPId() != $player->getId() ) {
-                        throw new \BgaVisibleSystemException("Coal cube doesn't belong to you");
-                    }
-                    $location = $coal->getLocation(); 
-                    if(!( str_starts_with($location,COAL_LOCATION_TILE) || str_starts_with($location,SPACE_PIT_TILE))){
-                        throw new \BgaVisibleSystemException("Coal cube cannot be moved to the pit cage");
-                    }
-                  
-                    if (preg_match("/^".SPACE_PIT_TILE."(?P<row>\d+)_(?P<col>(-)*\d+)$/", $location, $matches ) == 1) {
-                        $row = $matches['row'];
-                        if($row != $player->getCageLevel()){
-                          throw new \BgaVisibleSystemException("Pit cage is not at this level : $row");
-                        }
-                    }
-                    else if (preg_match("/^".COAL_LOCATION_TILE."(?P<tile>\d+)$/", $location, $matches ) == 1) {
-                        $tileId = $matches['tile'];
-                        $tile = Tiles::get($tileId);
-                        if($tile->getY() != $player->getCageLevel()){
-                          throw new \BgaVisibleSystemException("Pit cage is not at this level : ".$tile->getY());
-                        }
-                    }
-                    $coal->moveToCage($player);
-                    Globals::incMiningMoves(-1);
-                    Notifications::moveCoalToCage($player,$coalId);
-                }
+                $this->prepareMoveCoalsToCage($player,$coalIdArray);
                 break;
             case COAL_LOCATION_STORAGE:
-                if(count($coalIdArray) > 1)
-                    throw new \BgaVisibleSystemException("Only 1 coal cube at a time can be moved to the storage");
-                if($player->getCageLevel() > LEVEL_SURFACE){
-                    throw new \BgaVisibleSystemException("The pit cage is not at the surface level");
-                }
-                foreach($coalIdArray as $coalId){
-                    $coal = Meeples::get($coalId);
-                    if($coal->getPId() != $player->getId() ) {
-                        throw new \BgaVisibleSystemException("Coal cube doesn't belong to you");
-                    }
-                    $location = $coal->getLocation(); 
-                    if($location != SPACE_PIT_CAGE){
-                        throw new \BgaVisibleSystemException("Coal cube is not in the pit cage");
-                    }
-                    $coal->moveToStorage($player);
-                    Globals::incMiningMoves(-1);
-                    Notifications::moveCoalToStorage($player,$coalId);
-                }
+                $this->prepareMoveCoalsToStorage($player,$coalIdArray);
                 break;
             default:
                 if (preg_match("/^".COAL_LOCATION_CARD."(?P<cardId>\d+)_(?P<spotIndex>(-)*\d+)$/", $spaceId, $matches ) == 1) {
                     $this->prepareMoveCoalsToCard($player,$coalIdArray,$matches['cardId'],$matches['spotIndex']);
+                    break;
                 }
                 else throw new \BgaVisibleSystemException("Not supported destination to move your coals : $spaceId");
         }
@@ -137,6 +89,72 @@ trait WorkerAtMiningTrait
         $this->gamestate->nextState( 'continue' );
     }
 
+    /**
+     * ANTICHEAT CHECKS + mining action of moving 1 cube to pit cage -elevator
+     */
+    function prepareMoveCoalsToCage($player,$coalIdArray){
+        self::trace("prepareMoveCoalsToCage()...");
+        $coalsInCage = Meeples::getPlayerCageCoals($player->getId());
+        if(count($coalIdArray) > 1){
+            throw new \BgaVisibleSystemException("Only 1 coal cube at a time can be moved to the pit cage");
+        }
+        if(count($coalsInCage) > SPACE_PIT_CAGE_MAX){
+            throw new \BgaVisibleSystemException("The pit cage is full");
+        }
+        foreach($coalIdArray as $coalId){
+            $coal = Meeples::get($coalId);
+            if($coal->getPId() != $player->getId() ) {
+                throw new \BgaVisibleSystemException("Coal cube doesn't belong to you");
+            }
+            $location = $coal->getLocation(); 
+            if(!( str_starts_with($location,COAL_LOCATION_TILE) || str_starts_with($location,SPACE_PIT_TILE))){
+                throw new \BgaVisibleSystemException("Coal cube cannot be moved to the pit cage from $location");
+            }
+            $row = null;
+            $test = SPACE_PIT_TILE;
+            if (preg_match("/^${test}_(?P<row>\d+)_(?P<col>[-]*\d+)$/", $location, $matches ) == 1) {
+                $row = $matches['row'];
+                self::trace("prepareMoveCoalsToCage()... MOVING from PIT row $row");
+            }
+            else if (preg_match("/^".COAL_LOCATION_TILE."(?P<tile>\d+)$/", $location, $matches ) == 1) {
+                $tileId = $matches['tile'];
+                $tile = Tiles::get($tileId);
+                $row = $tile->getY();
+                self::trace("prepareMoveCoalsToCage()... MOVING from TILE row $row");
+            }
+            if($row != $player->getCageLevel()){
+                throw new \BgaVisibleSystemException("Pit cage is not at this level : $row");
+            }
+            $coal->moveToCage($player);
+            Globals::incMiningMoves(-1);
+            Notifications::moveCoalToCage($player,$coalId);
+        }
+    }
+    /**
+     * ANTICHEAT CHECKS + mining action of moving 1 cube to private storage
+     */
+    function prepareMoveCoalsToStorage($player,$coalIdArray){
+        self::trace("prepareMoveCoalsToStorage()...");
+        if(count($coalIdArray) > 1){
+            throw new \BgaVisibleSystemException("Only 1 coal cube at a time can be moved to the storage");
+        }
+        if($player->getCageLevel() > LEVEL_SURFACE){
+            throw new \BgaVisibleSystemException("The pit cage is not at the surface level");
+        }
+        foreach($coalIdArray as $coalId){
+            $coal = Meeples::get($coalId);
+            if($coal->getPId() != $player->getId() ) {
+                throw new \BgaVisibleSystemException("Coal cube doesn't belong to you");
+            }
+            $location = $coal->getLocation(); 
+            if($location != SPACE_PIT_CAGE){
+                throw new \BgaVisibleSystemException("Coal cube is not in the pit cage");
+            }
+            $coal->moveToStorage($player);
+            Globals::incMiningMoves(-1);
+            Notifications::moveCoalToStorage($player,$coalId);
+        }
+    }
     /**
      * ANTICHEAT CHECKS + mining action of moving cubes to an order card
      */
@@ -226,6 +244,7 @@ trait WorkerAtMiningTrait
         }
         Meeples::placeWorkersInSpace($player,$space);
         Globals::setMiningMoves($nbMoves);
+        Globals::setMiningMovesTotal($nbMoves);
         Notifications::startMining($player,$nbMoves);
         //Go to another state to manage moves :
         $this->gamestate->nextState( 'startMining' );

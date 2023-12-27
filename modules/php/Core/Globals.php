@@ -15,6 +15,7 @@ class Globals extends \COAL\Helpers\DB_Manager
     'firstPlayer' => 'int',
 
     'miningMoves' => 'int',
+    'miningMovesTotal' => 'int',
     // TODO : use meeple instead ?
     'elevators' => 'obj'
   ];

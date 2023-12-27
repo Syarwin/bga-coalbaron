@@ -38,6 +38,7 @@ class Card extends \COAL\Helpers\DB_Model
   {
     $data = parent::getUiData();
     $data['coalsStatus'] = Cards::getCardCoalsStatus($this->getId());
+    $data['isCompleted'] = $this->isCompleted();
     return $data;
   }
 
@@ -47,4 +48,17 @@ class Card extends \COAL\Helpers\DB_Model
     $this->setPId($player->getId());
   }
  
+  /**
+   * Return true if all coals spots are occupied
+   */
+  public function isCompleted()
+  {
+    $coalsStatus = Cards::getCardCoalsStatus($this->getId());
+    foreach( $coalsStatus as $coalStatus){
+      foreach( $coalStatus as $color => $status){
+        if($status == COAL_EMPTY_SPOT) return false;
+      }
+    }
+    return true;
+  }
 }

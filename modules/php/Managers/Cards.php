@@ -74,7 +74,35 @@ class Cards extends \COAL\Helpers\Pieces
     }
     return $datas;
   }
-
+  /**
+   * Return all pending cards of this player of type $deliveryType
+   */
+  public static function getPlayerOrders($pId,$deliveryType)
+  {
+    //! DB type is not deliveryType -> we cannot query it
+    $filter = function ($card) use ($deliveryType) {
+      if($card->getTransport() == $deliveryType){
+          return true;
+      }
+      return false;
+    };
+    return self::getFilteredQuery($pId, CARD_LOCATION_OUTSTANDING)
+      ->get()
+      ->filter($filter);
+  }
+  /**
+   * Return the list of this player ($pId) order cards of type $deliveryType, which contain all needed coal cubes
+   */
+  public static function getPlayerCompletedOrdersToDeliver($pId,$deliveryType){
+    
+    $filter = function ($card) {
+      if($card->isCompleted()){
+          return true;
+      }
+      return false;
+    };
+    return self::getPlayerOrders($pId,$deliveryType)->filter($filter);
+  }
   
   /**
    * Return all unlocked ORDER spaces on board

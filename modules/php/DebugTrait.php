@@ -175,6 +175,13 @@ trait DebugTrait
     $this->actMovePitCage(LEVEL_SURFACE);
     $this->actMoveCoals($coalIds,COAL_LOCATION_STORAGE); 
   }
+  
+  function testPossibleSpacesInDelivery()
+  {
+    $player = Players::getCurrent();
+    $pId = $player->getId();
+    self::dump("testPossibleSpacesInDelivery",$this->getPossibleSpacesInDelivery($pId ));
+  }
 
   /* Replace meeples in reserve : */
   function testReplaceMeeplesInReserve()

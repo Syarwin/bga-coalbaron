@@ -4,7 +4,7 @@ namespace COAL\States;
 
 use COAL\Core\Game;
 use COAL\Core\Globals;
-
+use COAL\Managers\Cards;
 use COAL\Managers\Players;
 
 /*
@@ -31,7 +31,28 @@ trait WorkerAtDeliveryTrait
         $spaces = $this->getAllSpacesInDelivery();
 
         //TODO JSA FILTER on player filled Orders (type)
+        $filter = function ($space) use ($pId) {
+            $deliveryType = $this->getDeliveryTypeFromSpace($space);
+            $cards = Cards::getPlayerCompletedOrdersToDeliver($pId,$deliveryType);
+            if(count($cards) ==0){
+                return false;
+            }
+            return true;
+        };
+
+        $spaces = array_values(array_filter($spaces,$filter));
         
         return $spaces;
+    }
+
+    public function getDeliveryTypeFromSpace($space){
+        switch($space){
+            case SPACE_DELIVERY_BARROW: return TRANSPORT_BARROW;
+            case SPACE_DELIVERY_ENGINE: return TRANSPORT_ENGINE;
+            case SPACE_DELIVERY_CARRIAGE: return TRANSPORT_CARRIAGE;
+            case SPACE_DELIVERY_MOTORCAR: return TRANSPORT_MOTORCAR;
+            default:
+                throw new \BgaVisibleSystemException("Not supported delivery type : $space");
+        }
     }
 }

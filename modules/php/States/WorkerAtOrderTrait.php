@@ -26,6 +26,7 @@ trait WorkerAtOrderTrait
         //TODO JSA PERFS ? could be more efficient to get all distinct "order_%" location in cards in order to filter
         //FILTER EMPTY ORDERS (because deck may be empty )
         $filter = function ($space) {
+            if($space == SPACE_ORDER_DRAW) return true;
             $card = Cards::getCardInOrder($space);
             if(!isset($card)){
                 return false;

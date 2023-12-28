@@ -32,6 +32,8 @@ trait WorkerAtFactoryTrait
         // FILTER on available money VS cost 
         // & FILTER EMPTY TILE (because deck may be empty )
         $filter = function ($space) use ($money) {
+            //FACTORY DRAW ALWAYS POSSIBLE with 0 money 
+            if($space == SPACE_FACTORY_DRAW) return true;
             $tile = Tiles::getTileInFactory($space);
             if($tile == null || $tile->getCost()> $money){
                 return false;

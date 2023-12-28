@@ -50,6 +50,11 @@ class Player extends \COAL\Helpers\DB_Model
     $name = 'get' . \ucfirst($name);
     return Stats::$name($this->id);
   }
+  
+  public function addPoints($points)
+  {
+    $this->setScore( $this->getScore() + $points);
+  }
 
   public function movePitCageTo($toLevel){
     $from = $this->getCageLevel();

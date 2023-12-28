@@ -74,6 +74,23 @@ class Cards extends \COAL\Helpers\Pieces
     }
     return $datas;
   }
+
+  /**
+   * Move all coal cubes from this card to the reserve
+   */
+  public static function removeCoalCubesOnCard($card) {
+    //moveAllInLocation Doesn't work with like...
+    //Meeples::moveAllInLocation(COAL_LOCATION_CARD.$cardId.'%', SPACE_RESERVE);
+    
+    $coalIds = array();
+    $filledCoals = Meeples::getPlayerCardCoals($card->getPId(),$card->getId());
+    foreach( $filledCoals as $coalCube){
+      $coalIds[] = $coalCube->getId();
+      $coalCube->setPId(null);
+    }
+    //update all  $coalIds at once:
+    Meeples::move($coalIds, SPACE_RESERVE);
+  }
   /**
    * Return all pending cards of this player of type $deliveryType
    */

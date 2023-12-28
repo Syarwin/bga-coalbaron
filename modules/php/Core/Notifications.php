@@ -73,6 +73,14 @@ class Notifications
       'card' => $card,
     ]);
   }
+  
+  public static function cardDelivered($player,$card){
+    self::notifyAll('cardDelivered', clienttranslate('${player_name} delivers an order card and receives ${n} points'), [
+      'player' => $player,
+      'card' => $card,
+      'n' => $card->getPoints(),
+    ]);
+  }
   public static function giveTileTo($player,$tile){
     self::notifyAll('giveTileTo', clienttranslate('${player_name} receives a new tunnel tile'), [
       'player' => $player,

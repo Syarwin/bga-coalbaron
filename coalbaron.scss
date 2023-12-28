@@ -32,6 +32,19 @@ html {
     visibility: hidden;
 }
 
+#box-reserve {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+
+    & > div.coalbaron-meeple:not(.moving) {
+        position: absolute;
+        top: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+}
+
 // SAFE MODE
 #ebd-body.help-mode {
     .tooltipable {

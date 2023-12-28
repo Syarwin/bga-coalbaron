@@ -13,4 +13,15 @@
             background-position-y: (($i - ($i % 4)) / 4) * 100% / 4;
         }
     }
+
+    position: relative;
+    .coalbaron-meeple {
+        position: absolute;
+        top: 30px;
+        left: 70px;
+
+        &:nth-child(2) {
+            left: 17px;
+        }
+    }
 }

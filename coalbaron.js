@@ -33,6 +33,8 @@ define([
       this._notifications = [
         ['placeWorkers', null],
         ['spendMoney', 1300],
+        ['giveTileTo', 1200],
+        ['moveCoalToTile', 1000],
         // ["newTurn", 1000],
         // ["updateFirstPlayer", 500],
       ];
@@ -57,7 +59,7 @@ define([
      */
     setup(gamedatas) {
       debug('SETUP', gamedatas);
-
+      $('page-title').insertAdjacentHTML('beforeend', '<div id="box-reserve"></div>');
       this.setupCentralBoard();
       this.setupPlayers();
       this.setupInfoPanel();
@@ -387,10 +389,15 @@ define([
         return $(tile.location).querySelector('.space-tile-container');
       }
       if (tile.location == 'player') {
-        return $(`${tile.light ? 'left' : 'right'}-pit-${tile.pId}-${tile.x}`);
+        return $(`${tile.x < 0 ? 'left' : 'right'}-pit-${tile.pId}-${tile.y}`);
       }
       console.error('Trying to get container of a tile', tile);
       return 'game_play_area';
+    },
+
+    notif_giveTileTo(n) {
+      debug('Notif: putting tile to pit', n);
+      this.slide(`tile-${n.args.tile.id}`, this.getTileContainer(n.args.tile));
     },
 
     ////////////////////////////////////////////////////////
@@ -454,7 +461,11 @@ define([
       let t = meeple.location.split('_');
       // Workers in reserve
       if (meeple.location == 'reserve') {
-        return $(`reserve-${meeple.pId}-worker`);
+        if (meeple.type == 'worker') {
+          return $(`reserve-${meeple.pId}-worker`);
+        } else {
+          return $('box-reserve');
+        }
       }
       // Coal on pit tile
       if (t[0] == 'pit' && t[1] == 'tile') {
@@ -472,6 +483,11 @@ define([
 
       console.error('Trying to get container of a meeple', meeple);
       return 'game_play_area';
+    },
+
+    notif_moveCoalToTile(n) {
+      debug('Notif: putting coal on tile', n);
+      this.slide(`meeple-${n.args.coal.id}`, this.getMeepleContainer(n.args.coal));
     },
 
     ////////////////////////////////////////////////////////

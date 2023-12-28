@@ -399,7 +399,8 @@
   background-size: 400% 500%;
   border: 1px solid black;
   box-shadow: 1px 1px 5px black;
-  border-radius: 2px; }
+  border-radius: 2px;
+  position: relative; }
   .coalbaron-tile[data-type="1"] {
     background-position-x: 0%;
     background-position-y: 0%; }
@@ -448,6 +449,12 @@
   .coalbaron-tile[data-type="16"] {
     background-position-x: 100%;
     background-position-y: 75%; }
+  .coalbaron-tile .coalbaron-meeple {
+    position: absolute;
+    top: 30px;
+    left: 70px; }
+    .coalbaron-tile .coalbaron-meeple:nth-child(2) {
+      left: 17px; }
 
 .coalbaron-meeple {
   width: 20px;
@@ -997,6 +1004,16 @@
 
 .phantom {
   visibility: hidden; }
+
+#box-reserve {
+  position: absolute;
+  top: 0%;
+  left: 0%; }
+  #box-reserve > div.coalbaron-meeple:not(.moving) {
+    position: absolute;
+    top: 0;
+    visibility: hidden;
+    pointer-events: none; }
 
 #ebd-body.help-mode .tooltipable {
   cursor: help; }

@@ -47,6 +47,18 @@ class Card extends \COAL\Helpers\DB_Model
     $this->setLocation(CARD_LOCATION_OUTSTANDING);
     $this->setPId($player->getId());
   }
+  
+  public function moveToDelivered()
+  {
+    $this->removeCoalCubes();
+    $this->setLocation(CARD_LOCATION_DELIVERED);
+    //PID must be already known
+  }
+  
+  public function removeCoalCubes()
+  {
+    Cards::removeCoalCubesOnCard($this);
+  }
  
   /**
    * Return true if all coals spots are occupied

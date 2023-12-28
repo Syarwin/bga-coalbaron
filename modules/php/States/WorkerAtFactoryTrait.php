@@ -32,6 +32,8 @@ trait WorkerAtFactoryTrait
         // FILTER on available money VS cost 
         // & FILTER EMPTY TILE (because deck may be empty )
         $filter = function ($space) use ($money) {
+            //FACTORY DRAW ALWAYS POSSIBLE with 0 money 
+            if($space == SPACE_FACTORY_DRAW) return true;
             $tile = Tiles::getTileInFactory($space);
             if($tile == null || $tile->getCost()> $money){
                 return false;
@@ -51,7 +53,8 @@ trait WorkerAtFactoryTrait
         Meeples::placeWorkersInSpace($player,$space);
         $tile = Tiles::getTileInFactory($space);
         Players::spendMoney($player,$tile->getCost());
-        $tile->moveToPlayerBoard($player);
+        $column = Tiles::getPlayerNextColumnForTile($player->getId(),$tile);
+        $tile->moveToPlayerBoard($player,$column);
         Meeples::placeCoalsOnTile($player,$tile);
 
         //TODO JSA refillFactorySpace only when player confirmed the turn 

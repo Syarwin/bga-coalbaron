@@ -4,7 +4,9 @@ namespace COAL\States;
 
 use COAL\Core\Game;
 use COAL\Core\Globals;
+use COAL\Core\Notifications;
 use COAL\Managers\Cards;
+use COAL\Managers\Meeples;
 use COAL\Managers\Players;
 
 /*
@@ -30,7 +32,7 @@ trait WorkerAtDeliveryTrait
     function getPossibleSpacesInDelivery($pId) {
         $spaces = $this->getAllSpacesInDelivery();
 
-        //TODO JSA FILTER on player filled Orders (type)
+        //FILTER on player filled Orders (type)
         $filter = function ($space) use ($pId) {
             $deliveryType = $this->getDeliveryTypeFromSpace($space);
             $cards = Cards::getPlayerCompletedOrdersToDeliver($pId,$deliveryType);
@@ -54,5 +56,22 @@ trait WorkerAtDeliveryTrait
             default:
                 throw new \BgaVisibleSystemException("Not supported delivery type : $space");
         }
+    }
+    
+    /**
+     * FOLLOW THE RULES of ACTION 3
+     */
+    function placeWorkerInDelivery($player, $space){
+        self::trace("placeWorkerInDelivery($space)...");
+        Meeples::placeWorkersInSpace($player,$space);
+        $deliveryType = $this->getDeliveryTypeFromSpace($space);
+        $cards = Cards::getPlayerCompletedOrdersToDeliver($player->getId(),$deliveryType);
+ 
+        foreach($cards as $card){
+            $player->addPoints($card->getPoints());
+            $card->moveToDelivered();
+            Notifications::cardDelivered($player,$card);
+        }
+
     }
 }

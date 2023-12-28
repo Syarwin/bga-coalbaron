@@ -60,15 +60,30 @@ class TileCard extends \COAL\Helpers\DB_Model
     }
     return 0;
   }
+  
+  /** Return the row of the tile which is linked to its color*/
+  public function getRow()
+  {
+    switch($this->getColor()){
+      case YELLOW_COAL:
+        return 1;
+      case BROWN_COAL:
+        return 2;
+      case GREY_COAL:
+        return 3;
+      case BLACK_COAL:
+        return 4;
+    }
+    return 0;
+  }
 
-  public function moveToPlayerBoard($player)
+  public function moveToPlayerBoard($player,$column)
   {
     $this->setLocation(TILE_LOCATION_BOARD);
     $this->setState(TILE_STATE_VISIBLE);
     $this->setPId($player->getId());
-    //TODO JSA compute tile COORD
-    $this->setX(1);
-    $this->setY(1);
+    $this->setX($column);
+    $this->setY($this->getRow());
 
     Notifications::giveTileTo($player, $this);
   }

@@ -86,6 +86,33 @@ class Tiles extends \COAL\Helpers\Pieces
   }
 
   /**
+   * return next available column to place a tile on player board : according to color (row) and light (right/left)
+   */
+  public static function getPlayerNextColumnForTile($pId,$tile)
+  {
+    $row = $tile->getRow();
+
+    //NB : for now, the default PIT TILES (SPACE_PIT_TILE) are not counted, because they don't use TILE model
+    if($tile->isLight()){//LIGHT SIDE = LEFT SIDE = NEGATIVE X
+      $xmin = self::DB()
+        ->wherePlayer($pId)
+        ->whereNotNull('x')
+        ->where('y',$row)
+        ->func('MIN','x')
+        ?? 0;
+      return $xmin-1;
+    }
+    else {//DARK SIDE = RIGHT SIDE = POSITIVE X
+      $xmax = self::DB()
+        ->wherePlayer($pId)
+        ->whereNotNull('x')
+        ->where('y',$row)
+        ->func('MAX','x')
+        ?? 0;
+      return $xmax+1;
+    }
+  }
+  /**
    * Return all unlocked spaces in factory
    */
   public static function getUnlockedSpacesInFactory()

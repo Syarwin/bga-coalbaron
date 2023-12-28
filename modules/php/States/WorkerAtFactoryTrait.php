@@ -51,7 +51,8 @@ trait WorkerAtFactoryTrait
         Meeples::placeWorkersInSpace($player,$space);
         $tile = Tiles::getTileInFactory($space);
         Players::spendMoney($player,$tile->getCost());
-        $tile->moveToPlayerBoard($player);
+        $column = Tiles::getPlayerNextColumnForTile($player->getId(),$tile);
+        $tile->moveToPlayerBoard($player,$column);
         Meeples::placeCoalsOnTile($player,$tile);
 
         //TODO JSA refillFactorySpace only when player confirmed the turn 

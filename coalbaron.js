@@ -31,6 +31,8 @@ define([
     constructor() {
       this._inactiveStates = [];
       this._notifications = [
+        ['placeWorkers', null],
+        ['spendMoney', 1300],
         // ["newTurn", 1000],
         // ["updateFirstPlayer", 500],
       ];
@@ -147,6 +149,20 @@ define([
       });
     },
 
+    notif_placeWorkers(n) {
+      debug('Notif: placing workers', n);
+      this._counters[n.args.player_id]['worker'].incValue(-n.args.n);
+      Promise.all(
+        n.args.workerIds.map((workerId, i) =>
+          this.wait(200 * i).then(() =>
+            this.slide(`meeple-${workerId}`, $(n.args.space).querySelector('.space-workers-container'))
+          )
+        )
+      ).then(() => {
+        this.notifqueue.setSynchronousDuration(this.isFastMode() ? 0 : 10);
+      });
+    },
+
     ////////////////////////////////////////
     //  ____  _
     // |  _ \| | __ _ _   _  ___ _ __ ___
@@ -159,6 +175,7 @@ define([
     setupPlayers() {
       let currentPlayerNo = 1;
       let nPlayers = 0;
+      this._counters = {};
       this.forEachPlayer((player) => {
         let isCurrent = player.id == this.player_id;
         this.place('tplPlayerPanel', player, `player_panel_content_${player.color}`, 'after');
@@ -172,6 +189,12 @@ define([
         //   this.addBiome(player.hand, 'pending-biomes');
         //   $('pending-biomes-wrapper').classList.remove('empty');
         // }
+
+        let pId = player.id;
+        this._counters[pId] = {
+          worker: this.createCounter(`counter-${pId}-worker`, player.workers),
+          money: this.createCounter(`counter-${pId}-money`, player.money),
+        };
 
         // Useful to order boards
         nPlayers++;
@@ -266,33 +289,42 @@ define([
       `);
     },
 
-    // gainPayCrystal(pId, n, targetSource = null) {
-    //   if (this.isFastMode()) {
-    //     this._crystalCounters[pId].incValue(n);
-    //     return Promise.resolve();
-    //   }
+    gainPayMoney(pId, n, targetSource = null) {
+      if (this.isFastMode()) {
+        this._crystalCounters[pId].incValue(n);
+        return Promise.resolve();
+      }
 
-    //   let elem = `<div id='crystal-animation' class='crystal-icon'>${Math.abs(
-    //     n
-    //   )}</div>`;
-    //   $("page-content").insertAdjacentHTML("beforeend", elem);
-    //   if (n > 0) {
-    //     return this.slide("crystal-animation", `crystal-counter-${pId}`, {
-    //       from: targetSource || "page-title",
-    //       destroy: true,
-    //       phantom: false,
-    //       duration: 1200,
-    //     }).then(() => this._crystalCounters[pId].incValue(n));
-    //   } else {
-    //     this._crystalCounters[pId].incValue(n);
-    //     return this.slide("crystal-animation", targetSource || "page-title", {
-    //       from: `crystal-counter-${pId}`,
-    //       destroy: true,
-    //       phantom: false,
-    //       duration: 1200,
-    //     });
-    //   }
-    // },
+      let elem = `<div id='money-animation'>
+        ${Math.abs(n)}
+        <div class="icon-container icon-container-money">
+          <div class="coalbaron-icon icon-money"></div>
+        </div>
+      </div>`;
+      $('page-content').insertAdjacentHTML('beforeend', elem);
+
+      if (n > 0) {
+        return this.slide('money-animation', `counter-${pId}-money`, {
+          from: targetSource || 'page-title',
+          destroy: true,
+          phantom: false,
+          duration: 1200,
+        }).then(() => this._counters[pId]['money'].incValue(n));
+      } else {
+        this._counters[pId]['money'].incValue(n);
+        return this.slide('money-animation', targetSource || 'page-title', {
+          from: `counter-${pId}-money`,
+          destroy: true,
+          phantom: false,
+          duration: 1200,
+        });
+      }
+    },
+
+    notif_spendMoney(n) {
+      debug('Notif: spending money', n);
+      this.gainPayMoney(n.args.player_id, -n.args.n);
+    },
 
     ////////////////////////////////////////////////////////
     //  _____ _ _

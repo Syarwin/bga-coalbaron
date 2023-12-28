@@ -174,7 +174,7 @@ class Meeples extends \COAL\Helpers\Pieces
     }
     Meeples::move($workersIds, $toLocation);
 
-    Notifications::placeWorkersInSpace($player, $toLocation, $nbNeededWorkers);
+    Notifications::placeWorkersInSpace($player, $toLocation, $workersIds);
   }
 
   public static function getFirstAvailableCoals($color, $number)
@@ -201,9 +201,9 @@ class Meeples extends \COAL\Helpers\Pieces
   /**
    * Return all coals currently on a card of this player
    */
-  public static function getPlayerCardCoals($pId,$cardId)
+  public static function getPlayerCardCoals($pId, $cardId)
   {
-    return self::getFilteredQuery($pId, COAL_LOCATION_CARD.$cardId.'%', '%_coal')->get();
+    return self::getFilteredQuery($pId, COAL_LOCATION_CARD . $cardId . '%', '%_coal')->get();
   }
   /**
    * ADD 1 COAL in each minecart on the tile

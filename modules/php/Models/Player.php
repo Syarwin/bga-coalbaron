@@ -9,6 +9,7 @@ use COAL\Core\Preferences;
 use COAL\Managers\Tiles;
 use COAL\Managers\Cards;
 use COAL\Managers\Players;
+use COAL\Managers\Meeples;
 
 /*
  * Player: all utility functions concerning a player
@@ -36,6 +37,7 @@ class Player extends \COAL\Helpers\DB_Model
   {
     $data = parent::getUiData();
     $current = $this->id == $currentPlayerId;
+    $data['workers'] = Meeples::getNbAvailableWorkers($this);
 
     return $data;
   }
@@ -51,12 +53,14 @@ class Player extends \COAL\Helpers\DB_Model
     return Stats::$name($this->id);
   }
 
-  public function movePitCageTo($toLevel){
+  public function movePitCageTo($toLevel)
+  {
     $from = $this->getCageLevel();
-    if($from == $toLevel)
-      throw new \BgaVisibleSystemException("Incorrect destination : your pit cage must move to a different level");
+    if ($from == $toLevel) {
+      throw new \BgaVisibleSystemException('Incorrect destination : your pit cage must move to a different level');
+    }
     $this->setCageLevel($toLevel);
     Globals::incMiningMoves(-1);
-    Notifications::movePitCage($this,$from,$toLevel);
+    Notifications::movePitCage($this, $from, $toLevel);
   }
 }

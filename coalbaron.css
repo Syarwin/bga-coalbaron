@@ -23,7 +23,6 @@
   .coalbaron-player-infos .player-resource {
     margin: 4px 0px;
     position: relative;
-    flex-basis: 25%;
     text-align: center; }
     .coalbaron-player-infos .player-resource .reserve {
       position: absolute;
@@ -32,9 +31,21 @@
       width: 100%;
       height: 100%; }
       .coalbaron-player-infos .player-resource .reserve > div.coalbaron-meeple:not(.moving) {
-        display: none; }
+        position: absolute;
+        top: 0;
+        visibility: hidden;
+        pointer-events: none; }
+    .coalbaron-player-infos .player-resource .resource-money,
+    .coalbaron-player-infos .player-resource .resource-worker {
+      font-size: 22px;
+      font-weight: bold; }
+      .coalbaron-player-infos .player-resource .resource-money::after,
+      .coalbaron-player-infos .player-resource .resource-worker::after {
+        content: " x"; }
     .coalbaron-player-infos .player-resource .icon-container {
-      display: inline-block; }
+      display: inline-block;
+      vertical-align: middle;
+      margin: 0 0.5em; }
       .coalbaron-player-infos .player-resource .icon-container .icon-worker {
         width: 1.6em;
         height: 2em;
@@ -481,6 +492,32 @@
       background-position-x: 60%; }
     .coalbaron-meeple.icon-worker[data-color="cf5404"] {
       background-position-x: 70%; }
+
+.icon-container {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 0.5em; }
+  .icon-container .icon-worker {
+    width: 1.6em;
+    height: 2em;
+    background-image: url("img/workers.png");
+    background-size: 1100% 100%;
+    background-repeat: no-repeat; }
+  .icon-container .icon-money {
+    width: 3em;
+    height: 1.7em;
+    background-image: url("img/money.png");
+    background-size: 100% auto;
+    background-repeat: no-repeat; }
+
+#money-animation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 22px; }
+  #money-animation .icon-container {
+    font-size: 0.8em; }
 
 #player_board_config {
   position: relative;

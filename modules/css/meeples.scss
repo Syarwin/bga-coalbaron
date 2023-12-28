@@ -62,3 +62,37 @@
         }
     }
 }
+
+.icon-container {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 0.5em;
+
+    .icon-worker {
+        width: 1.6em;
+        height: 2em;
+        background-image: url("img/workers.png");
+        background-size: 1100% 100%;
+        background-repeat: no-repeat;
+    }
+
+    .icon-money {
+        width: 3em;
+        height: 1.7em;
+        background-image: url("img/money.png");
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+    }
+}
+
+#money-animation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 22px;
+
+    .icon-container {
+        font-size: 0.8em;
+    }
+}

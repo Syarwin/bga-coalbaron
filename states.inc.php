@@ -23,16 +23,40 @@ $machinestates = [
     'type' => 'manager',
     'action' => 'stGameSetup',
     // 'transitions' => ['' => ST_NEXT_ROUND],
-    'transitions' => ['' => ST_PLACE_WORKER],
+    'transitions' => ['' => ST_DRAFT_INIT],
+  ],
+  
+  ST_DRAFT_INIT => [
+    'name' => 'newDraft',
+    'description' => '',
+    'type' => 'game',
+    'action' => 'stNewDraft',
+    'transitions' => [
+      'next' => ST_DRAFT_PLAYER,
+    ],
   ],
 
-  2 => [
-    'name' => 'foo',
-    'description' => 'FOO',
-    'descriptionmyturn' => 'FOO',
+  ST_DRAFT_PLAYER => [
+    'name' => 'draft',
+    'description' => clienttranslate('${actplayer} must take 1 order card'),
+    'descriptionmyturn' => clienttranslate('${you} must take 1 order card'),
+    'args' => 'argDraft',
+    'possibleactions' => ['actTakeCard'],
     'type' => 'activeplayer',
     'transitions' => [
-      '' => ST_CONFIRM_CHOICES,
+      'next' => ST_DRAFT_NEXT_PLAYER,
+    ],
+  ],
+  
+  ST_DRAFT_NEXT_PLAYER => [
+    'name' => 'draftNextPlayer',
+    'description' => '',
+    'type' => 'game',
+    'action' => 'stDraftNextPlayer',
+    'transitions' => [
+      'next' => ST_DRAFT_PLAYER,
+      //'end' => TODO JSA NEW ROUND
+      'end' => ST_PLACE_WORKER,
     ],
   ],
 

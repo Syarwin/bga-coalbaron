@@ -65,6 +65,7 @@ const TRANSPORT_ENGINE = "engine";
 
 /* CARDS LOCATIONS */
 const CARD_LOCATION_DECK = "deck";
+const CARD_LOCATION_DRAFT = "draft";
 const CARD_LOCATION_OUTSTANDING = "outstanding";
 const CARD_LOCATION_DELIVERED = "delivered";
 const TILE_LOCATION_DECK = "deck";
@@ -90,6 +91,10 @@ const OPTION_CONFIRM_ENABLED = 2;
  * State constants
  */
 const ST_GAME_SETUP = 1;
+
+const ST_DRAFT_INIT = 2;
+const ST_DRAFT_PLAYER = 3;
+const ST_DRAFT_NEXT_PLAYER = 4;
 
 const ST_NEXT_ROUND = 5;
 

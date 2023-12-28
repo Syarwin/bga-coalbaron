@@ -36,6 +36,14 @@ class action_coalbaron extends APP_GameAction
     }
   }
 
+  public function actTakeCard()
+  {
+    self::setAjaxMode();
+    $cardId = self::getArg('cardId', AT_posint, true);
+    $this->game->actTakeCard($cardId);
+    self::ajaxResponse();
+  }
+
   public function actPlaceWorker()
   {
     self::setAjaxMode();

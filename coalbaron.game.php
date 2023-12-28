@@ -45,6 +45,7 @@ class CoalBaron extends Table
 {
   use COAL\DebugTrait;
   use COAL\States\SetupTrait;
+  use COAL\States\DraftTrait;
   use COAL\States\NextPlayerTrait;
   use COAL\States\NewRoundTrait;
   use COAL\States\PlaceWorkerTrait;

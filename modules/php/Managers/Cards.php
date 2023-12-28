@@ -32,11 +32,42 @@ class Cards extends \COAL\Helpers\Pieces
   }
   
   /**
+   * Draw $number cards to choose in "draft" phase
+   */
+  public static function drawCardsToDraft($number)
+  {
+    return self::pickForLocation($number,CARD_LOCATION_DECK,CARD_LOCATION_DRAFT,0,false);
+  }
+  /**
+   * return list of all cards to choose in "draft" phase
+   */
+  public static function getDraft()
+  {
+    return self::getInLocation(CARD_LOCATION_DRAFT)
+      ->map(function ($card) {
+        return $card->getUiData();
+      })
+      ->toAssoc();
+  }
+  
+  /**
    * Draw a new card and place it in the board order $space 
    */
   public static function refillOrderSpace($space) {
-    $newTile = self::pickOneForLocation(CARD_LOCATION_DECK,$space,0,false);
-    return $newTile;
+    $newCard = self::pickOneForLocation(CARD_LOCATION_DECK,$space,0,false);
+    return $newCard;
+  }
+  /**
+   * Draw a new card and place it in the board order space except for the specified $spaceX (and the draw space)
+   */
+  public static function refillOtherOrderSpaces($exceptSpaceX) {
+    $nbPlayers = Players::count();
+    $spaces = self::getUnlockedOrderSpaces($nbPlayers);
+    foreach($spaces as $space){
+      if($space == SPACE_ORDER_DRAW || $space == $exceptSpaceX ) continue;
+      $newCard = self::refillOrderSpace($space);
+      Notifications::refillOrderSpace($newCard);
+    }
   }
   /**
    * Read the card in a specified board space
@@ -150,6 +181,7 @@ class Cards extends \COAL\Helpers\Pieces
     }
 
     self::create($cards);
+    self::shuffle(CARD_LOCATION_DECK);
   }
 
   public function getCards()

@@ -12,6 +12,15 @@ use COAL\Models\CoalCube;
 
 trait DebugTrait
 {
+  function testGoToDraft()
+  {
+    $this->gamestate->jumpToState(ST_DRAFT_INIT);
+  }
+  
+  function testGoToPlaceWorkers()
+  {
+    $this->gamestate->jumpToState(ST_PLACE_WORKER);
+  }
 
   function testSimulateDraft()
   {

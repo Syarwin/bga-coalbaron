@@ -136,9 +136,10 @@ class Players extends \COAL\Helpers\DB_Manager
   
   public static function spendMoney($player,$money){
     $pId = $player->getId();
-    if($player->getMoney() < $money) 
+    if($player->getMoney() < $money){
       //Should not happen
       throw new \BgaVisibleSystemException("Not enough money to spend");
+    }
     self::DB()->inc(['money' => 0-$money], $pId);
     Notifications::spendMoney($player,$money);
   }

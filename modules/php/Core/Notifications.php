@@ -75,6 +75,18 @@ class Notifications
     ]);
   }
 
+  public static function startDraft()
+  {
+    self::notifyAll('startDraft', clienttranslate('Starting draft : each player will take 3 cards'), [
+    ]);
+  }
+  public static function endDraft($lastCard)
+  {
+    self::notifyAll('endDraft', clienttranslate('Ending draft : the last card goes to the board'), [
+      'card' => $lastCard,
+      //Space info is in the card location
+    ]);
+  }
   public static function refillOrderSpace($newCard)
   {
     self::notifyAll('refillOrderSpace', clienttranslate('The game draws a new card'), [

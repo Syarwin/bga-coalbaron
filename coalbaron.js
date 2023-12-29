@@ -138,6 +138,10 @@ define([
       if (this[methodName] !== undefined) this[methodName](args.args);
     },
 
+    onEnteringStateDraft(args) {
+      Object.values(args.cards).forEach((card) => this.addCard(card, $('draft-container')));
+    },
+
     onEnteringStatePlaceWorker(args) {
       let selectedSpace = null;
       Object.keys(args.nbrWorkersNeeded).forEach((spaceId) => {
@@ -540,9 +544,7 @@ define([
     },
 
     tplCard(card) {
-      let type = card.type.charAt(0).toLowerCase() + card.type.substr(1);
-      let color = ` data-color="${card.color}" data-type="${card.type}"`;
-      return `<div class="coalbaron-card" id="card-${card.id}" data-id="${card.id}" data-type="${type}"></div>`;
+      return `<div class="coalbaron-card" id="card-${card.id}" data-id="${card.id}" data-type="${card.type}"></div>`;
     },
 
     getCardContainer(card) {

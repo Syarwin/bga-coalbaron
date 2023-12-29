@@ -1,5 +1,6 @@
 {OVERALL_GAME_HEADER}
 
+<div id="draft-container"></div>
 <div id="coalbaron-main-container">
   <div id="coalbaron-board"></div>
 </div>

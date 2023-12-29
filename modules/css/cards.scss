@@ -1,0 +1,37 @@
+#draft-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    .coalbaron-card {
+        margin: 15px 10px;
+    }
+}
+
+.coalbaron-card {
+    width: 130px;
+    height: 200px;
+    background-image: url("img/orders.jpg");
+    background-size: 900% 500%;
+    border: 1px solid black;
+    box-shadow: 1px 1px 5px black;
+    border-radius: 5px;
+
+    @for $i from 1 through 46 {
+        &[data-type="#{$i}"] {
+            background-position-x: ($i % 9) * 100% / 8;
+            background-position-y: (($i - ($i % 9)) / 9) * 100% / 4;
+        }
+    }
+
+    position: relative;
+    // .coalbaron-meeple {
+    //     position: absolute;
+    //     top: 30px;
+    //     left: 70px;
+
+    //     &:nth-child(2) {
+    //         left: 17px;
+    //     }
+    // }
+}

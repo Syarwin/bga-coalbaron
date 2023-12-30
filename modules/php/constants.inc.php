@@ -16,6 +16,7 @@ const TILES_EACH_NB = 3; //3 tiles of each
 const LEVEL_SURFACE = 0;
 const LEVEL_TUNNEL_MAX = 4;
 const SPACE_PIT_CAGE_MAX = 5;//5 coals max in the cage
+const SHIFT_MAX = 3; //3 shift "rounds" in the base game
 
 /** Worker spaces */
 const SPACE_FACTORY = 'factory';
@@ -96,7 +97,8 @@ const ST_DRAFT_INIT = 2;
 const ST_DRAFT_PLAYER = 3;
 const ST_DRAFT_NEXT_PLAYER = 4;
 
-const ST_NEXT_ROUND = 5;
+const ST_NEXT_SHIFT = 5;
+const ST_END_SHIFT = 6;
 
 const ST_NEXT_PLAYER = 10;
 const ST_PLACE_WORKER = 11;
@@ -105,6 +107,7 @@ const ST_CONFIRM_CHOICES = 20;
 
 const ST_MINING = 30;
 
+const ST_END_SCORING = 90;
 const ST_PRE_END_OF_GAME = 98;
 const ST_END_GAME = 99;
 

@@ -12,12 +12,11 @@ class Globals extends \COAL\Helpers\DB_Manager
   protected static $initialized = false;
   protected static $variables = [
     'turn' => 'int',
+    'shift' => 'int',
     'firstPlayer' => 'int',
 
     'miningMoves' => 'int',
     'miningMovesTotal' => 'int',
-    // TODO : use meeple instead ?
-    'elevators' => 'obj'
   ];
 
   /*
@@ -26,6 +25,14 @@ class Globals extends \COAL\Helpers\DB_Manager
   public static function setupNewGame($players, $options)
   {
     self::setTurn(0);
+    self::setShift(0);
+    
+    foreach($players as $pId => $player){
+      if($player['player_table_order'] == 1){
+        self::setFirstPlayer($pId);
+        break;
+      }
+    }
   }
 
 

@@ -108,7 +108,7 @@ class Players extends \COAL\Helpers\DB_Manager
   /**
    * Get current turn order according to first player variable
    */
-  public function getTurnOrder($firstPlayer = null)
+  public static function getTurnOrder($firstPlayer = null)
   {
     $firstPlayer = $firstPlayer ?? Globals::getFirstPlayer();
     $order = [];

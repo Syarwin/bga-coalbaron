@@ -47,9 +47,10 @@ class CoalBaron extends Table
   use COAL\States\SetupTrait;
   use COAL\States\DraftTrait;
   use COAL\States\NextPlayerTrait;
-  use COAL\States\NewRoundTrait;
+  use COAL\States\NewShiftTrait;
   use COAL\States\PlaceWorkerTrait;
-  use COAL\States\EndRoundScoringTrait;
+  use COAL\States\EndGameScoringTrait;
+  use COAL\States\EndShiftTrait;
 
   public static $instance = null;
   function __construct()
@@ -83,7 +84,7 @@ class CoalBaron extends Table
     return [
       'prefs' => Preferences::getUiData($pId),
       'players' => Players::getUiData($pId),
-      'turn' => Globals::getTurn(),
+      'shift' => Globals::getShift(),
       'meeples' => Meeples::getUiData(),
       'cards' => Cards::getUiData(),
       'tiles' => Tiles::getUiData(),

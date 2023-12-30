@@ -12,6 +12,10 @@ use COAL\Models\CoalCube;
 
 trait DebugTrait
 {
+  function testGoToNextPlayer()
+  {
+    $this->gamestate->nextState( 'next' );
+  }
   function testGoToDraft()
   {
     $this->gamestate->jumpToState(ST_DRAFT_INIT);

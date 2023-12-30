@@ -125,13 +125,66 @@ class Meeples extends \COAL\Helpers\Pieces
 
     self::create($meeples);
   }
-
   /**
-   * Return number of available workers for this player, by reading the DB
+   * Move all meeples of specified types to location 
    */
-  public static function getNbAvailableWorkers($player)
+  public static function moveAllByType($types, $location)
   {
-    $pId = is_int($player) ? $player : $player->getId();
+    $data = [];
+    $data[static::$prefix . 'location'] = $location;
+    $query = self::DB()->update($data);
+    $query->whereIn(
+      'type',
+      is_array($types) ? $types : [$types]
+    );
+    return $query->run();
+  }
+  /**
+   * Return number of workers in factory for this player
+   */
+  // public static function getNbWorkersInFactory($player)
+  // {
+  //   $pId = is_int($player) ? $player : $player->getId();
+  //   return self::getFilteredQuery($pId, SPACE_FACTORY . '%', WORKER)->count();
+  // }
+  /**
+   * Return an array of player ids who have the majority in Factory spaces;
+   *  EMPTY if no player is in factory
+   */
+  public static function getPlayerMajorityInFactory()
+  {
+    $factorySpace = SPACE_FACTORY . '%';
+    $meeples = static::$table;
+    $meeple_location = static::$prefix . 'location';
+    //SELECT count(1), player_id FROM `meeples` 
+    //WHERE `meeple_location` like 'factory%' group by `player_id`
+    $sql = "SELECT player_id, count(1) 'nb'";
+    $sql.= " FROM `$meeples`";
+    $sql.= " WHERE `$meeple_location` like '$factorySpace'";
+    $sql.= " group by `player_id` ";
+    $countPerPlayers = new Collection(self::getCollectionFromDB($sql,true));
+    
+    $maxCount = 0;
+    $maxPlayers = array();
+    
+    foreach($countPerPlayers as $pId => $countPerPlayer){
+      if($maxCount < $countPerPlayer){
+        $maxCount = $countPerPlayer;
+        $maxPlayers = array($pId);
+      }
+      else if($maxCount == $countPerPlayer){
+        $maxPlayers[] = $pId;
+      }
+    }
+    
+    return $maxPlayers;
+  }
+  /**
+   * Return number of available workers for all players (of for parametered player when set) , by reading the DB
+   */
+  public static function getNbAvailableWorkers($player = null)
+  {
+    $pId = is_null($player) ? null : (is_int($player) ? $player : $player->getId());
     return self::getFilteredQuery($pId, SPACE_RESERVE, WORKER)->count();
   }
 

@@ -8,14 +8,31 @@ use COAL\Core\Globals;
 
 class Notifications
 {
-  public static function newTurn($step)
+  public static function newShift($shift)
   {
+    self::notifyAll('newShift', clienttranslate('Game starts shift ${n}/${m}'), [
+      'n' => $shift,
+      'm' => SHIFT_MAX,
+    ]);
   }
-
-  public static function updateFirstPlayer($pId)
+  public static function endShift($shift)
   {
-    self::notifyAll('updateFirstPlayer', '', [
-      'pId' => $pId,
+    self::notifyAll('endShift', clienttranslate('Game ends shift ${n}/${m} because no more workers are available'), [
+      'n' => $shift,
+      'm' => SHIFT_MAX,
+    ]);
+  }
+  
+  public static function updateFirstPlayer($player)
+  {
+    self::notifyAll('updateFirstPlayer', clienttranslate('${player_name} is the first player during this shift'), [
+      'player' => $player,
+    ]);
+  }
+  public static function skipTurn($player)
+  {
+    self::notifyAll('skipTurn', clienttranslate('${player_name} turn is skipped because 0 workers left'), [
+      'player' => $player,
     ]);
   }
 

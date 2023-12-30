@@ -14,6 +14,43 @@
  * CoalBaron game states description
  *
  */
+/*
+    "Visual" States Diagram :
+
+        SETUP
+        |
+        v
+        newDraft
+        | 
+        v
+        draft   <------\
+        |              |
+        v              /
+        draftNextPlayer
+        | 
+        v
+    /-- nextShift   <-----------\
+    |     |                      |
+    |     v                      |
+    |   placeWorker <------\     |    
+    |     |    |           |     |
+    |     |    v           |     |
+    |     |  miningSteps   |     |
+    |     |    |           |     |
+    |     v    v           /     |
+    |   nextPlayer  -------      |
+    |     |                      |
+    |     v                      |
+    |   endShift    -------------/
+    |     
+    \-> endGameScoring
+        | 
+        v
+        preEndOfGame
+        | 
+        v
+        END
+*/
 
 $machinestates = [
   // The initial state. Please do not modify.
@@ -22,7 +59,6 @@ $machinestates = [
     'description' => '',
     'type' => 'manager',
     'action' => 'stGameSetup',
-    // 'transitions' => ['' => ST_NEXT_ROUND],
     'transitions' => ['' => ST_DRAFT_INIT],
   ],
   
@@ -55,20 +91,19 @@ $machinestates = [
     'action' => 'stDraftNextPlayer',
     'transitions' => [
       'next' => ST_DRAFT_PLAYER,
-      //'end' => TODO JSA NEW ROUND
-      'end' => ST_PLACE_WORKER,
+      'end' => ST_NEXT_SHIFT,
     ],
   ],
 
-  ST_NEXT_ROUND => [
-    'name' => 'nextRound',
+  //I don't use the semantics "round" here because it has a different meaning in an (not planned) expansion 
+  ST_NEXT_SHIFT => [
+    'name' => 'nextShift',
     'description' => '',
     'type' => 'game',
-    'action' => 'stNextRound',
-    'updateGameProgression' => false,
+    'action' => 'stNextShift',
     'transitions' => [
-      // 'round_start' => ST_MOVE_AVATARS,
-      'game_end' => ST_PRE_END_OF_GAME,
+      'shift_start' => ST_PLACE_WORKER,
+      'game_end' => ST_END_SCORING,
     ],
   ],
 
@@ -80,7 +115,7 @@ $machinestates = [
     'updateGameProgression' => false,
     'transitions' => [
       'next' => ST_PLACE_WORKER,
-      // 'end_turn' => ST_MOVE_AVATARS,
+      'end_shift' => ST_END_SHIFT,
     ],
   ],
 
@@ -119,6 +154,23 @@ $machinestates = [
     'transitions' => [
       '' => ST_NEXT_PLAYER,
     ],
+  ],
+
+  ST_END_SHIFT => [
+    'name' => 'endShift',
+    'description' => '',
+    'type' => 'game',
+    'action' => 'stEndShift',
+    'transitions' => [
+      'next' => ST_NEXT_SHIFT,
+    ],
+  ],
+
+  ST_END_SCORING => [
+    'name' => 'endGameScoring',
+    'type' => 'game',
+    'action' => 'stEndGameScoring',
+    'transitions' => ['' => ST_PRE_END_OF_GAME],
   ],
 
   ST_PRE_END_OF_GAME => [

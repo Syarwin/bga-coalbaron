@@ -176,6 +176,38 @@ class Notifications
     ]);
   }
 
+  public static function noDeliveries()
+  {
+    self::notifyAll('noDeliveries', clienttranslate('No delivery during this shift, thus no one scores points'), [
+    ]);
+  }
+  public static function noPlayerDeliveries($player)
+  {
+    self::notifyAll('noPlayerDeliveries', clienttranslate('${player_name} did no delivery during this shift, thus scores 0 points'), [
+      'player' => $player,
+    ]);
+  }
+  /**
+   * Resend cards to UI to see cards during end shift, then the UI must hide them again
+   */
+  public static function endShiftDeliveries($deliveredOrders)
+  {
+    self::notifyAll('endShiftDeliveries', '', [
+      'cards' => $deliveredOrders,
+    ]);
+  }
+  public static function endShiftMajority($player, $points, $type,$majorityIndex, $nbElements)
+  {
+    self::notifyAll('endShiftMajority', clienttranslate('${player_name} scores ${p} points for the ${i}th majority (with ${n} elements)'), [
+      'player' => $player,
+      'p' => $points,
+      'i' => $majorityIndex,
+      'n' => $nbElements,
+      //TODO : see if useful for adding an icon :
+      'type' => $type,
+    ]);
+  }
+
   /*************************
    **** GENERIC METHODS ****
    *************************/

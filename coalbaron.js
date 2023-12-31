@@ -1,7 +1,7 @@
 /**
  *------
  * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
- * CoalBaron implementation : © Timothée Pecatte <tim.pecatte@gmail.com>, Mathieu Chatrain <EMAIL>
+ * CoalBaron implementation : © Timothée Pecatte <tim.pecatte@gmail.com>, joesimpson <1324811+joesimpson@users.noreply.github.com>
  *
  * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
@@ -25,7 +25,6 @@ define([
   'ebg/counter',
   g_gamethemeurl + 'modules/js/Core/game.js',
   g_gamethemeurl + 'modules/js/Core/modal.js',
-  g_gamethemeurl + 'modules/js/biomes.js',
 ], function (dojo, declare) {
   return declare('bgagame.coalbaron', [customgame.game], {
     constructor() {

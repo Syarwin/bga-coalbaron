@@ -65,25 +65,6 @@ abstract class Utils extends \APP_DbObject
         ];
     }
 
-    public static function reduceResources($meeples)
-    {
-        $allResources = [XTOKEN, REPUTATION, APPEAL];
-        $t = [];
-        foreach ($allResources as $resource) {
-            $t[$resource] = 0;
-        }
-
-        foreach ($meeples as $meeple) {
-            if ($meeple['type'] == SCORE) {
-                continue;
-            }
-
-            $t[$meeple['type']]++;
-        }
-
-        return $t;
-    }
-
     public static function uniqueZones($arr1)
     {
         return array_values(

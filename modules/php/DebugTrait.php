@@ -211,15 +211,18 @@ trait DebugTrait
     Notifications::message("$nbAv workers are available");
   }
 
-  
-  function testEndShiftScoring()
+  function testSimulateDeliveries()
   {
     //SIMULATE DELIVERIES :
     Cards::moveAllInLocation(CARD_LOCATION_DELIVERED, CARD_LOCATION_DECK);
+    Cards::shuffle(CARD_LOCATION_DECK);
     $this->testSimulateDraft();
     Cards::moveAllInLocation(CARD_LOCATION_OUTSTANDING, CARD_LOCATION_DELIVERED);
-
-    $this->computeEndShiftScoring();
+  }
+  function testEndShiftScoring()
+  {
+    $this->testSimulateDeliveries();
+    $this->computeEndShiftScoring(2);
   }
 
 }

@@ -3,6 +3,7 @@
 namespace COAL\Models;
 
 use COAL\Core\Notifications;
+use COAL\Managers\Tiles;
 
 /*
  * TileCard: all utility functions concerning a tile
@@ -76,6 +77,20 @@ class TileCard extends \COAL\Helpers\DB_Model
     }
     return 0;
   }
+  public function getMinecartColor()
+  {
+    switch($this->getColor()){
+      case YELLOW_COAL:
+        return MINECART_YELLOW;
+      case BROWN_COAL:
+        return MINECART_BROWN;
+      case GREY_COAL:
+        return MINECART_GREY;
+      case BLACK_COAL:
+        return MINECART_BLACK;
+    }
+    return null;
+  }
 
   public function moveToPlayerBoard($player,$column)
   {
@@ -88,4 +103,18 @@ class TileCard extends \COAL\Helpers\DB_Model
     Notifications::giveTileTo($player, $this);
   }
 
+  /**
+   * return the number of empty minecarts (the opposite of number of cubes on the tile)
+   */
+  public function countEmptyMinecarts()
+  {
+    $counter = 0;
+    $coalsStatus = Tiles::getTileCoalsStatus($this);
+    foreach( $coalsStatus as $coalStatus){
+      foreach( $coalStatus as $color => $status){
+        if($status == COAL_EMPTY_SPOT) $counter++;
+      }
+    }
+    return $counter;
+  }
 }

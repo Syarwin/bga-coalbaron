@@ -2,6 +2,8 @@
 
 namespace COAL\Managers;
 
+use COAL\Helpers\Collection;
+use COAL\Models\BaseTileCard;
 use COAL\Models\TileCard;
 
 /* Class to manage all the tile cards for CoalBaron */
@@ -18,7 +20,7 @@ class Tiles extends \COAL\Helpers\Pieces
   {
     $data = self::getTiles()[$row['type']];
     $data['type'] = $row['type'];
-    return new \COAL\Models\TileCard($row, $data);
+    return new TileCard($row, $data);
   }
 
   public static function getUiData()
@@ -31,6 +33,27 @@ class Tiles extends \COAL\Helpers\Pieces
         return $tile->getUiData();
       })
       ->toArray();
+  }
+
+  /**
+   * For one tile, return the list of all coal spots with either the coal currently in the spot, either "EMPTY_SPOT"
+   */
+  public static function getTileCoalsStatus($tile) {
+    $datas = array();
+    for( $coalIndex=0 ; $coalIndex < $tile->getNumber(); $coalIndex++){
+      $datas[$coalIndex] = array($tile->getColor() => COAL_EMPTY_SPOT);
+    }
+    $pId = $tile->getPId();
+    if( !isset( $pId )) {
+      return $datas;
+    }
+    $filledCoals = Meeples::getPlayerTileCoals($pId,$tile->getId());
+    $coalIndex = 0;
+    foreach($filledCoals as $filledCoal){//loop CoalCube list
+      $datas[$coalIndex] = array($tile->getColor() => $filledCoal);
+      $coalIndex++;
+    }
+    return $datas;
   }
 
   /* Creation of the tiles */
@@ -111,6 +134,27 @@ class Tiles extends \COAL\Helpers\Pieces
         ?? 0;
       return $xmax+1;
     }
+  }
+
+  /**
+   * return the list of tiles owned by players
+   */
+  public static function getPlayersTiles()
+  {
+    return self::DB()->whereNotNull('player_id')->get();
+  }
+
+  /**
+   * return the list of basic tiles owned by players (on default pit)
+   */
+  public static function getPlayersBaseTiles($pId)
+  {
+    $tiles = array();
+    $tiles[] = new BaseTileCard($pId,MINECART_YELLOW,1,1);
+    $tiles[] = new BaseTileCard($pId,MINECART_BROWN,2,-1);
+    $tiles[] = new BaseTileCard($pId,MINECART_GREY,3,-1);
+    $tiles[] = new BaseTileCard($pId,MINECART_BLACK,4,1);
+    return new Collection($tiles);
   }
   /**
    * Return all unlocked spaces in factory

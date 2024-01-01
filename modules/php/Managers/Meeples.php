@@ -71,30 +71,14 @@ class Meeples extends \COAL\Helpers\Pieces
         'nbr' => $nWorkers[count($players)],
       ];
       //Fill each player's starting minecarts with 1 coal cube :
-      $meeples[] = [
-        'type' => YELLOW_COAL,
-        'location' => SPACE_PIT_TILE . '_1_1',
-        'player_id' => $pId,
-        'nbr' => 1,
-      ];
-      $meeples[] = [
-        'type' => BROWN_COAL,
-        'location' => SPACE_PIT_TILE . '_2_-1',
-        'player_id' => $pId,
-        'nbr' => 1,
-      ];
-      $meeples[] = [
-        'type' => GREY_COAL,
-        'location' => SPACE_PIT_TILE . '_3_-1',
-        'player_id' => $pId,
-        'nbr' => 1,
-      ];
-      $meeples[] = [
-        'type' => BLACK_COAL,
-        'location' => SPACE_PIT_TILE . '_4_1',
-        'player_id' => $pId,
-        'nbr' => 1,
-      ];
+      foreach (Tiles::getPlayersBaseTiles($pId) as $baseTileCard) {
+        $meeples[] = [
+          'type' => $baseTileCard->getCoalColor(),
+          'location' => $baseTileCard->getLocation(),
+          'player_id' => $pId,
+          'nbr' => 1,
+        ];
+      }
     }
     //Place all other Coal Cubes in reserve : 16 exist in each color
     $nbCubesOfEach = 16 - count($players);
@@ -257,6 +241,20 @@ class Meeples extends \COAL\Helpers\Pieces
   public static function getPlayerCardCoals($pId, $cardId)
   {
     return self::getFilteredQuery($pId, COAL_LOCATION_CARD . $cardId . '%', '%_coal')->get();
+  }
+  /**
+   * Return all coals currently on a tile of this player
+   */
+  public static function getPlayerTileCoals($pId, $tileId)
+  {
+    return self::getFilteredQuery($pId, COAL_LOCATION_TILE . $tileId . '%', '%_coal')->get();
+  }
+  /**
+   * @return number of coal cubes on specified location AND player
+   */
+  public static function countPlayerCoalsOnLocation($pId, $location)
+  {
+    return self::getFilteredQuery($pId, $location, '%_coal')->count();
   }
   /**
    * ADD 1 COAL in each minecart on the tile

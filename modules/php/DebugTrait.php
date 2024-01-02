@@ -23,6 +23,7 @@ trait DebugTrait
   
   function testGoToPlaceWorkers()
   {
+    Globals::setShift(1);
     $this->gamestate->jumpToState(ST_PLACE_WORKER);
   }
 

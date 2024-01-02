@@ -95,11 +95,20 @@ class CoalBaron extends Table
 
   /*
    * getGameProgression:
+   * GAME SHIFTS's Progression : 0/3 or 1/3 or 2/3
+   *      + 1/3 x (
+   *   Progression in current shift = (nbWorkersTOTAL - nbWorkersInReserve) / nbWorkersTOTAL
+   *      )
    */
   function getGameProgression()
   {
-    return 0; // TODO
-    // return (Globals::getTurn() / 16) * 100;
+    $shift = Globals::getShift();//FROM 1 to SHIFT_MAX
+    $nbWorkersInReserve = Meeples::countWorkers(SPACE_RESERVE);
+    $nbWorkersTOTAL = Meeples::countWorkers();
+    $currentShiftProgression = ($nbWorkersTOTAL - $nbWorkersInReserve) / $nbWorkersTOTAL;
+    $progress = ($shift-1)/SHIFT_MAX + 1/SHIFT_MAX * $currentShiftProgression;
+    //die("debug getGameProgression : progress = ($shift-1)/SHIFT_MAX + 1/SHIFT_MAX * $currentShiftProgression => $progress ");
+    return $progress * 100;
   }
 
   function actChangePreference($pref, $value)

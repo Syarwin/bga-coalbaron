@@ -164,6 +164,21 @@ class Meeples extends \COAL\Helpers\Pieces
     return $maxPlayers;
   }
   /**
+   * @return int number of ALL workers in that $location, or ALL workers if location not given
+   */
+  public static function countWorkers($location = null)
+  {
+    $query = self::getSelectQuery()->where('type','=',WORKER);
+    if ($location != null) {
+        $query = $query->where(
+            static::$prefix . 'location',
+            strpos($location, '%') === false ? '=' : 'LIKE',
+            $location
+        );
+    }
+    return $query->count();
+  }
+  /**
    * Return number of available workers for all players (of for parametered player when set) , by reading the DB
    */
   public static function getNbAvailableWorkers($player = null)

@@ -192,8 +192,12 @@ class Notifications
    */
   public static function endShiftDeliveries($deliveredOrders)
   {
+    $cards = $deliveredOrders->map(function ($card) {
+        return $card->getUiData();
+      }) ->toAssoc();
+
     self::notifyAll('endShiftDeliveries', '', [
-      'cards' => $deliveredOrders,
+      'cards' => $cards,
     ]);
   }
   public static function endShiftMajority($player, $points, $type,$majorityIndex, $nbElements)

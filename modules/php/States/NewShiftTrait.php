@@ -21,7 +21,7 @@ trait NewShiftTrait
         // CHANGE starting player
 
         $playersMajorityInFactory = Meeples::getPlayerMajorityInFactory();
-        self::dump("stNextShift()... playersMajorityInFactory ",$playersMajorityInFactory);
+        self::dump("stNextShift()... playersMajorityInFactory after $firstPlayerId",$playersMajorityInFactory);
         if(count($playersMajorityInFactory) == 1){
           /* GAME RULE :
           Give the starting player marker to the
@@ -41,9 +41,11 @@ trait NewShiftTrait
           the starting player.)
           */
           $turnOrder = Players::getTurnOrder($firstPlayerId);
+          self::dump("stNextShift()... turnOrder after $firstPlayerId ",$turnOrder);
           foreach($turnOrder as $orderPId){
             if($orderPId == $firstPlayerId ) continue;
-            if(array_search($orderPId,$playersMajorityInFactory) !== FALSE){
+            if(count($playersMajorityInFactory) == 0 || array_search($orderPId,$playersMajorityInFactory) !== FALSE){
+              //next player to play after current first player AND NO ONE in factory majority tie  
               //next player to play after current first player AND in factory majority tie  
               $newFirstPlayerId = $orderPId;
               break;

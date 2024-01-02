@@ -220,6 +220,45 @@ class Notifications
     ]);
   }
 
+  
+  public static function endGameScoring()
+  {
+    self::notifyAll('endGameScoring', clienttranslate("Game ends : let's check final scoring..."), [
+    ]);
+  }
+  public static function endGameScoringMoney($player, $money, $points)
+  {
+    self::notifyAll('endGameScoringMoney', clienttranslate('${player_name} scores ${p} points with ${m} Francs remaining'), [
+      'player' => $player,
+      'm' => $money,
+      'p' => $points,
+    ]);
+  }
+  public static function endGameScoringCoals($player, $nb, $points)
+  {
+    self::notifyAll('endGameScoringCoals', clienttranslate('${player_name} scores ${p} points with ${n} coal cubes remaining'), [
+      'player' => $player,
+      'n' => $nb,
+      'p' => $points,
+    ]);
+  }
+  public static function endGameScoringCards($player, $nb, $points)
+  {
+    self::notifyAll('endGameScoringCards', clienttranslate('${player_name} scores ${p} points with ${n} order cards remaining'), [
+      'player' => $player,
+      'n' => $nb,
+      'p' => $points,
+    ]);
+  }
+  public static function endGameScoringBalance($player, $imbalance, $points)
+  {
+    self::notifyAll('endGameScoringBalance', clienttranslate('${player_name} scores ${p} points with a tunnel imbalance of ${n} tiles'), [
+      'player' => $player,
+      'n' => $imbalance,
+      'p' => $points,
+    ]);
+  }
+
   /*************************
    **** GENERIC METHODS ****
    *************************/

@@ -143,6 +143,20 @@ class Tiles extends \COAL\Helpers\Pieces
   {
     return self::DB()->whereNotNull('player_id')->get();
   }
+  /**
+   * @param bool $light 
+   * @return int number of ALL (light OR dark) TILES owned by that player
+   */
+  public static function countPlayerTiles($pId, $light)
+  {
+    if($light){
+      $types = self::getLightTypes();
+    }
+    else {
+      $types = self::getDarkTypes();
+    }
+    return self::getFilteredQuery($pId,null,$types)->count();
+  }
 
   /**
    * return the list of basic tiles owned by players (on default pit)
@@ -177,6 +191,32 @@ class Tiles extends \COAL\Helpers\Pieces
       $spaces[] = SPACE_FACTORY_8;
     }
     return $spaces;
+  }
+
+  /**
+   * @return array list of all tiles types corresponding to a LIGHT tile
+   */
+  public static function getLightTypes(){
+    return self::getTypes(true);
+  }
+  /**
+   * @return array list of all tiles types corresponding to a DARK tile
+   */
+  public static function getDarkTypes(){
+    return self::getTypes(false);
+  }
+  /**
+   * @return array list of all tiles types corresponding to a LIGHT or DARK tile
+   */
+  public static function getTypes($isExpectedLight){
+    $tiles = self::getTiles();
+    $lightTypes = array();
+    foreach ($tiles as $type => $tile) {
+      if($tile['light'] == $isExpectedLight){
+        $lightTypes[] = $type;
+      }
+    }
+    return $lightTypes;
   }
 
   public function getTiles()

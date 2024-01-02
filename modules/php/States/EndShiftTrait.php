@@ -20,7 +20,7 @@ trait EndShiftTrait
   }
 
   /**
-   * END A SHIFT Scoring, RULES p.15
+   * END A SHIFT Scoring, see rules at p.15
    */
   function computeEndShiftScoring($shift){
     self::trace("computeEndShiftScoring($shift)...");

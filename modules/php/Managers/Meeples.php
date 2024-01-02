@@ -235,7 +235,14 @@ class Meeples extends \COAL\Helpers\Pieces
       ->limit($number)
       ->get();
   }
-
+  /**
+   * @return int number of ALL COALS owned by that player and in that $location,
+   *   or ALL COALS owned by that player if location not given
+   */
+  public static function countPlayerCoals($pId, $location = null)
+  {
+    return self::getFilteredQuery($pId, $location, '%_coal')->count();
+  }
   /**
    * Return all coals currently owned by this player
    */

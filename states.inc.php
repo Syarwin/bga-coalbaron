@@ -171,7 +171,7 @@ $machinestates = [
     'name' => 'endGameScoring',
     'type' => 'game',
     'action' => 'stEndGameScoring',
-    'transitions' => ['' => ST_PRE_END_OF_GAME],
+    'transitions' => ['next' => ST_PRE_END_OF_GAME],
   ],
 
   ST_PRE_END_OF_GAME => [

@@ -241,4 +241,10 @@ trait DebugTrait
     $this->computeEndShiftScoring(3);
   }
 
+  
+  function testEndGameScoring()
+  { 
+    $this->computeEndGameScoring();
+  }
+
 }

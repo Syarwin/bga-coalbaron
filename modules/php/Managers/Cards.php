@@ -123,6 +123,14 @@ class Cards extends \COAL\Helpers\Pieces
     Meeples::move($coalIds, SPACE_RESERVE);
   }
   /**
+   * @return int number of ALL CARDS owned by that player and in that $location,
+   *   or ALL CARDS owned by that player if location not given
+   */
+  public static function countPlayerOrders($pId, $location = null)
+  {
+    return self::getFilteredQuery($pId, $location)->count();
+  }
+  /**
    * Return all pending cards of this player of type $deliveryType
    */
   public static function getPlayerOrders($pId,$deliveryType)

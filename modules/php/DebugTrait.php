@@ -163,8 +163,7 @@ trait DebugTrait
     $this->actMovePitCage(2);
     $this->actMovePitCage(1);
     $this->actMovePitCage(LEVEL_TUNNEL_MAX);
-    $this->actMovePitCage(1);
-    $this->actMovePitCage(2);
+    $this->actStopMining();
   }
   
   function testActionMoveCoal()

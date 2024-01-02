@@ -28,7 +28,18 @@ trait WorkerAtMiningTrait
         'totalMoves' => Globals::getMiningMovesTotal(),
         );
     }
-    
+
+    function actStopMining()
+    {
+        self::checkAction( 'actStopMining' ); 
+        $moves = Globals::getMiningMoves();
+        $movesTotal = Globals::getMiningMovesTotal();
+        $player = Players::getActive();
+        Notifications::stopMining($player, $moves, $movesTotal);
+
+        $this->gamestate->nextState( 'end' );
+    }
+
     function actMovePitCage($toLevel)
     {
         self::checkAction( 'actMovePitCage' ); 

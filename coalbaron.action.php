@@ -77,6 +77,12 @@ class action_coalbaron extends APP_GameAction
     self::ajaxResponse();
   }
 
+  public function actStopMining()
+  {
+    self::setAjaxMode();
+    $this->game->actStopMining();
+    self::ajaxResponse();
+  }
 
   ///////////////////
   /////  PREFS  /////

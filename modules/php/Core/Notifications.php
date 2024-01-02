@@ -175,6 +175,14 @@ class Notifications
       'b' => $toLevel,
     ]);
   }
+  public static function stopMining($player, $moves, $movesTotal)
+  {
+    self::notifyAll('movePitCage', clienttranslate('${player_name} stops with ${a}/${b} moves remaining'), [
+      'player' => $player,
+      'a' => $moves,
+      'b' => $movesTotal,
+    ]);
+  }
 
   public static function noDeliveries()
   {

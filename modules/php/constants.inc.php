@@ -21,6 +21,8 @@ const LEVEL_SURFACE = 0;
 const LEVEL_TUNNEL_MAX = 4;
 const SPACE_PIT_CAGE_MAX = 5;//5 coals max in the cage
 const SHIFT_MAX = 3; //3 shift "rounds" in the base game
+/** Draw 5 cards at a time */
+const CARDS_DRAW_NUMBER = 5;
 
 /** Worker spaces */
 const SPACE_FACTORY = 'factory';
@@ -71,6 +73,7 @@ const TRANSPORT_ENGINE = "engine";
 /* CARDS LOCATIONS */
 const CARD_LOCATION_DECK = "deck";
 const CARD_LOCATION_DRAFT = "draft";
+const CARD_LOCATION_DRAW = "draw";
 const CARD_LOCATION_OUTSTANDING = "outstanding";
 const CARD_LOCATION_DELIVERED = "delivered";
 const TILE_LOCATION_DECK = "deck";
@@ -110,6 +113,8 @@ const ST_PLACE_WORKER = 11;
 const ST_CONFIRM_CHOICES = 20;
 
 const ST_MINING = 30;
+const ST_CHOOSE_CARD = 40;
+const ST_CHOOSE_TILE = 50;
 
 const ST_END_SCORING = 90;
 const ST_PRE_END_OF_GAME = 98;

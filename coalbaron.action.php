@@ -84,6 +84,26 @@ class action_coalbaron extends APP_GameAction
     self::ajaxResponse();
   }
 
+  public function actChooseCard()
+  {
+    self::setAjaxMode();
+    //Choosing a card is optionnal
+    $cardId = self::getArg('cardId', AT_posint, false);
+    $returnDest = self::getArg( 'returnDest', AT_enum, true, null, [ 'TOP', 'BOTTOM' ] ); 
+    // ---------- ---------- ORDERED array of Cards'ids  --------------------
+    $other_ids_raw = self::getArg( "otherCardsId", AT_numberlist, true );
+    // Removing last ';' if exists
+    if( substr( $other_ids_raw, -1 ) == ';' )
+       $other_ids_raw = substr( $other_ids_raw, 0, -1 );
+    if( $other_ids_raw == '' )
+        $otherCardsArray = array();
+    else
+        $otherCardsArray = explode( ';', $other_ids_raw );
+    // ---------- ---------- -------------------- --------------------
+    $this->game->actChooseCard($cardId, $returnDest, $otherCardsArray);
+    self::ajaxResponse();
+  }
+
   ///////////////////
   /////  PREFS  /////
   ///////////////////

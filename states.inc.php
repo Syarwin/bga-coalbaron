@@ -29,19 +29,19 @@
         draftNextPlayer
         | 
         v
-    /-- nextShift   <-----------\
-    |     |                      |
-    |     v                      |
-    |   placeWorker <------\     |    
-    |     |    |           |     |
-    |     |    v           |     |
-    |     |  miningSteps   |     |
-    |     |    |           |     |
-    |     v    v           /     |
-    |   nextPlayer  -------      |
-    |     |                      |
-    |     v                      |
-    |   endShift    -------------/
+    /-- nextShift   <---------------------------\
+    |     |                                      |
+    |     v                                      |
+    |   placeWorker <----------------------\     |
+    |   |    |          |           |      |     |
+    |   |    v          v           v      |     |
+    |   |miningSteps chooseCard chooseTile |     |
+    |   |    |          |           |      |     |
+    |   \    v          v           v      /     |
+    |    ----------------> nextPlayer  ----      |
+    |                        |                   |
+    |                        v                   |
+    |                      endShift -------------/
     |     
     \-> endGameScoring
         | 
@@ -128,8 +128,9 @@ $machinestates = [
     'type' => 'activeplayer',
     'possibleactions' => ['actPlaceWorker'],
     'transitions' => [
-      //'' => ST_CONFIRM_CHOICES,
       'startMining' => ST_MINING,
+      'chooseCard' => ST_CHOOSE_CARD,
+      'chooseTile' => ST_CHOOSE_TILE,
       'next' => ST_NEXT_PLAYER,
     ],
   ],
@@ -154,6 +155,30 @@ $machinestates = [
     'action' => 'stConfirmChoices',
     'transitions' => [
       '' => ST_NEXT_PLAYER,
+    ],
+  ],
+
+  ST_CHOOSE_CARD => [
+    'name' => 'chooseCard',
+    'description' => clienttranslate('${actplayer} may choose to keep 1 card from the deck'),
+    'descriptionmyturn' => clienttranslate('${you} may choose to keep 1 card from the deck'),
+    'args' => 'argChooseCard',
+    'type' => 'activeplayer',
+    'possibleactions' => ['actChooseCard'],
+    'transitions' => [
+      'next' => ST_NEXT_PLAYER,
+    ],
+  ],
+  
+  ST_CHOOSE_TILE => [
+    'name' => 'chooseTile',
+    'description' => clienttranslate('${actplayer} may choose to keep 1 tunnel tile from the deck'),
+    'descriptionmyturn' => clienttranslate('${you} may choose to keep 1 tunnel tile from the deck'),
+    'args' => 'argChooseTile',
+    'type' => 'activeplayer',
+    'possibleactions' => ['actChooseTile'],
+    'transitions' => [
+      'next' => ST_NEXT_PLAYER,
     ],
   ],
 

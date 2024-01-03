@@ -186,6 +186,9 @@ trait PlaceWorkerTrait
             case SPACE_ORDER_4: 
                 $this->placeWorkerInOrder($player,$space);
                 break;
+            case SPACE_ORDER_DRAW: 
+                $this->placeWorkerInDrawOrder($player);
+                break;
             case SPACE_DELIVERY_BARROW: 
             case SPACE_DELIVERY_CARRIAGE: 
             case SPACE_DELIVERY_ENGINE: 

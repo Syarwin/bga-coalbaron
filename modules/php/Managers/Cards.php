@@ -77,6 +77,46 @@ class Cards extends \COAL\Helpers\Pieces
     return $card;
   }
 
+  /**
+   * Move all these ordered cards to the TOP of the deck after checking they are at $fromLocation
+   * @param array $cardsIdArray
+   * @param string $fromLocation
+   * @param string $toLocation
+   */
+  public static function moveAllToTop($cardsIdArray, $fromLocation, $toLocation){
+    $cards = self::getMany($cardsIdArray);
+    //Warning! the result of getMany is not ordered like array input !
+    //foreach($cards as $cardId => $card){
+    foreach($cardsIdArray as $cardId){
+      $card = $cards[$cardId];
+      if($card->getLocation() != $fromLocation){
+        throw new \BgaVisibleSystemException("Card $cardId is not at the right place ($fromLocation)");
+      }
+      self::insertOnTop($cardId, $toLocation);
+    }
+  }
+  
+  /**
+   * Move all these ordered cards to the BOTTOM of the deck after checking they are at $fromLocation
+   * @param array $cardsIdArray
+   * @param string $fromLocation
+   * @param string $toLocation
+   */
+  public static function moveAllToBottom($cardsIdArray, $fromLocation, $toLocation){
+    $cards = self::getMany($cardsIdArray);
+    //Warning! the result of getMany is not ordered like array input !
+    //foreach($cards as $cardId => $card){
+    foreach($cardsIdArray as $cardId){
+      $card = $cards[$cardId];
+      if($card->getLocation() != $fromLocation){
+        throw new \BgaVisibleSystemException("Card $cardId is not at the right place ($fromLocation)");
+      }
+      self::insertAtBottom($cardId, $toLocation);
+    }
+  }
+  /**
+   * Move a card to a player outstanding orders
+   */
   public static function giveCardTo($player,$card){
     $card->moveToOutstanding($player);
     Notifications::giveCardTo($player,$card);

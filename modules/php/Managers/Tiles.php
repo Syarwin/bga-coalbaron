@@ -100,6 +100,43 @@ class Tiles extends \COAL\Helpers\Pieces
   }
 
   /**
+   * Move all these ordered cards to the TOP of the deck after checking they are at $fromLocation
+   * @param array $cardsIdArray
+   * @param string $fromLocation
+   * @param string $toLocation
+   */
+  public static function moveAllToTop($cardsIdArray, $fromLocation, $toLocation){
+    $cards = self::getMany($cardsIdArray);
+    //Warning! the result of getMany is not ordered like array input !
+    //foreach($cards as $cardId => $card){
+    foreach($cardsIdArray as $cardId){
+      $card = $cards[$cardId];
+      if($card->getLocation() != $fromLocation){
+        throw new \BgaVisibleSystemException("Tile $cardId is not at the right place ($fromLocation)");
+      }
+      self::insertOnTop($cardId, $toLocation);
+    }
+  }
+  
+  /**
+   * Move all these ordered cards to the BOTTOM of the deck after checking they are at $fromLocation
+   * @param array $cardsIdArray
+   * @param string $fromLocation
+   * @param string $toLocation
+   */
+  public static function moveAllToBottom($cardsIdArray, $fromLocation, $toLocation){
+    $cards = self::getMany($cardsIdArray);
+    //Warning! the result of getMany is not ordered like array input !
+    //foreach($cards as $cardId => $card){
+    foreach($cardsIdArray as $cardId){
+      $card = $cards[$cardId];
+      if($card->getLocation() != $fromLocation){
+        throw new \BgaVisibleSystemException("Tile $cardId is not at the right place ($fromLocation)");
+      }
+      self::insertAtBottom($cardId, $toLocation);
+    }
+  }
+  /**
    * Read the tile in a specified factory space
    */
   public static function getTileInFactory($space)

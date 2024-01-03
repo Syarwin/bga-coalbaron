@@ -179,7 +179,9 @@ trait PlaceWorkerTrait
             case SPACE_FACTORY_8: 
                 $this->placeWorkerInFactory($player,$space);
                 break;
-            //TODO JSA placeWorker DRAW TYPES
+            case SPACE_FACTORY_DRAW: 
+                $this->placeWorkerInDrawFactory($player);
+                break;
             case SPACE_ORDER_1: 
             case SPACE_ORDER_2: 
             case SPACE_ORDER_3: 

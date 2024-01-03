@@ -23,6 +23,8 @@ const SPACE_PIT_CAGE_MAX = 5;//5 coals max in the cage
 const SHIFT_MAX = 3; //3 shift "rounds" in the base game
 /** Draw 5 cards at a time */
 const CARDS_DRAW_NUMBER = 5;
+/** Draw 5 tiles at a time */
+const TILES_DRAW_NUMBER = 5;
 
 /** Worker spaces */
 const SPACE_FACTORY = 'factory';
@@ -77,6 +79,7 @@ const CARD_LOCATION_DRAW = "draw";
 const CARD_LOCATION_OUTSTANDING = "outstanding";
 const CARD_LOCATION_DELIVERED = "delivered";
 const TILE_LOCATION_DECK = "deck";
+const TILE_LOCATION_DRAW = "draw";
 const TILE_LOCATION_BOARD = "player";
 const TILE_STATE_VISIBLE = 1;
 const COAL_LOCATION_TILE = "tile_";

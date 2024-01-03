@@ -14,21 +14,27 @@ trait WorkerAtOrderTrait
 {
     
     function argChooseCard(){
+        $player_id = Players::getActive()->getId();
+        $privateDatas = array ();
+
         $cards = Cards::getInLocation(CARD_LOCATION_DRAW)->map(function ($card) {
             return $card->getUiData();
           }) ->toAssoc();
 
-        return array(
-            //TODO JSA private datas cards
+        $privateDatas[$player_id] = array(
             'cards' => $cards,
+        );
+
+        return array(
+            '_private' => $privateDatas,
         );
     }
 
     /**
      * Action of choosing 0-1 card and returning the others in wanted order 
-     * @param int $cardId
+     * @param int $cardId Id of the card to keep (optional)
      * @param TOP|BOTTOM $returnDest (comes from action enum)
-     * @param array $otherCardsOrder
+     * @param array $otherCardsOrder Order of cards ids to put on $returnDest 
      */
     function actChooseCard($cardId, $returnDest, $otherCardsOrder){
         self::checkAction( 'actChooseCard' ); 

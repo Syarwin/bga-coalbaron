@@ -14,6 +14,62 @@ functions about workers at the Minecarts Factory spaces
 */
 trait WorkerAtFactoryTrait
 {
+    function argChooseTile(){
+        $player_id = Players::getActive()->getId();
+        $privateDatas = array ();
+
+        $tiles = Tiles::getInLocation(TILE_LOCATION_DRAW)->map(function ($tile) {
+            return $tile->getUiData();
+          }) ->toAssoc();
+
+        $privateDatas[$player_id] = array(
+            'tiles' => $tiles,
+        );
+
+        return array(
+            '_private' => $privateDatas,
+        );
+    }
+    
+    /**
+     * Action of choosing 0-1 card and returning the others in wanted order 
+     * @param int $tileId Id of the tile to keep (optional)
+     * @param TOP|BOTTOM $returnDest (comes from action enum)
+     * @param array $otherCardsOrder Order of tiles ids to put on $returnDest 
+     */
+    function actChooseTile($tileId, $returnDest, $othersTilesOrder){
+        self::checkAction( 'actChooseTile' ); 
+        self::trace("actChooseCard($tileId, $returnDest)...");
+
+        $player = Players::getActive();
+        $cardsNb = 0;
+
+        //ANTICHEATS :
+        if(isset($tileId)){
+            //IF player keeps a card
+            $tile = Tiles::get($tileId);
+            if($tile->getLocation() != TILE_LOCATION_DRAW){
+              throw new \BgaVisibleSystemException("Tile $tileId is not selectable");
+            }
+            //$cardsNb++;
+            self::giveTileToPlayer($player,$tile);
+        }
+        $cardsNb += count($othersTilesOrder);
+        
+        $expectedCount = Tiles::countInLocation(TILE_LOCATION_DRAW);
+        if($cardsNb != $expectedCount)
+            throw new \BgaVisibleSystemException("Wrong number of cards : $cardsNb != $expectedCount");
+
+        if($returnDest == "TOP") {
+            Tiles::moveAllToTop($othersTilesOrder,TILE_LOCATION_DRAW,TILE_LOCATION_DECK);
+            Notifications::returnTilesToTop($player,count($othersTilesOrder));
+        } else {
+            Tiles::moveAllToBottom($othersTilesOrder,TILE_LOCATION_DRAW,TILE_LOCATION_DECK);
+            Notifications::returnTilesToBottom($player,count($othersTilesOrder));
+        }
+    
+        $this->gamestate->nextState('next');
+    }
     /**
      * List all Worker Spaces to play in "Factory"
      */
@@ -33,7 +89,7 @@ trait WorkerAtFactoryTrait
         // & FILTER EMPTY TILE (because deck may be empty )
         $filter = function ($space) use ($money) {
             //FACTORY DRAW ALWAYS POSSIBLE with 0 money 
-            if($space == SPACE_FACTORY_DRAW) return true;
+            if($space == SPACE_FACTORY_DRAW) return true;//TODO JSA CHECK DECKSIZE
             $tile = Tiles::getTileInFactory($space);
             if($tile == null || $tile->getCost()> $money){
                 return false;
@@ -52,13 +108,34 @@ trait WorkerAtFactoryTrait
         self::trace("placeWorkerInFactory($space)...");
         Meeples::placeWorkersInSpace($player,$space);
         $tile = Tiles::getTileInFactory($space);
-        Players::spendMoney($player,$tile->getCost());
-        $column = Tiles::getPlayerNextColumnForTile($player->getId(),$tile);
-        $tile->moveToPlayerBoard($player,$column);
-        Meeples::placeCoalsOnTile($player,$tile);
+        self::giveTileToPlayer($player,$tile);
 
         //TODO JSA refillFactorySpace only when player confirmed the turn 
         $newTile = Tiles::refillFactorySpace($space);
         Notifications::refillFactorySpace($newTile);
+    }
+    
+     /**
+     * FOLLOW THE RULES of ACTION 1 - SPECIAL CASE : drawing 5 tiles
+     */
+    function placeWorkerInDrawFactory($player){
+        self::trace("placeWorkerInDrawFactory()...");
+        Meeples::placeWorkersInSpace($player,SPACE_FACTORY_DRAW);
+
+        $tiles = Tiles::pickForLocation(TILES_DRAW_NUMBER,TILE_LOCATION_DECK,TILE_LOCATION_DRAW);
+        
+        //Go to another state to manage selection of tiles :
+        $this->gamestate->nextState( 'chooseTile' );
+    }
+    
+    /**
+     * Move a tile to a given player
+     */
+    public static function giveTileToPlayer($player,$tile)
+    {
+        Players::spendMoney($player,$tile->getCost());
+        $column = Tiles::getPlayerNextColumnForTile($player->getId(),$tile);
+        $tile->moveToPlayerBoard($player,$column);
+        Meeples::placeCoalsOnTile($player,$tile);
     }
 }

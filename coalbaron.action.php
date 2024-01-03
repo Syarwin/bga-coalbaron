@@ -91,7 +91,7 @@ class action_coalbaron extends APP_GameAction
     $cardId = self::getArg('cardId', AT_posint, false);
     $returnDest = self::getArg( 'returnDest', AT_enum, true, null, [ 'TOP', 'BOTTOM' ] ); 
     // ---------- ---------- ORDERED array of Cards'ids  --------------------
-    $other_ids_raw = self::getArg( "otherCardsId", AT_numberlist, true );
+    $other_ids_raw = self::getArg( "otherIds", AT_numberlist, true );
     // Removing last ';' if exists
     if( substr( $other_ids_raw, -1 ) == ';' )
        $other_ids_raw = substr( $other_ids_raw, 0, -1 );
@@ -101,6 +101,26 @@ class action_coalbaron extends APP_GameAction
         $otherCardsArray = explode( ';', $other_ids_raw );
     // ---------- ---------- -------------------- --------------------
     $this->game->actChooseCard($cardId, $returnDest, $otherCardsArray);
+    self::ajaxResponse();
+  }
+  
+  public function actChooseTile()
+  {
+    self::setAjaxMode();
+    //Choosing a card is optionnal
+    $tileId = self::getArg('tileId', AT_posint, false);
+    $returnDest = self::getArg( 'returnDest', AT_enum, true, null, [ 'TOP', 'BOTTOM' ] ); 
+    // ---------- ---------- ORDERED array of Cards'ids  --------------------
+    $other_ids_raw = self::getArg( "otherIds", AT_numberlist, true );
+    // Removing last ';' if exists
+    if( substr( $other_ids_raw, -1 ) == ';' )
+       $other_ids_raw = substr( $other_ids_raw, 0, -1 );
+    if( $other_ids_raw == '' )
+        $otherTilesArray = array();
+    else
+        $otherTilesArray = explode( ';', $other_ids_raw );
+    // ---------- ---------- -------------------- --------------------
+    $this->game->actChooseTile($tileId, $returnDest, $otherTilesArray);
     self::ajaxResponse();
   }
 

@@ -124,6 +124,28 @@ class Notifications
    * @param Player $player
    * @param int $nb
    */
+  public static function returnTilesToTop($player, $nb)
+  {
+    self::notifyAll('returnTilesToTop', clienttranslate('${player_name} returns ${n} tiles to the top of the deck'), [
+      'player' => $player,
+      'n' => $nb,
+    ]);
+  }
+  /**
+   * @param Player $player
+   * @param int $nb
+   */
+  public static function returnTilesToBottom($player, $nb)
+  {
+    self::notifyAll('returnTilesToBottom', clienttranslate('${player_name} returns ${n} tiles to the bottom of the deck'), [
+      'player' => $player,
+      'n' => $nb,
+    ]);
+  }
+    /**
+   * @param Player $player
+   * @param int $nb
+   */
   public static function returnCardsToTop($player, $nb)
   {
     self::notifyAll('returnCardsToTop', clienttranslate('${player_name} returns ${n} cards to the top of the deck'), [

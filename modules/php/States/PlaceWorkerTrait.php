@@ -2,13 +2,7 @@
 
 namespace COAL\States;
 
-use COAL\Core\Game;
 use COAL\Core\Globals;
-use COAL\Core\Notifications;
-use COAL\Core\Engine;
-use COAL\Core\Stats;
-use COAL\Helpers\UserException;
-use COAL\Helpers\Utils;
 use COAL\Managers\Cards;
 use COAL\Managers\Meeples;
 use COAL\Managers\Players;
@@ -29,10 +23,6 @@ trait PlaceWorkerTrait
         $nbAvailableWorkers = Meeples::getNbAvailableWorkers($player);
     
         return array(
-          'turn' => Globals::getTurn(),
-          'meeples' => Meeples::getUiData(),
-          'cards' => Cards::getUiData(),
-          'tiles' => Tiles::getUiData(),
           'spaces' => $spaces,
           'nbrWorkersNeeded' => $this->getSpacesNeededWorkers($nbPlayers),
           'nbAvailableWorkers' => $nbAvailableWorkers,

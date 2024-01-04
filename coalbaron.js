@@ -31,6 +31,7 @@ define([
       this._inactiveStates = ['draft'];
       this._notifications = [
         ['placeWorkers', null],
+        ['giveMoney', 1300],
         ['spendMoney', 1300],
         ['giveTileTo', 1200],
         ['moveCoalToTile', 1000],
@@ -329,6 +330,11 @@ define([
     notif_spendMoney(n) {
       debug('Notif: spending money', n);
       this.gainPayMoney(n.args.player_id, -n.args.n);
+    },
+
+    notif_giveMoney(n) {
+      debug('Notif: gaining money', n);
+      this.gainPayMoney(n.args.player_id, n.args.n);
     },
 
     ////////////////////////////////////////////////////////

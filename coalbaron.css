@@ -302,6 +302,8 @@
       #coalbaron-main-container #coalbaron-board .board-space#bank_3 .space-title-container, #coalbaron-main-container #coalbaron-board .board-space#bank_4 .space-title-container, #coalbaron-main-container #coalbaron-board .board-space#bank_5 .space-title-container, #coalbaron-main-container #coalbaron-board .board-space#bank_6 .space-title-container {
         position: absolute;
         top: -12px; }
+      #coalbaron-main-container #coalbaron-board .board-space#bank_3 .space-workers-container, #coalbaron-main-container #coalbaron-board .board-space#bank_4 .space-workers-container, #coalbaron-main-container #coalbaron-board .board-space#bank_5 .space-workers-container, #coalbaron-main-container #coalbaron-board .board-space#bank_6 .space-workers-container {
+        height: 100%; }
     #coalbaron-main-container #coalbaron-board .board-space#bank_3 {
       left: 1160px; }
       #coalbaron-main-container #coalbaron-board .board-space#bank_3 .space-title-container::before {

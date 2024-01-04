@@ -224,7 +224,9 @@ class Meeples extends \COAL\Helpers\Pieces
       $nbNeededWorkers = $nbWorkersAtWork + 1;
       //MOVE PREVIOUS WORKERS to the CANTEEN before placing new workers !
       self::moveAllInLocation($toLocation, SPACE_CANTEEN);
-      Notifications::moveToCanteen($toLocation,$nbWorkersAtWork);
+      if ($nbWorkersAtWork > 0){
+        Notifications::moveToCanteen($toLocation,$nbWorkersAtWork);
+      }
     }
     //pickForLocation is good for location but doesnt filter pid...
     //self::pickForLocation($nbNeededWorkers,SPACE_RESERVE,$toLocation);

@@ -65,9 +65,7 @@ trait EndGameScoringTrait
       /*
       RULE 4 : For each tunnel tile that one side has in excess of the other side, you lose 2 VPs.
       */
-      $nbLightTiles = Tiles::countPlayerTiles($pId,true);
-      $nbDarkTiles = Tiles::countPlayerTiles($pId,false);
-      $imbalance = abs($nbLightTiles - $nbDarkTiles);
+      $imbalance = $player->getTunnelImbalance();
       $balancePoints = -2 * $imbalance;
       if($balancePoints != 0){
         $player->addPoints($balancePoints);

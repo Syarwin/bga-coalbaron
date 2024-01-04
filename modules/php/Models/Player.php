@@ -38,6 +38,10 @@ class Player extends \COAL\Helpers\DB_Model
     $data = parent::getUiData();
     $current = $this->id == $currentPlayerId;
     $data['workers'] = Meeples::getNbAvailableWorkers($this);
+    $data['ordersTodo'] = Cards::countPlayerOrders($this->id, CARD_LOCATION_OUTSTANDING);
+    $data['ordersDone'] = Cards::countPlayerOrders($this->id, CARD_LOCATION_DELIVERED);
+    $data['coals'] = Meeples::countPlayerCoals($this->id);
+    $data['imbalance'] = $this->getTunnelImbalance();
 
     return $data;
   }
@@ -67,5 +71,15 @@ class Player extends \COAL\Helpers\DB_Model
     $this->setCageLevel($toLevel);
     Globals::incMiningMoves(-1);
     Notifications::movePitCage($this, $from, $toLevel);
+  }
+  
+  /**
+   * @return int absolute number of tunnel tiles in excess on LIGHT side VS DARK side
+   */
+  public function getTunnelImbalance()
+  {
+    $nbLightTiles = Tiles::countPlayerTiles($this->id,true);
+    $nbDarkTiles = Tiles::countPlayerTiles($this->id,false);
+    return abs($nbLightTiles - $nbDarkTiles);
   }
 }

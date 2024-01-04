@@ -36,6 +36,13 @@ class Tiles extends \COAL\Helpers\Pieces
   }
 
   /**
+   * @return int number of cards in deck
+   */
+  public static function getDeckSize()
+  {
+    return self::countInLocation(TILE_LOCATION_DECK);
+  }
+  /**
    * For one tile, return the list of all coal spots with either the coal currently in the spot, either "EMPTY_SPOT"
    */
   public static function getTileCoalsStatus($tile) {

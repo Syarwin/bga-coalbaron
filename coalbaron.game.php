@@ -86,8 +86,11 @@ class CoalBaron extends Table
       'players' => Players::getUiData($pId),
       'shift' => Globals::getShift(),
       'meeples' => Meeples::getUiData(),
+      'coalsInReserve' => Meeples::countAvailableCoalsColorArray(),
       'cards' => Cards::getUiData(),
+      'cardsDeckSize' => Cards::getDeckSize(),
       'tiles' => Tiles::getUiData(),
+      'tilesDeckSize' => Tiles::getDeckSize(),
       'firstPlayer' => Globals::getFirstPlayer(),
       'nbrWorkersNeeded' => $this->getSpacesNeededWorkers($nbPlayers),
     ];

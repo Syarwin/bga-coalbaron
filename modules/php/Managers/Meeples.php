@@ -248,6 +248,26 @@ class Meeples extends \COAL\Helpers\Pieces
       ->limit($number)
       ->get();
   }
+  
+  /**
+   * @return int number of ALL COALS in reserve of that color
+   */
+  public static function countAvailableCoals($color)
+  {
+    return self::getFilteredQuery(null, SPACE_RESERVE, $color)->count();
+  }
+  /**
+   * @return array ARRAY of number of ALL COALS in reserve of EACH color
+   */
+  public static function countAvailableCoalsColorArray()
+  {
+    return array(
+      YELLOW_COAL => self::countAvailableCoals(YELLOW_COAL),
+      BROWN_COAL => self::countAvailableCoals(BROWN_COAL),
+      GREY_COAL => self::countAvailableCoals(GREY_COAL),
+      BLACK_COAL => self::countAvailableCoals(BLACK_COAL),
+    );
+  }
   /**
    * @return int number of ALL COALS owned by that player and in that $location,
    *   or ALL COALS owned by that player if location not given

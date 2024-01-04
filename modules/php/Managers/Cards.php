@@ -30,7 +30,13 @@ class Cards extends \COAL\Helpers\Pieces
       })
       ->toArray();
   }
-
+  /**
+   * @return int number of cards in deck
+   */
+  public static function getDeckSize()
+  {
+    return self::countInLocation(CARD_LOCATION_DECK);
+  }
   /**
    * Draw $number cards to choose in "draft" phase
    */

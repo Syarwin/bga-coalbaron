@@ -115,40 +115,40 @@
 
             &#factory_1 {
                 top: 0px;
-                left: 0px;
+                left: -2px;
             }
             &#factory_2 {
                 top: 0px;
-                left: 160px;
+                left: 156px;
             }
             &#factory_3 {
                 top: 0px;
-                left: 320px;
+                left: 314px;
             }
             &#factory_4 {
                 top: 0px;
-                left: 480px;
+                left: 472px;
             }
             &#factory_5 {
                 top: 470px;
-                left: 0px;
+                left: -2px;
             }
             &#factory_6 {
                 top: 470px;
-                left: 160px;
+                left: 156px;
             }
             &#factory_7 {
                 top: 470px;
-                left: 320px;
+                left: 314px;
             }
             &#factory_8 {
                 top: 470px;
-                left: 480px;
+                left: 472px;
             }
             &#factory_draw {
                 width: 100px;
                 height: 140px;
-                left: 20px;
+                left: 16px;
                 top: 280px;
 
                 .space-title-container {
@@ -175,7 +175,7 @@
                 }
             }
             &#mining_4 {
-                left: 660px;
+                left: 650px;
                 .space-title-container::before {
                     background-position: 0% 0%;
                 }
@@ -245,25 +245,25 @@
                 top: 580px;
             }
             &#delivery_1 {
-                left: 640px;
+                left: 630px;
                 .space-title-container::before {
                     background-position: 33.3333% 66.6666%;
                 }
             }
             &#delivery_2 {
-                left: 760px;
+                left: 748px;
                 .space-title-container::before {
                     background-position: 66.6666% 66.6666%;
                 }
             }
             &#delivery_3 {
-                left: 880px;
+                left: 866px;
                 .space-title-container::before {
                     background-position: 100% 66.6666%;
                 }
             }
             &#delivery_4 {
-                left: 1000px;
+                left: 984px;
                 .space-title-container::before {
                     background-position: 0% 100%;
                 }
@@ -284,18 +284,35 @@
                 .space-title-container::before {
                     background-position: 0% 66.6666%;
                 }
+
+                .space-workers-container {
+                    height: 100px;
+                    border-bottom: 1px solid black;
+                }
+
+                .space-order-container {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 168px;
+                }
+
+                .coalbaron-card {
+                    width: 100px;
+                    height: 154px;
+                }
             }
             &#order_1 {
-                left: 1120px;
+                left: 1101px;
             }
             &#order_2 {
-                left: 1260px;
+                left: 1238px;
             }
             &#order_3 {
-                left: 1380px;
+                left: 1375px;
             }
             &#order_4 {
-                left: 1520px;
+                left: 1510px;
             }
 
             &#order_draw {

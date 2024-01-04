@@ -28,12 +28,15 @@ define([
 ], function (dojo, declare) {
   return declare('bgagame.coalbaron', [customgame.game], {
     constructor() {
-      this._inactiveStates = [];
+      this._inactiveStates = ['draft'];
       this._notifications = [
         ['placeWorkers', null],
         ['spendMoney', 1300],
         ['giveTileTo', 1200],
         ['moveCoalToTile', 1000],
+        ['giveCardTo', 1200],
+        ['endDraft', 1200],
+        ['refillOrderSpace', 1200],
         // ["newTurn", 1000],
         // ["updateFirstPlayer", 500],
       ];
@@ -64,6 +67,7 @@ define([
       this.setupInfoPanel();
       this.setupTiles();
       this.setupMeeples();
+      this.setupCards();
 
       // Create round counter
       this._roundCounter = this.createCounter('round-counter');
@@ -135,10 +139,6 @@ define([
       // Call appropriate method
       var methodName = 'onEnteringState' + stateName.charAt(0).toUpperCase() + stateName.slice(1);
       if (this[methodName] !== undefined) this[methodName](args.args);
-    },
-
-    onEnteringStateDraft(args) {
-      Object.values(args.cards).forEach((card) => this.addCard(card, $('draft-container')));
     },
 
     onEnteringStatePlaceWorker(args) {
@@ -548,12 +548,49 @@ define([
 
     getCardContainer(card) {
       let t = card.location.split('_');
-      if (t[0] == 'factory') {
-        return $(card.location).querySelector('.space-card-container');
+      if (t[0] == 'order') {
+        return $(card.location).querySelector('.space-order-container');
+      }
+      if (card.location == 'outstanding') {
+        return $(`pending-orders-${card.pId}`);
       }
 
       console.error('Trying to get container of a card', card);
       return 'game_play_area';
+    },
+
+    onEnteringStateDraft(args) {
+      let selectedCard = null;
+      Object.values(args.cards).forEach((card) => {
+        this.addCard(card, $('draft-container'));
+        if (this.isCurrentPlayerActive()) {
+          this.onClick(`card-${card.id}`, () => {
+            if (selectedCard) $(`card-${selectedCard}`).classList.remove('selected');
+            selectedCard = card.id;
+            $(`card-${selectedCard}`).classList.add('selected');
+            this.addPrimaryActionButton('btnConfirm', _('Confirm'), () =>
+              this.takeAction('actTakeCard', { cardId: selectedCard })
+            );
+          });
+        }
+      });
+    },
+
+    notif_giveCardTo(n) {
+      debug('Notif: receiving a new order cards', n);
+      // TODO : add card if not existing
+      this.slide(`card-${n.args.card.id}`, `pending-orders-${n.args.player_id}`);
+    },
+
+    notif_endDraft(n) {
+      debug('Notif: end of draft', n);
+      this.slide(`card-${n.args.card.id}`, this.getCardContainer(n.args.card));
+    },
+
+    notif_refillOrderSpace(n) {
+      debug('Notif: refill order cards', n);
+      this.addCard(n.args.card, this.getVisibleTitleContainer());
+      this.slide(`card-${n.args.card.id}`, this.getCardContainer(n.args.card));
     },
 
     ////////////////////////////////////////////////////////////

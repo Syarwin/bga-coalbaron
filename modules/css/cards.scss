@@ -34,4 +34,18 @@
     //         left: 17px;
     //     }
     // }
+
+    &.selectable {
+        box-shadow: 0px 0px 7px 2px red;
+        cursor: pointer;
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+
+    &.selected,
+    &.selected:hover {
+        box-shadow: 0px 0px 7px 2px green;
+        transform: scale(1.1);
+    }
 }

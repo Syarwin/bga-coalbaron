@@ -24,19 +24,19 @@ class Cards extends \COAL\Helpers\Pieces
   public static function getUiData()
   {
     return self::getInLocation(CARD_LOCATION_OUTSTANDING)
-      ->merge(self::getInLocation(SPACE_ORDER."_%"))
+      ->merge(self::getInLocation(SPACE_ORDER . '_%'))
       ->map(function ($card) {
         return $card->getUiData();
       })
-      ->toAssoc();
+      ->toArray();
   }
-  
+
   /**
    * Draw $number cards to choose in "draft" phase
    */
   public static function drawCardsToDraft($number)
   {
-    return self::pickForLocation($number,CARD_LOCATION_DECK,CARD_LOCATION_DRAFT,0,false);
+    return self::pickForLocation($number, CARD_LOCATION_DECK, CARD_LOCATION_DRAFT, 0, false);
   }
   /**
    * return list of all cards to choose in "draft" phase
@@ -49,22 +49,26 @@ class Cards extends \COAL\Helpers\Pieces
       })
       ->toAssoc();
   }
-  
+
   /**
-   * Draw a new card and place it in the board order $space 
+   * Draw a new card and place it in the board order $space
    */
-  public static function refillOrderSpace($space) {
-    $newCard = self::pickOneForLocation(CARD_LOCATION_DECK,$space,0,false);
+  public static function refillOrderSpace($space)
+  {
+    $newCard = self::pickOneForLocation(CARD_LOCATION_DECK, $space, 0, false);
     return $newCard;
   }
   /**
    * Draw a new card and place it in the board order space except for the specified $spaceX (and the draw space)
    */
-  public static function refillOtherOrderSpaces($exceptSpaceX) {
+  public static function refillOtherOrderSpaces($exceptSpaceX)
+  {
     $nbPlayers = Players::count();
     $spaces = self::getUnlockedOrderSpaces($nbPlayers);
-    foreach($spaces as $space){
-      if($space == SPACE_ORDER_DRAW || $space == $exceptSpaceX ) continue;
+    foreach ($spaces as $space) {
+      if ($space == SPACE_ORDER_DRAW || $space == $exceptSpaceX) {
+        continue;
+      }
       $newCard = self::refillOrderSpace($space);
       Notifications::refillOrderSpace($newCard);
     }
@@ -72,7 +76,8 @@ class Cards extends \COAL\Helpers\Pieces
   /**
    * Read the card in a specified board space
    */
-  public static function getCardInOrder($space) {
+  public static function getCardInOrder($space)
+  {
     $card = self::getTopOf($space);
     return $card;
   }
@@ -83,32 +88,34 @@ class Cards extends \COAL\Helpers\Pieces
    * @param string $fromLocation
    * @param string $toLocation
    */
-  public static function moveAllToTop($cardsIdArray, $fromLocation, $toLocation){
+  public static function moveAllToTop($cardsIdArray, $fromLocation, $toLocation)
+  {
     $cards = self::getMany($cardsIdArray);
     //Warning! the result of getMany is not ordered like array input !
     //foreach($cards as $cardId => $card){
-    foreach($cardsIdArray as $cardId){
+    foreach ($cardsIdArray as $cardId) {
       $card = $cards[$cardId];
-      if($card->getLocation() != $fromLocation){
+      if ($card->getLocation() != $fromLocation) {
         throw new \BgaVisibleSystemException("Card $cardId is not at the right place ($fromLocation)");
       }
       self::insertOnTop($cardId, $toLocation);
     }
   }
-  
+
   /**
    * Move all these ordered cards to the BOTTOM of the deck after checking they are at $fromLocation
    * @param array $cardsIdArray
    * @param string $fromLocation
    * @param string $toLocation
    */
-  public static function moveAllToBottom($cardsIdArray, $fromLocation, $toLocation){
+  public static function moveAllToBottom($cardsIdArray, $fromLocation, $toLocation)
+  {
     $cards = self::getMany($cardsIdArray);
     //Warning! the result of getMany is not ordered like array input !
     //foreach($cards as $cardId => $card){
-    foreach($cardsIdArray as $cardId){
+    foreach ($cardsIdArray as $cardId) {
       $card = $cards[$cardId];
-      if($card->getLocation() != $fromLocation){
+      if ($card->getLocation() != $fromLocation) {
         throw new \BgaVisibleSystemException("Card $cardId is not at the right place ($fromLocation)");
       }
       self::insertAtBottom($cardId, $toLocation);
@@ -117,31 +124,35 @@ class Cards extends \COAL\Helpers\Pieces
   /**
    * Move a card to a player outstanding orders
    */
-  public static function giveCardTo($player,$card){
+  public static function giveCardTo($player, $card)
+  {
     $card->moveToOutstanding($player);
-    Notifications::giveCardTo($player,$card);
+    Notifications::giveCardTo($player, $card);
   }
 
   /**
    * For one card, return the list of all coal spots with either the coal currently in the spot, either "EMPTY_SPOT"
    */
-  public static function getCardCoalsStatus($cardId) {
-    $datas = array();
+  public static function getCardCoalsStatus($cardId)
+  {
+    $datas = [];
     $card = self::get($cardId);
     $wantedCoals = $card->getCoals();
     $coalIndex = 0;
-    foreach($wantedCoals as $wantedCoal){//loop string list
-      $datas[$coalIndex] = array($wantedCoal => COAL_EMPTY_SPOT);
+    foreach ($wantedCoals as $wantedCoal) {
+      //loop string list
+      $datas[$coalIndex] = [$wantedCoal => COAL_EMPTY_SPOT];
       $coalIndex++;
     }
     $pId = $card->getPId();
-    if( !isset( $pId )) {
+    if (!isset($pId)) {
       return $datas;
     }
-    $filledCoals = Meeples::getPlayerCardCoals($pId,$cardId);
-    foreach($filledCoals as $filledCoal){//loop CoalCube list
+    $filledCoals = Meeples::getPlayerCardCoals($pId, $cardId);
+    foreach ($filledCoals as $filledCoal) {
+      //loop CoalCube list
       $coalIndex = $filledCoal->getCoalSpotIndexOnCard();
-      $datas[$coalIndex] = array($wantedCoal => $filledCoal);
+      $datas[$coalIndex] = [$wantedCoal => $filledCoal];
     }
     return $datas;
   }
@@ -149,13 +160,14 @@ class Cards extends \COAL\Helpers\Pieces
   /**
    * Move all coal cubes from this card to the reserve
    */
-  public static function removeCoalCubesOnCard($card) {
+  public static function removeCoalCubesOnCard($card)
+  {
     //moveAllInLocation Doesn't work with like...
     //Meeples::moveAllInLocation(COAL_LOCATION_CARD.$cardId.'%', SPACE_RESERVE);
-    
-    $coalIds = array();
-    $filledCoals = Meeples::getPlayerCardCoals($card->getPId(),$card->getId());
-    foreach( $filledCoals as $coalCube){
+
+    $coalIds = [];
+    $filledCoals = Meeples::getPlayerCardCoals($card->getPId(), $card->getId());
+    foreach ($filledCoals as $coalCube) {
       $coalIds[] = $coalCube->getId();
       $coalCube->setPId(null);
     }
@@ -173,12 +185,12 @@ class Cards extends \COAL\Helpers\Pieces
   /**
    * Return all pending cards of this player of type $deliveryType
    */
-  public static function getPlayerOrders($pId,$deliveryType)
+  public static function getPlayerOrders($pId, $deliveryType)
   {
     //! DB type is not deliveryType -> we cannot query it
     $filter = function ($card) use ($deliveryType) {
-      if($card->getTransport() == $deliveryType){
-          return true;
+      if ($card->getTransport() == $deliveryType) {
+        return true;
       }
       return false;
     };
@@ -189,29 +201,25 @@ class Cards extends \COAL\Helpers\Pieces
   /**
    * Return the list of this player ($pId) order cards of type $deliveryType, which contain all needed coal cubes
    */
-  public static function getPlayerCompletedOrdersToDeliver($pId,$deliveryType){
-    
+  public static function getPlayerCompletedOrdersToDeliver($pId, $deliveryType)
+  {
     $filter = function ($card) {
-      if($card->isCompleted()){
-          return true;
+      if ($card->isCompleted()) {
+        return true;
       }
       return false;
     };
-    return self::getPlayerOrders($pId,$deliveryType)->filter($filter);
+    return self::getPlayerOrders($pId, $deliveryType)->filter($filter);
   }
-  
+
   /**
    * Return all unlocked ORDER spaces on board
    */
-  public static function getUnlockedOrderSpaces($nbPlayers) {
-    $spaces = array(
-      SPACE_ORDER_2,
-      SPACE_ORDER_3,
-      SPACE_ORDER_4,
-      SPACE_ORDER_DRAW,
-    );
-    if($nbPlayers>=3){
-        $spaces[] = SPACE_ORDER_1;
+  public static function getUnlockedOrderSpaces($nbPlayers)
+  {
+    $spaces = [SPACE_ORDER_2, SPACE_ORDER_3, SPACE_ORDER_4, SPACE_ORDER_DRAW];
+    if ($nbPlayers >= 3) {
+      $spaces[] = SPACE_ORDER_1;
     }
     return $spaces;
   }
@@ -243,53 +251,53 @@ class Cards extends \COAL\Helpers\Pieces
     };
     return [
       // 11 different barrow
-      1=>  $f([TRANSPORT_BARROW,2, [YELLOW_COAL]]),
-      2=>  $f([TRANSPORT_BARROW,3, [BROWN_COAL]]),
-      3=>  $f([TRANSPORT_BARROW,3, [YELLOW_COAL,YELLOW_COAL]]),
-      4=>  $f([TRANSPORT_BARROW,4, [GREY_COAL]]),
-      5=>  $f([TRANSPORT_BARROW,5, [BLACK_COAL]]),
-      6=>  $f([TRANSPORT_BARROW,5, [BROWN_COAL,BROWN_COAL]]),
-      7=>  $f([TRANSPORT_BARROW,7, [BROWN_COAL,BROWN_COAL,BROWN_COAL]]),
-      8=>  $f([TRANSPORT_BARROW,7, [GREY_COAL,GREY_COAL]]),
-      9=>  $f([TRANSPORT_BARROW,9, [BLACK_COAL,BLACK_COAL]]),
-      10=> $f([TRANSPORT_BARROW,9,  [GREY_COAL,GREY_COAL,GREY_COAL]]),
-      11=> $f([TRANSPORT_BARROW,10, [YELLOW_COAL,BROWN_COAL, GREY_COAL,BLACK_COAL]]),
+      1 => $f([TRANSPORT_BARROW, 2, [YELLOW_COAL]]),
+      2 => $f([TRANSPORT_BARROW, 3, [BROWN_COAL]]),
+      3 => $f([TRANSPORT_BARROW, 3, [YELLOW_COAL, YELLOW_COAL]]),
+      4 => $f([TRANSPORT_BARROW, 4, [GREY_COAL]]),
+      5 => $f([TRANSPORT_BARROW, 5, [BLACK_COAL]]),
+      6 => $f([TRANSPORT_BARROW, 5, [BROWN_COAL, BROWN_COAL]]),
+      7 => $f([TRANSPORT_BARROW, 7, [BROWN_COAL, BROWN_COAL, BROWN_COAL]]),
+      8 => $f([TRANSPORT_BARROW, 7, [GREY_COAL, GREY_COAL]]),
+      9 => $f([TRANSPORT_BARROW, 9, [BLACK_COAL, BLACK_COAL]]),
+      10 => $f([TRANSPORT_BARROW, 9, [GREY_COAL, GREY_COAL, GREY_COAL]]),
+      11 => $f([TRANSPORT_BARROW, 10, [YELLOW_COAL, BROWN_COAL, GREY_COAL, BLACK_COAL]]),
       // 11 different motorcar
-      12=> $f([TRANSPORT_MOTORCAR,2, [YELLOW_COAL]]),
-      13=> $f([TRANSPORT_MOTORCAR,3, [YELLOW_COAL,YELLOW_COAL]]),
-      14=> $f([TRANSPORT_MOTORCAR,3, [BROWN_COAL]]),
-      15=> $f([TRANSPORT_MOTORCAR,4, [YELLOW_COAL,YELLOW_COAL,YELLOW_COAL]]),
-      16=> $f([TRANSPORT_MOTORCAR,4, [GREY_COAL]]),
-      17=> $f([TRANSPORT_MOTORCAR,5, [BROWN_COAL,BROWN_COAL]]),
-      18=> $f([TRANSPORT_MOTORCAR,5, [BLACK_COAL]]),
-      19=> $f([TRANSPORT_MOTORCAR,7, [GREY_COAL,GREY_COAL]]),
-      20=> $f([TRANSPORT_MOTORCAR,9, [BLACK_COAL,BLACK_COAL]]),
-      21=> $f([TRANSPORT_MOTORCAR,10, [YELLOW_COAL,BROWN_COAL, GREY_COAL,BLACK_COAL]]),
-      22=> $f([TRANSPORT_MOTORCAR,12, [BLACK_COAL,BLACK_COAL,BLACK_COAL]]),
+      12 => $f([TRANSPORT_MOTORCAR, 2, [YELLOW_COAL]]),
+      13 => $f([TRANSPORT_MOTORCAR, 3, [YELLOW_COAL, YELLOW_COAL]]),
+      14 => $f([TRANSPORT_MOTORCAR, 3, [BROWN_COAL]]),
+      15 => $f([TRANSPORT_MOTORCAR, 4, [YELLOW_COAL, YELLOW_COAL, YELLOW_COAL]]),
+      16 => $f([TRANSPORT_MOTORCAR, 4, [GREY_COAL]]),
+      17 => $f([TRANSPORT_MOTORCAR, 5, [BROWN_COAL, BROWN_COAL]]),
+      18 => $f([TRANSPORT_MOTORCAR, 5, [BLACK_COAL]]),
+      19 => $f([TRANSPORT_MOTORCAR, 7, [GREY_COAL, GREY_COAL]]),
+      20 => $f([TRANSPORT_MOTORCAR, 9, [BLACK_COAL, BLACK_COAL]]),
+      21 => $f([TRANSPORT_MOTORCAR, 10, [YELLOW_COAL, BROWN_COAL, GREY_COAL, BLACK_COAL]]),
+      22 => $f([TRANSPORT_MOTORCAR, 12, [BLACK_COAL, BLACK_COAL, BLACK_COAL]]),
       // 11 different carriage
-      23=> $f([TRANSPORT_CARRIAGE,2, [YELLOW_COAL]]),
-      24=> $f([TRANSPORT_CARRIAGE,3, [YELLOW_COAL,YELLOW_COAL]]),
-      25=> $f([TRANSPORT_CARRIAGE,3, [BROWN_COAL]]),
-      26=> $f([TRANSPORT_CARRIAGE,4, [YELLOW_COAL,YELLOW_COAL,YELLOW_COAL]]),
-      27=> $f([TRANSPORT_CARRIAGE,4, [GREY_COAL]]),
-      28=> $f([TRANSPORT_CARRIAGE,5, [BLACK_COAL]]),
-      29=> $f([TRANSPORT_CARRIAGE,5, [BROWN_COAL,BROWN_COAL]]),
-      30=> $f([TRANSPORT_CARRIAGE,7, [GREY_COAL,GREY_COAL]]),
-      31=> $f([TRANSPORT_CARRIAGE,9, [BLACK_COAL,BLACK_COAL]]),
-      32=> $f([TRANSPORT_CARRIAGE,10, [YELLOW_COAL,BROWN_COAL, GREY_COAL,BLACK_COAL]]),
-      33=> $f([TRANSPORT_CARRIAGE,12, [BLACK_COAL,BLACK_COAL,BLACK_COAL]]),
+      23 => $f([TRANSPORT_CARRIAGE, 2, [YELLOW_COAL]]),
+      24 => $f([TRANSPORT_CARRIAGE, 3, [YELLOW_COAL, YELLOW_COAL]]),
+      25 => $f([TRANSPORT_CARRIAGE, 3, [BROWN_COAL]]),
+      26 => $f([TRANSPORT_CARRIAGE, 4, [YELLOW_COAL, YELLOW_COAL, YELLOW_COAL]]),
+      27 => $f([TRANSPORT_CARRIAGE, 4, [GREY_COAL]]),
+      28 => $f([TRANSPORT_CARRIAGE, 5, [BLACK_COAL]]),
+      29 => $f([TRANSPORT_CARRIAGE, 5, [BROWN_COAL, BROWN_COAL]]),
+      30 => $f([TRANSPORT_CARRIAGE, 7, [GREY_COAL, GREY_COAL]]),
+      31 => $f([TRANSPORT_CARRIAGE, 9, [BLACK_COAL, BLACK_COAL]]),
+      32 => $f([TRANSPORT_CARRIAGE, 10, [YELLOW_COAL, BROWN_COAL, GREY_COAL, BLACK_COAL]]),
+      33 => $f([TRANSPORT_CARRIAGE, 12, [BLACK_COAL, BLACK_COAL, BLACK_COAL]]),
       // 11 different engine
-      34=> $f([TRANSPORT_ENGINE,2,  [YELLOW_COAL]]),
-      35=> $f([TRANSPORT_ENGINE,3,  [BROWN_COAL]]),
-      36=> $f([TRANSPORT_ENGINE,3,  [YELLOW_COAL,YELLOW_COAL]]),
-      37=> $f([TRANSPORT_ENGINE,4,  [GREY_COAL]]),
-      38=> $f([TRANSPORT_ENGINE,5,  [BROWN_COAL,BROWN_COAL]]),
-      39=> $f([TRANSPORT_ENGINE,5,  [BLACK_COAL]]),
-      40=> $f([TRANSPORT_ENGINE,7,  [BROWN_COAL,BROWN_COAL,BROWN_COAL]]),
-      41=> $f([TRANSPORT_ENGINE,7,  [GREY_COAL,GREY_COAL]]),
-      42=> $f([TRANSPORT_ENGINE,9,  [GREY_COAL,GREY_COAL,GREY_COAL]]),
-      43=> $f([TRANSPORT_ENGINE,9,  [BLACK_COAL,BLACK_COAL]]),
-      44=> $f([TRANSPORT_ENGINE,10, [YELLOW_COAL,BROWN_COAL, GREY_COAL,BLACK_COAL]]),
+      34 => $f([TRANSPORT_ENGINE, 2, [YELLOW_COAL]]),
+      35 => $f([TRANSPORT_ENGINE, 3, [BROWN_COAL]]),
+      36 => $f([TRANSPORT_ENGINE, 3, [YELLOW_COAL, YELLOW_COAL]]),
+      37 => $f([TRANSPORT_ENGINE, 4, [GREY_COAL]]),
+      38 => $f([TRANSPORT_ENGINE, 5, [BROWN_COAL, BROWN_COAL]]),
+      39 => $f([TRANSPORT_ENGINE, 5, [BLACK_COAL]]),
+      40 => $f([TRANSPORT_ENGINE, 7, [BROWN_COAL, BROWN_COAL, BROWN_COAL]]),
+      41 => $f([TRANSPORT_ENGINE, 7, [GREY_COAL, GREY_COAL]]),
+      42 => $f([TRANSPORT_ENGINE, 9, [GREY_COAL, GREY_COAL, GREY_COAL]]),
+      43 => $f([TRANSPORT_ENGINE, 9, [BLACK_COAL, BLACK_COAL]]),
+      44 => $f([TRANSPORT_ENGINE, 10, [YELLOW_COAL, BROWN_COAL, GREY_COAL, BLACK_COAL]]),
     ];
   }
 }

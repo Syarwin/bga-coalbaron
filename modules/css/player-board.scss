@@ -59,7 +59,13 @@
             flex-flow: column;
             .pending-orders {
                 height: 223px;
-                background: red;
+                display: flex;
+                flex-flow: row;
+                align-items: center;
+                padding: 0px 5px;
+                .coalbaron-card {
+                    margin: 2px 5px;
+                }
             }
             .right-pit {
                 .pit-level {

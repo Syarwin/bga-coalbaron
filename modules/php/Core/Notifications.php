@@ -22,7 +22,7 @@ class Notifications
       'm' => SHIFT_MAX,
     ]);
   }
-  
+
   public static function updateFirstPlayer($player)
   {
     self::notifyAll('updateFirstPlayer', clienttranslate('${player_name} is the first player during this shift'), [
@@ -94,8 +94,7 @@ class Notifications
 
   public static function startDraft()
   {
-    self::notifyAll('startDraft', clienttranslate('Starting draft : each player will take 3 cards'), [
-    ]);
+    self::notifyAll('startDraft', clienttranslate('Starting draft : each player will take 3 cards'), []);
   }
   public static function endDraft($lastCard)
   {
@@ -106,8 +105,8 @@ class Notifications
   }
   public static function refillOrderSpace($newCard)
   {
-    self::notifyAll('refillOrderSpace', clienttranslate('The game draws a new card'), [
-      'card' => $newCard,
+    self::notifyAll('refillOrderSpace', clienttranslate('A new order card is added on the board'), [
+      'card' => $newCard->getUiData(),
       //Space info is in the card location
     ]);
   }
@@ -116,10 +115,10 @@ class Notifications
   {
     self::notifyAll('giveCardTo', clienttranslate('${player_name} receives a new order card'), [
       'player' => $player,
-      'card' => $card,
+      'card' => $card->getUiData(),
     ]);
   }
-  
+
   /**
    * @param Player $player
    * @param int $nb
@@ -142,7 +141,7 @@ class Notifications
       'n' => $nb,
     ]);
   }
-    /**
+  /**
    * @param Player $player
    * @param int $nb
    */
@@ -231,45 +230,52 @@ class Notifications
 
   public static function noDeliveries()
   {
-    self::notifyAll('noDeliveries', clienttranslate('No delivery during this shift, thus no one scores points'), [
-    ]);
+    self::notifyAll('noDeliveries', clienttranslate('No delivery during this shift, thus no one scores points'), []);
   }
   public static function noPlayerDeliveries($player)
   {
-    self::notifyAll('noPlayerDeliveries', clienttranslate('${player_name} did no delivery during this shift, thus scores 0 points'), [
-      'player' => $player,
-    ]);
+    self::notifyAll(
+      'noPlayerDeliveries',
+      clienttranslate('${player_name} did no delivery during this shift, thus scores 0 points'),
+      [
+        'player' => $player,
+      ]
+    );
   }
   /**
    * Resend cards to UI to see cards during end shift, then the UI must hide them again
    */
   public static function endShiftDeliveries($deliveredOrders)
   {
-    $cards = $deliveredOrders->map(function ($card) {
+    $cards = $deliveredOrders
+      ->map(function ($card) {
         return $card->getUiData();
-      }) ->toAssoc();
+      })
+      ->toAssoc();
 
     self::notifyAll('endShiftDeliveries', '', [
       'cards' => $cards,
     ]);
   }
-  public static function endShiftMajority($player, $points, $type,$majorityIndex, $nbElements)
+  public static function endShiftMajority($player, $points, $type, $majorityIndex, $nbElements)
   {
-    self::notifyAll('endShiftMajority', clienttranslate('${player_name} scores ${p} points for the ${i}th majority (with ${n} elements)'), [
-      'player' => $player,
-      'p' => $points,
-      'i' => $majorityIndex,
-      'n' => $nbElements,
-      //TODO : see if useful for adding an icon :
-      'type' => $type,
-    ]);
+    self::notifyAll(
+      'endShiftMajority',
+      clienttranslate('${player_name} scores ${p} points for the ${i}th majority (with ${n} elements)'),
+      [
+        'player' => $player,
+        'p' => $points,
+        'i' => $majorityIndex,
+        'n' => $nbElements,
+        //TODO : see if useful for adding an icon :
+        'type' => $type,
+      ]
+    );
   }
 
-  
   public static function endGameScoring()
   {
-    self::notifyAll('endGameScoring', clienttranslate("Game ends : let's check final scoring..."), [
-    ]);
+    self::notifyAll('endGameScoring', clienttranslate("Game ends : let's check final scoring..."), []);
   }
   public static function endGameScoringMoney($player, $money, $points)
   {
@@ -297,11 +303,15 @@ class Notifications
   }
   public static function endGameScoringBalance($player, $imbalance, $points)
   {
-    self::notifyAll('endGameScoringBalance', clienttranslate('${player_name} scores ${p} points with a tunnel imbalance of ${n} tiles'), [
-      'player' => $player,
-      'n' => $imbalance,
-      'p' => $points,
-    ]);
+    self::notifyAll(
+      'endGameScoringBalance',
+      clienttranslate('${player_name} scores ${p} points with a tunnel imbalance of ${n} tiles'),
+      [
+        'player' => $player,
+        'n' => $imbalance,
+        'p' => $points,
+      ]
+    );
   }
 
   /*************************

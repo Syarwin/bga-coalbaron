@@ -4,7 +4,7 @@ var debug = isDebug ? console.info.bind(window.console) : function () {};
 define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouislider.min.js', 'ebg/core/gamegui'], (
   dojo,
   declare,
-  noUiSlider,
+  noUiSlider
 ) => {
   const isPromise = (v) => typeof v === 'object' && typeof v.then === 'function';
 
@@ -122,7 +122,7 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
           (data) => resolve(data),
           (isError, message, code) => {
             if (isError) reject(message, code);
-          },
+          }
         );
       });
     },
@@ -161,7 +161,7 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
       var methodName = 'onLeavingState' + stateName.charAt(0).toUpperCase() + stateName.slice(1);
       if (this[methodName] !== undefined) this[methodName]();
     },
-    
+
     clearPossible() {
       this.removeActionButtons();
       dojo.empty('customActions');
@@ -194,6 +194,18 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
     /*
      * setupNotifications
      */
+    getVisibleTitleContainer() {
+      function isVisible(elem) {
+        return !!(elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length);
+      }
+
+      if (isVisible($('pagemaintitletext'))) {
+        return $('pagemaintitletext');
+      } else {
+        return $('gameaction_status');
+      }
+    },
+
     setupNotifications() {
       console.log(this._notifications);
       this._notifications.forEach((notif) => {
@@ -208,9 +220,7 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
           let timing = this[functionName](args);
           if (timing === undefined) {
             if (notif[1] === undefined) {
-              console.error(
-                "A notification don't have default timing and didn't send a timing as return value : " + notif[0],
-              );
+              console.error("A notification don't have default timing and didn't send a timing as return value : " + notif[0]);
               return;
             }
 
@@ -375,9 +385,7 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
     setPreferenceValue(number, newValue) {
       var optionSel = 'option[value="' + newValue + '"]';
       dojo
-        .query(
-          '#preference_control_' + number + ' > ' + optionSel + ', #preference_fontrol_' + number + ' > ' + optionSel,
-        )
+        .query('#preference_control_' + number + ' > ' + optionSel + ', #preference_fontrol_' + number + ' > ' + optionSel)
         .attr('selected', true);
       var select = $('preference_control_' + number);
       if (dojo.isIE) {
@@ -460,10 +468,7 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
     tplPreferenceSelect(pref) {
       let values = Object.keys(pref.values)
         .map(
-          (val) =>
-            `<option value='${val}' ${pref.value == val ? 'selected="selected"' : ''}>${_(
-              pref.values[val].name,
-            )}</option>`,
+          (val) => `<option value='${val}' ${pref.value == val ? 'selected="selected"' : ''}>${_(pref.values[val].name)}</option>`
         )
         .join('');
 
@@ -497,10 +502,7 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
         this._settingsSections = this.getSettingsSections();
         dojo.place(`<div id='settings-controls-header'></div><div id='settings-controls-wrapper'></div>`, container);
         Object.keys(this._settingsSections).forEach((sectionName, i) => {
-          dojo.place(
-            `<div id='settings-section-${sectionName}' class='settings-section'></div>`,
-            'settings-controls-wrapper',
-          );
+          dojo.place(`<div id='settings-section-${sectionName}' class='settings-section'></div>`, 'settings-controls-wrapper');
           let div = dojo.place(`<div>${this._settingsSections[sectionName]}</div>`, 'settings-controls-header');
           let openSection = () => {
             dojo.query('#settings-controls-header div').removeClass('open');
@@ -542,9 +544,7 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
           this.place('tplSettingSlider', { desc: config.name, id: settingName }, localContainer);
           config.sliderConfig.start = [value];
           noUiSlider.create($('setting-' + settingName), config.sliderConfig);
-          $('setting-' + settingName).noUiSlider.on('slide', (arg) =>
-            this.changeSetting(settingName, parseInt(arg[0])),
-          );
+          $('setting-' + settingName).noUiSlider.on('slide', (arg) => this.changeSetting(settingName, parseInt(arg[0])));
         } else if (config.type == 'multislider') {
           this.place('tplSettingSlider', { desc: config.name, id: settingName }, localContainer);
           config.sliderConfig.start = value;
@@ -611,9 +611,7 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
         <div class='row-label'>${_(setting.name)}</div>
         <div class='row-value'>
           <label class="switch" for="setting-${setting.id}">
-            <input type="checkbox" id="setting-${setting.id}" ${
-        this.settings[setting.id] == 1 ? 'checked="checked"' : ''
-      } />
+            <input type="checkbox" id="setting-${setting.id}" ${this.settings[setting.id] == 1 ? 'checked="checked"' : ''} />
             <div class="slider round"></div>
           </label>
         </div>
@@ -626,8 +624,8 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
         .map(
           (val) =>
             `<option value='${val}' ${this.settings[setting.id] == val ? 'selected="selected"' : ''}>${_(
-              setting.values[val],
-            )}</option>`,
+              setting.values[val]
+            )}</option>`
         )
         .join('');
 
@@ -636,9 +634,7 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
           <div class="row-data row-data-large">
             <div class="row-label">${_(setting.name)}</div>
             <div class="row-value">
-              <select id="setting-${
-                setting.id
-              }" class="preference_control game_local_preference_control" style="display: block;">
+              <select id="setting-${setting.id}" class="preference_control game_local_preference_control" style="display: block;">
                 ${values}
               </select>
             </div>
@@ -699,7 +695,7 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
 
           phantom: true,
         },
-        options,
+        options
       );
       config.phantomStart = config.phantomStart || config.phantom;
       config.phantomEnd = config.phantomEnd || config.phantom;
@@ -752,14 +748,7 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
         const animation =
           config.pos == null
             ? this.slideToObject(mobile, config.to || targetId, config.duration, config.delay)
-            : this.slideToObjectPos(
-                mobile,
-                config.to || targetId,
-                config.pos.x,
-                config.pos.y,
-                config.duration,
-                config.delay,
-              );
+            : this.slideToObjectPos(mobile, config.to || targetId, config.pos.x, config.pos.y, config.duration, config.delay);
 
         dojo.connect(animation, 'onEnd', () => {
           dojo.style(mobile, 'zIndex', null);
@@ -844,7 +833,7 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
             </div>
           </div>`,
           target,
-          'after',
+          'after'
         );
         dojo.place(target, container.querySelector('.flip-back'));
         dojo.place(newNode, container.querySelector('.flip-front'));
@@ -870,14 +859,7 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
       if (this.gamedatas.players[this.player_id] && this.gamedatas.players[this.player_id].color_back) {
         color_bg = 'background-color:#' + this.gamedatas.players[this.player_id].color_back + ';';
       }
-      var you =
-        '<span style="font-weight:bold;color:#' +
-        color +
-        ';' +
-        color_bg +
-        '">' +
-        __('lang_mainsite', 'You') +
-        '</span>';
+      var you = '<span style="font-weight:bold;color:#' + color + ';' + color_bg + '">' + __('lang_mainsite', 'You') + '</span>';
       return you;
     },
 
@@ -886,12 +868,8 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
       if (player == undefined) return '<!--PNS--><span class="playername">' + name + '</span><!--PNE-->';
 
       const color = player.color;
-      const color_bg = player.color_back
-        ? 'background-color:#' + this.gamedatas.players[this.player_id].color_back + ';'
-        : '';
-      return (
-        '<!--PNS--><span class="playername" style="color:#' + color + ';' + color_bg + '">' + name + '</span><!--PNE-->'
-      );
+      const color_bg = player.color_back ? 'background-color:#' + this.gamedatas.players[this.player_id].color_back + ';' : '';
+      return '<!--PNS--><span class="playername" style="color:#' + color + ';' + color_bg + '">' + name + '</span><!--PNE-->';
     },
 
     /*
@@ -932,9 +910,7 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
 
     /* Helper to work with local storage */
     getConfig(value, v) {
-      return localStorage.getItem(value) == null || isNaN(localStorage.getItem(value))
-        ? v
-        : localStorage.getItem(value);
+      return localStorage.getItem(value) == null || isNaN(localStorage.getItem(value)) ? v : localStorage.getItem(value);
     },
 
     /**********************
@@ -1038,7 +1014,7 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
           <svg><use href="#help-marker-svg" /></svg>
         </div>
       `,
-        id,
+        id
       );
 
       dojo.connect($(id), 'click', (evt) => {

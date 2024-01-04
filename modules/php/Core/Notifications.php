@@ -78,9 +78,9 @@ class Notifications
   }
   public static function moveToCanteen($space,$nbWorkers)
   {
-    self::notifyAll('moveToCanteen', clienttranslate('All ${n} workers in space ${s} are moved to the canteen'), [
+    self::notifyAll('moveToCanteen', clienttranslate('All workers in space ${space} are moved to the canteen'), [
       'n' => $nbWorkers,
-      's' => $space,
+      'space' => $space,
     ]);
   }
   public static function startMining($player, $nbMoves)

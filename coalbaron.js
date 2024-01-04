@@ -31,6 +31,7 @@ define([
       this._inactiveStates = ['draft'];
       this._notifications = [
         ['placeWorkers', null],
+        ['moveToCanteen', null],
         ['giveMoney', 1300],
         ['spendMoney', 1300],
         ['giveTileTo', 1200],
@@ -163,6 +164,17 @@ define([
           this.wait(200 * i).then(() =>
             this.slide(`meeple-${workerId}`, $(n.args.space).querySelector('.space-workers-container'))
           )
+        )
+      ).then(() => {
+        this.notifqueue.setSynchronousDuration(this.isFastMode() ? 0 : 10);
+      });
+    },
+
+    notif_moveToCanteen(n) {
+      debug('Notif: move to canteen', n);
+      Promise.all(
+        [...$(n.args.space).querySelectorAll('.coalbaron-meeple')].map((oWorker, i) =>
+          this.wait(200 * i).then(() => this.slide(oWorker, $('canteen').querySelector('.space-workers-container')))
         )
       ).then(() => {
         this.notifqueue.setSynchronousDuration(this.isFastMode() ? 0 : 10);

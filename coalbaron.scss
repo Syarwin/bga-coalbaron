@@ -32,8 +32,10 @@ html {
     visibility: hidden;
 }
 
-#pagemaintitletext {
-    .coalbaron-card {
+#pagemaintitletext,
+#gameaction_status {
+    .coalbaron-card,
+    .coalbaron-tile {
         position: absolute;
     }
 }

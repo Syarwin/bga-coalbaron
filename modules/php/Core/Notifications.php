@@ -76,7 +76,7 @@ class Notifications
       'i18n' => ['space_name'],
     ]);
   }
-  public static function moveToCanteen($space,$nbWorkers)
+  public static function moveToCanteen($space, $nbWorkers)
   {
     self::notifyAll('moveToCanteen', clienttranslate('All workers in space ${space} are moved to the canteen'), [
       'n' => $nbWorkers,
@@ -93,8 +93,8 @@ class Notifications
 
   public static function refillFactorySpace($newTile)
   {
-    self::notifyAll('refillFactorySpace', clienttranslate('The game draws a new tile'), [
-      'tile' => $newTile,
+    self::notifyAll('refillFactorySpace', clienttranslate('A new tunnel tile is added on the board'), [
+      'tile' => $newTile->getUiData(),
       //Space info is in the tile location
     ]);
   }

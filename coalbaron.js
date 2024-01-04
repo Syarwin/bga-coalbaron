@@ -39,6 +39,7 @@ define([
         ['giveCardTo', 1200],
         ['endDraft', 1200],
         ['refillOrderSpace', 1200],
+        ['refillFactorySpace', 1200],
         // ["newTurn", 1000],
         // ["updateFirstPlayer", 500],
       ];
@@ -418,6 +419,12 @@ define([
 
     notif_giveTileTo(n) {
       debug('Notif: putting tile to pit', n);
+      this.slide(`tile-${n.args.tile.id}`, this.getTileContainer(n.args.tile));
+    },
+
+    notif_refillFactorySpace(n) {
+      debug('Notif: refill tunnel tiles', n);
+      this.addTile(n.args.tile, this.getVisibleTitleContainer());
       this.slide(`tile-${n.args.tile.id}`, this.getTileContainer(n.args.tile));
     },
 

@@ -1188,7 +1188,10 @@
 .phantom {
   visibility: hidden; }
 
-#pagemaintitletext .coalbaron-card {
+#pagemaintitletext .coalbaron-card,
+#pagemaintitletext .coalbaron-tile,
+#gameaction_status .coalbaron-card,
+#gameaction_status .coalbaron-tile {
   position: absolute; }
 
 #box-reserve {

@@ -93,10 +93,15 @@ trait PlaceWorkerTrait
         );
         foreach($spaces as $type => $typeSpaces){
             foreach($typeSpaces as $space){
-                $workersAtWork = $allWorkers->filter(function ($meeple) use ($space){
-                    return $meeple->getType() == WORKER && $meeple->getLocation() == $space;
-                })->count();
-                $nbrWorkersNeeded = $workersAtWork + 1;
+                if($space == SPACE_BANK_1 ){
+                    $nbrWorkersNeeded = 1;
+                }
+                else {
+                    $workersAtWork = $allWorkers->filter(function ($meeple) use ($space){
+                        return $meeple->getType() == WORKER && $meeple->getLocation() == $space;
+                    })->count();
+                    $nbrWorkersNeeded = $workersAtWork + 1;
+                }
                 $nbrNeededWorkers[$space] = $nbrWorkersNeeded;
             }
         }

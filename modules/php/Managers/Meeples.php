@@ -207,12 +207,25 @@ class Meeples extends \COAL\Helpers\Pieces
     return $availableWorkers;
   }
 
-  public static function placeWorkersInSpace($player, $toLocation)
+  /**
+   * Move enough workers from $player's reserve to $toLocation
+   * @param Player $player
+   * @param string $toLocation
+   * @param int $fixedNbNeededWorkers (optional) A fixed number of workers in the same place whatever the workers already in
+   */
+  public static function placeWorkersInSpace($player, $toLocation, $fixedNbNeededWorkers = null)
   {
     $pId = $player->getId();
-    $nbNeededWorkers = Meeples::countInLocation($toLocation) + 1;
-    //MOVE PREVIOUS WORKERS to the CANTEEN before placing new workers !
-    self::moveAllInLocation($toLocation, SPACE_CANTEEN);
+    if(isset($fixedNbNeededWorkers)){
+      $nbNeededWorkers = $fixedNbNeededWorkers;
+    }
+    else{
+      $workersAtWork = Meeples::countInLocation($toLocation);
+      $nbNeededWorkers = $workersAtWork + 1;
+      //MOVE PREVIOUS WORKERS to the CANTEEN before placing new workers !
+      self::moveAllInLocation($toLocation, SPACE_CANTEEN);
+      Notifications::moveToCanteen($toLocation,$workersAtWork);
+    }
     //pickForLocation is good for location but doesnt filter pid...
     //self::pickForLocation($nbNeededWorkers,SPACE_RESERVE,$toLocation);
     $workersToMove = self::getFirstAvailableWorkers($pId, $nbNeededWorkers);

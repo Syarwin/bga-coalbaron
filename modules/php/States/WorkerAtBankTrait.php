@@ -39,6 +39,7 @@ trait WorkerAtBankTrait
 
     function placeWorkerInBank($player, $space){
         self::trace("placeWorkerInBank($space)...");
+        $fixedNbNeededWorkers = null;
         switch($space)
         {
             case SPACE_BANK_3: 
@@ -55,11 +56,12 @@ trait WorkerAtBankTrait
                 break;
             case SPACE_BANK_1: 
                 $money = 1; 
+                $fixedNbNeededWorkers = 1;
                 break;
             default:
                 throw new \BgaVisibleSystemException("Not supported bank worker space : $space");
         }
-        Meeples::placeWorkersInSpace($player,$space);
+        Meeples::placeWorkersInSpace($player,$space,$fixedNbNeededWorkers);
         Players::giveMoney($player,$money);
     }
 }

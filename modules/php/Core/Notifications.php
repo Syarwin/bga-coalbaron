@@ -76,6 +76,13 @@ class Notifications
       'i18n' => ['space_name'],
     ]);
   }
+  public static function moveToCanteen($space,$nbWorkers)
+  {
+    self::notifyAll('moveToCanteen', clienttranslate('All ${n} workers in space ${s} are moved to the canteen'), [
+      'n' => $nbWorkers,
+      's' => $space,
+    ]);
+  }
   public static function startMining($player, $nbMoves)
   {
     self::notifyAll('startMining', clienttranslate('${player_name} gets ${n} mining work steps to perform'), [

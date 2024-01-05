@@ -40,6 +40,8 @@ define([
         ['endDraft', 1200],
         ['refillOrderSpace', 1200],
         ['refillFactorySpace', 1200],
+        ['returnTiles', 1400],
+        ['returnCards', 1400],
         // ["newTurn", 1000],
         // ["updateFirstPlayer", 500],
       ];
@@ -419,6 +421,8 @@ define([
 
     notif_giveTileTo(n) {
       debug('Notif: putting tile to pit', n);
+      if (!$(`tile-${n.args.tile.id}`)) this.addTile(n.args.tile, this.getVisibleTitleContainer());
+      $(`tile-${n.args.tile.id}`).classList.remove('selected');
       this.slide(`tile-${n.args.tile.id}`, this.getTileContainer(n.args.tile));
     },
 
@@ -426,6 +430,96 @@ define([
       debug('Notif: refill tunnel tiles', n);
       this.addTile(n.args.tile, this.getVisibleTitleContainer());
       this.slide(`tile-${n.args.tile.id}`, this.getTileContainer(n.args.tile));
+    },
+
+    onEnteringStateChooseTile(args) {
+      [...$('draft-container').querySelectorAll('.coalbaron-tile[data-order]')].forEach((o) => delete o.dataset.order);
+
+      let tiles = args._private.tiles;
+      Object.values(tiles).forEach((tile) => {
+        this.addTile(tile, $('draft-container'));
+        this.onClick(`tile-${tile.id}`, () =>
+          this.clientState('chooseTileRemaining', _('Select where and in which order you want to place the other tiles'), {
+            tileId: tile.id,
+            tiles,
+          })
+        );
+      });
+
+      this.addSecondaryActionButton('btnNoTake', _("Don't take any tile"), () => {
+        this.clientState('chooseTileRemaining', _('Select where and in which order you want to place the tiles'), {
+          tiles,
+        });
+      });
+    },
+
+    onEnteringStateChooseTileRemaining(args) {
+      this.addCancelStateBtn();
+      let tileId = args.tileId ? args.tileId : null;
+      if (tileId !== null) {
+        $(`tile-${tileId}`).classList.add('selected');
+      }
+
+      let selectedPosition = null;
+      let orderIds = [];
+
+      let updateStatus = () => {
+        if (selectedPosition !== null && orderIds.length == (tileId === null ? 5 : 4)) {
+          this.addPrimaryActionButton('btnConfirm', _('Confirm'), () =>
+            this.takeAction('actChooseTile', { tileId, returnDest: selectedPosition, otherIds: orderIds.join(';') })
+          );
+        } else if ($('btnConfirm')) {
+          $('btnConfirm').remove();
+        }
+
+        if (selectedPosition !== null) {
+          $('btnTOP').classList.toggle('selected', selectedPosition == 'TOP');
+          $('btnBOTTOM').classList.toggle('selected', selectedPosition == 'BOTTOM');
+        }
+
+        if (orderIds.length > 0) {
+          this.addSecondaryActionButton('btnCancelOrder', _('Reset tile order'), () => {
+            orderIds = [];
+            [...$('draft-container').querySelectorAll('.coalbaron-tile[data-order]')].forEach((o) => delete o.dataset.order);
+            updateStatus();
+          });
+        } else if ($('btnCancelOrder')) {
+          $('btnCancelOrder').remove();
+        }
+      };
+
+      // Choose position
+      this.addPrimaryActionButton('btnTOP', _('Place on top (1 = top tile)'), () => {
+        selectedPosition = 'TOP';
+        updateStatus();
+      });
+      this.addPrimaryActionButton('btnBOTTOM', _('Place on bottom (1 = bottom tile)'), () => {
+        selectedPosition = 'BOTTOM';
+        updateStatus();
+      });
+
+      // Choose order
+      Object.values(args.tiles).forEach((tile) => {
+        if (tile.id === tileId) return;
+
+        this.onClick(`tile-${tile.id}`, () => {
+          if (orderIds.includes(tile.id)) return;
+
+          orderIds.push(tile.id);
+          $(`tile-${tile.id}`).dataset.order = orderIds.length;
+          updateStatus();
+        });
+      });
+    },
+
+    notif_returnTiles(n) {
+      debug('Notif: return tiles', n);
+      if (n.args.player_id != this.player_id) return;
+
+      for (let i = 1; i <= n.args.n; i++) {
+        let oTile = $('draft-container').querySelector(`.coalbaron-tile[data-order='${i}']`);
+        this.wait((i - 1) * 200).then(() => this.slide(oTile, this.getVisibleTitleContainer(), { destroy: true }));
+      }
     },
 
     ////////////////////////////////////////////////////////
@@ -603,7 +697,8 @@ define([
 
     notif_giveCardTo(n) {
       debug('Notif: receiving a new order cards', n);
-      // TODO : add card if not existing
+      if (!$(`card-${n.args.card.id}`)) this.addCard(n.args.card, this.getVisibleTitleContainer());
+      $(`card-${n.args.card.id}`).classList.remove('selected');
       this.slide(`card-${n.args.card.id}`, `pending-orders-${n.args.player_id}`);
     },
 
@@ -618,6 +713,95 @@ define([
       this.slide(`card-${n.args.card.id}`, this.getCardContainer(n.args.card));
     },
 
+    onEnteringStateChooseCard(args) {
+      [...$('draft-container').querySelectorAll('.coalbaron-card[data-order]')].forEach((o) => delete o.dataset.order);
+
+      let cards = args._private.cards;
+      Object.values(cards).forEach((card) => {
+        this.addCard(card, $('draft-container'));
+        this.onClick(`card-${card.id}`, () =>
+          this.clientState('chooseCardRemaining', _('Select where and in which order you want to place the other cards'), {
+            cardId: card.id,
+            cards,
+          })
+        );
+      });
+
+      this.addSecondaryActionButton('btnNoTake', _("Don't take any card"), () => {
+        this.clientState('chooseCardRemaining', _('Select where and in which order you want to place the cards'), {
+          cards,
+        });
+      });
+    },
+
+    onEnteringStateChooseCardRemaining(args) {
+      this.addCancelStateBtn();
+      let cardId = args.cardId ? args.cardId : null;
+      if (cardId !== null) {
+        $(`card-${cardId}`).classList.add('selected');
+      }
+
+      let selectedPosition = null;
+      let orderIds = [];
+
+      let updateStatus = () => {
+        if (selectedPosition !== null && orderIds.length == (cardId === null ? 5 : 4)) {
+          this.addPrimaryActionButton('btnConfirm', _('Confirm'), () =>
+            this.takeAction('actChooseCard', { cardId, returnDest: selectedPosition, otherIds: orderIds.join(';') })
+          );
+        } else if ($('btnConfirm')) {
+          $('btnConfirm').remove();
+        }
+
+        if (selectedPosition !== null) {
+          $('btnTOP').classList.toggle('selected', selectedPosition == 'TOP');
+          $('btnBOTTOM').classList.toggle('selected', selectedPosition == 'BOTTOM');
+        }
+
+        if (orderIds.length > 0) {
+          this.addSecondaryActionButton('btnCancelOrder', _('Reset card order'), () => {
+            orderIds = [];
+            [...$('draft-container').querySelectorAll('.coalbaron-card[data-order]')].forEach((o) => delete o.dataset.order);
+            updateStatus();
+          });
+        } else if ($('btnCancelOrder')) {
+          $('btnCancelOrder').remove();
+        }
+      };
+
+      // Choose position
+      this.addPrimaryActionButton('btnTOP', _('Place on top (1 = top card)'), () => {
+        selectedPosition = 'TOP';
+        updateStatus();
+      });
+      this.addPrimaryActionButton('btnBOTTOM', _('Place on bottom (1 = bottom card)'), () => {
+        selectedPosition = 'BOTTOM';
+        updateStatus();
+      });
+
+      // Choose order
+      Object.values(args.cards).forEach((card) => {
+        if (card.id === cardId) return;
+
+        this.onClick(`card-${card.id}`, () => {
+          if (orderIds.includes(card.id)) return;
+
+          orderIds.push(card.id);
+          $(`card-${card.id}`).dataset.order = orderIds.length;
+          updateStatus();
+        });
+      });
+    },
+
+    notif_returnCards(n) {
+      debug('Notif: return cards', n);
+      if (n.args.player_id != this.player_id) return;
+
+      for (let i = 1; i <= n.args.n; i++) {
+        let oCard = $('draft-container').querySelector(`.coalbaron-card[data-order='${i}']`);
+        this.wait((i - 1) * 200).then(() => this.slide(oCard, this.getVisibleTitleContainer(), { destroy: true }));
+      }
+    },
     ////////////////////////////////////////////////////////////
     // _____                          _   _   _
     // |  ___|__  _ __ _ __ ___   __ _| |_| |_(_)_ __   __ _

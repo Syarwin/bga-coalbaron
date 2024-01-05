@@ -3,6 +3,7 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+    .coalbaron-tile,
     .coalbaron-card {
         margin: 15px 10px;
     }
@@ -47,5 +48,23 @@
     &.selected:hover {
         box-shadow: 0px 0px 7px 2px green;
         transform: scale(1.1);
+    }
+
+    &[data-order]::before {
+        content: attr(data-order);
+        display: block;
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: white;
+        border-radius: 50%;
+        border: 1px solid black;
+        top: 5px;
+        left: 45px;
+        font-size: 21px;
+        font-weight: bold;
     }
 }

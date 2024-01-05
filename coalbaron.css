@@ -276,6 +276,8 @@
         top: 120px; }
         #coalbaron-main-container #coalbaron-board .board-space#factory_draw .space-title-container::before {
           background-position: 66.6666% 100%; }
+      #coalbaron-main-container #coalbaron-board .board-space#factory_draw .space-workers-container {
+        height: 100%; }
     #coalbaron-main-container #coalbaron-board .board-space#mining_4, #coalbaron-main-container #coalbaron-board .board-space#mining_6, #coalbaron-main-container #coalbaron-board .board-space#mining_8, #coalbaron-main-container #coalbaron-board .board-space#mining_10 {
       top: 80px; }
       #coalbaron-main-container #coalbaron-board .board-space#mining_4 .space-title-container, #coalbaron-main-container #coalbaron-board .board-space#mining_6 .space-title-container, #coalbaron-main-container #coalbaron-board .board-space#mining_8 .space-title-container, #coalbaron-main-container #coalbaron-board .board-space#mining_10 .space-title-container {
@@ -381,15 +383,29 @@
         left: 10px; }
       #coalbaron-main-container #coalbaron-board .board-space#order_draw .space-title-container::before {
         background-position: 100% 100%; }
+      #coalbaron-main-container #coalbaron-board .board-space#order_draw .space-workers-container {
+        height: 100%; }
     #coalbaron-main-container #coalbaron-board .board-space#canteen, #coalbaron-main-container #coalbaron-board .board-space#bank_1 {
-      top: 280px;
-      left: 275px;
+      top: 395px;
+      left: 708px;
       width: 300px;
       height: 150px;
       background: none;
-      box-shadow: none; }
+      box-shadow: none;
+      display: flex;
+      justify-content: center;
+      align-items: center; }
       #coalbaron-main-container #coalbaron-board .board-space#canteen::before, #coalbaron-main-container #coalbaron-board .board-space#bank_1::before {
         display: none; }
+      #coalbaron-main-container #coalbaron-board .board-space#canteen .space-workers-container, #coalbaron-main-container #coalbaron-board .board-space#bank_1 .space-workers-container {
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.6);
+        border-radius: 5px; }
+        #coalbaron-main-container #coalbaron-board .board-space#canteen .space-workers-container:empty, #coalbaron-main-container #coalbaron-board .board-space#bank_1 .space-workers-container:empty {
+          background: none; }
     #coalbaron-main-container #coalbaron-board .board-space#bank_1 {
       top: 112px;
       left: 1324px; }
@@ -468,12 +484,36 @@
   .coalbaron-tile[data-type="16"] {
     background-position-x: 100%;
     background-position-y: 75%; }
+  .coalbaron-tile.selectable {
+    box-shadow: 0px 0px 7px 2px red;
+    cursor: pointer; }
+    .coalbaron-tile.selectable:hover {
+      transform: scale(1.1); }
+  .coalbaron-tile.selected, .coalbaron-tile.selected:hover {
+    box-shadow: 0px 0px 7px 2px green;
+    transform: scale(1.1); }
   .coalbaron-tile .coalbaron-meeple {
     position: absolute;
     top: 30px;
     left: 70px; }
     .coalbaron-tile .coalbaron-meeple:nth-child(2) {
       left: 17px; }
+  .coalbaron-tile[data-order]::before {
+    content: attr(data-order);
+    display: block;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    border-radius: 50%;
+    border: 1px solid black;
+    top: 5px;
+    left: 45px;
+    font-size: 21px;
+    font-weight: bold; }
 
 .coalbaron-meeple {
   width: 20px;
@@ -550,6 +590,7 @@
   flex-wrap: wrap;
   justify-content: center;
   align-items: center; }
+  #draft-container .coalbaron-tile,
   #draft-container .coalbaron-card {
     margin: 15px 10px; }
 
@@ -708,6 +749,22 @@
   .coalbaron-card.selected, .coalbaron-card.selected:hover {
     box-shadow: 0px 0px 7px 2px green;
     transform: scale(1.1); }
+  .coalbaron-card[data-order]::before {
+    content: attr(data-order);
+    display: block;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    border-radius: 50%;
+    border: 1px solid black;
+    top: 5px;
+    left: 45px;
+    font-size: 21px;
+    font-weight: bold; }
 
 #player_board_config {
   position: relative;
@@ -1193,6 +1250,10 @@
 #gameaction_status .coalbaron-card,
 #gameaction_status .coalbaron-tile {
   position: absolute; }
+
+.bgabutton.selected,
+.bgabutton.selected:hover {
+  background: #d97050; }
 
 #box-reserve {
   position: absolute;

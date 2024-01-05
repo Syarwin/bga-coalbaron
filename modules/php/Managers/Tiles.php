@@ -45,19 +45,21 @@ class Tiles extends \COAL\Helpers\Pieces
   /**
    * For one tile, return the list of all coal spots with either the coal currently in the spot, either "EMPTY_SPOT"
    */
-  public static function getTileCoalsStatus($tile) {
-    $datas = array();
-    for( $coalIndex=0 ; $coalIndex < $tile->getNumber(); $coalIndex++){
-      $datas[$coalIndex] = array($tile->getColor() => COAL_EMPTY_SPOT);
+  public static function getTileCoalsStatus($tile)
+  {
+    $datas = [];
+    for ($coalIndex = 0; $coalIndex < $tile->getNumber(); $coalIndex++) {
+      $datas[$coalIndex] = [$tile->getColor() => COAL_EMPTY_SPOT];
     }
     $pId = $tile->getPId();
-    if( !isset( $pId )) {
+    if (!isset($pId)) {
       return $datas;
     }
-    $filledCoals = Meeples::getPlayerTileCoals($pId,$tile->getId());
+    $filledCoals = Meeples::getPlayerTileCoals($pId, $tile->getId());
     $coalIndex = 0;
-    foreach($filledCoals as $filledCoal){//loop CoalCube list
-      $datas[$coalIndex] = array($tile->getColor() => $filledCoal);
+    foreach ($filledCoals as $filledCoal) {
+      //loop CoalCube list
+      $datas[$coalIndex] = [$tile->getColor() => $filledCoal];
       $coalIndex++;
     }
     return $datas;
@@ -112,32 +114,30 @@ class Tiles extends \COAL\Helpers\Pieces
    * @param string $fromLocation
    * @param string $toLocation
    */
-  public static function moveAllToTop($cardsIdArray, $fromLocation, $toLocation){
+  public static function moveAllToTop($cardsIdArray, $fromLocation, $toLocation)
+  {
     $cards = self::getMany($cardsIdArray);
-    //Warning! the result of getMany is not ordered like array input !
-    //foreach($cards as $cardId => $card){
-    foreach($cardsIdArray as $cardId){
-      $card = $cards[$cardId];
-      if($card->getLocation() != $fromLocation){
+    foreach ($cards as $card) {
+      $cardId = $card->getId();
+      if ($card->getLocation() != $fromLocation) {
         throw new \BgaVisibleSystemException("Tile $cardId is not at the right place ($fromLocation)");
       }
       self::insertOnTop($cardId, $toLocation);
     }
   }
-  
+
   /**
    * Move all these ordered cards to the BOTTOM of the deck after checking they are at $fromLocation
    * @param array $cardsIdArray
    * @param string $fromLocation
    * @param string $toLocation
    */
-  public static function moveAllToBottom($cardsIdArray, $fromLocation, $toLocation){
+  public static function moveAllToBottom($cardsIdArray, $fromLocation, $toLocation)
+  {
     $cards = self::getMany($cardsIdArray);
-    //Warning! the result of getMany is not ordered like array input !
-    //foreach($cards as $cardId => $card){
-    foreach($cardsIdArray as $cardId){
-      $card = $cards[$cardId];
-      if($card->getLocation() != $fromLocation){
+    foreach ($cards as $card) {
+      $cardId = $card->getId();
+      if ($card->getLocation() != $fromLocation) {
         throw new \BgaVisibleSystemException("Tile $cardId is not at the right place ($fromLocation)");
       }
       self::insertAtBottom($cardId, $toLocation);
@@ -155,28 +155,29 @@ class Tiles extends \COAL\Helpers\Pieces
   /**
    * return next available column to place a tile on player board : according to color (row) and light (right/left)
    */
-  public static function getPlayerNextColumnForTile($pId,$tile)
+  public static function getPlayerNextColumnForTile($pId, $tile)
   {
     $row = $tile->getRow();
 
     //NB : for now, the default PIT TILES (SPACE_PIT_TILE) are not counted, because they don't use TILE model
-    if($tile->isLight()){//LIGHT SIDE = LEFT SIDE = NEGATIVE X
-      $xmin = self::DB()
-        ->wherePlayer($pId)
-        ->whereNotNull('x')
-        ->where('y',$row)
-        ->func('MIN','x')
-        ?? 0;
-      return $xmin-1;
-    }
-    else {//DARK SIDE = RIGHT SIDE = POSITIVE X
-      $xmax = self::DB()
-        ->wherePlayer($pId)
-        ->whereNotNull('x')
-        ->where('y',$row)
-        ->func('MAX','x')
-        ?? 0;
-      return $xmax+1;
+    if ($tile->isLight()) {
+      //LIGHT SIDE = LEFT SIDE = NEGATIVE X
+      $xmin =
+        self::DB()
+          ->wherePlayer($pId)
+          ->whereNotNull('x')
+          ->where('y', $row)
+          ->func('MIN', 'x') ?? 0;
+      return $xmin - 1;
+    } else {
+      //DARK SIDE = RIGHT SIDE = POSITIVE X
+      $xmax =
+        self::DB()
+          ->wherePlayer($pId)
+          ->whereNotNull('x')
+          ->where('y', $row)
+          ->func('MAX', 'x') ?? 0;
+      return $xmax + 1;
     }
   }
 
@@ -185,21 +186,22 @@ class Tiles extends \COAL\Helpers\Pieces
    */
   public static function getPlayersTiles()
   {
-    return self::DB()->whereNotNull('player_id')->get();
+    return self::DB()
+      ->whereNotNull('player_id')
+      ->get();
   }
   /**
-   * @param bool $light 
+   * @param bool $light
    * @return int number of ALL (light OR dark) TILES owned by that player
    */
   public static function countPlayerTiles($pId, $light)
   {
-    if($light){
+    if ($light) {
       $types = self::getLightTypes();
-    }
-    else {
+    } else {
       $types = self::getDarkTypes();
     }
-    return self::getFilteredQuery($pId,null,$types)->count();
+    return self::getFilteredQuery($pId, null, $types)->count();
   }
 
   /**
@@ -207,11 +209,11 @@ class Tiles extends \COAL\Helpers\Pieces
    */
   public static function getPlayersBaseTiles($pId)
   {
-    $tiles = array();
-    $tiles[] = new BaseTileCard($pId,MINECART_YELLOW,1,1);
-    $tiles[] = new BaseTileCard($pId,MINECART_BROWN,2,-1);
-    $tiles[] = new BaseTileCard($pId,MINECART_GREY,3,-1);
-    $tiles[] = new BaseTileCard($pId,MINECART_BLACK,4,1);
+    $tiles = [];
+    $tiles[] = new BaseTileCard($pId, MINECART_YELLOW, 1, 1);
+    $tiles[] = new BaseTileCard($pId, MINECART_BROWN, 2, -1);
+    $tiles[] = new BaseTileCard($pId, MINECART_GREY, 3, -1);
+    $tiles[] = new BaseTileCard($pId, MINECART_BLACK, 4, 1);
     return new Collection($tiles);
   }
   /**
@@ -240,23 +242,26 @@ class Tiles extends \COAL\Helpers\Pieces
   /**
    * @return array list of all tiles types corresponding to a LIGHT tile
    */
-  public static function getLightTypes(){
+  public static function getLightTypes()
+  {
     return self::getTypes(true);
   }
   /**
    * @return array list of all tiles types corresponding to a DARK tile
    */
-  public static function getDarkTypes(){
+  public static function getDarkTypes()
+  {
     return self::getTypes(false);
   }
   /**
    * @return array list of all tiles types corresponding to a LIGHT or DARK tile
    */
-  public static function getTypes($isExpectedLight){
+  public static function getTypes($isExpectedLight)
+  {
     $tiles = self::getTiles();
-    $lightTypes = array();
+    $lightTypes = [];
     foreach ($tiles as $type => $tile) {
-      if($tile['light'] == $isExpectedLight){
+      if ($tile['light'] == $isExpectedLight) {
         $lightTypes[] = $type;
       }
     }

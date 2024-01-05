@@ -132,7 +132,7 @@ class Notifications
    */
   public static function returnTilesToTop($player, $nb)
   {
-    self::notifyAll('returnTilesToTop', clienttranslate('${player_name} returns ${n} tiles to the top of the deck'), [
+    self::notifyAll('returnTiles', clienttranslate('${player_name} returns ${n} tiles to the top of the deck'), [
       'player' => $player,
       'n' => $nb,
     ]);
@@ -143,7 +143,7 @@ class Notifications
    */
   public static function returnTilesToBottom($player, $nb)
   {
-    self::notifyAll('returnTilesToBottom', clienttranslate('${player_name} returns ${n} tiles to the bottom of the deck'), [
+    self::notifyAll('returnTiles', clienttranslate('${player_name} returns ${n} tiles to the bottom of the deck'), [
       'player' => $player,
       'n' => $nb,
     ]);
@@ -154,7 +154,7 @@ class Notifications
    */
   public static function returnCardsToTop($player, $nb)
   {
-    self::notifyAll('returnCardsToTop', clienttranslate('${player_name} returns ${n} cards to the top of the deck'), [
+    self::notifyAll('returnCards', clienttranslate('${player_name} returns ${n} cards to the top of the deck'), [
       'player' => $player,
       'n' => $nb,
     ]);
@@ -165,7 +165,7 @@ class Notifications
    */
   public static function returnCardsToBottom($player, $nb)
   {
-    self::notifyAll('returnCardsToBottom', clienttranslate('${player_name} returns ${n} cards to the bottom of the deck'), [
+    self::notifyAll('returnCards', clienttranslate('${player_name} returns ${n} cards to the bottom of the deck'), [
       'player' => $player,
       'n' => $nb,
     ]);
@@ -183,7 +183,7 @@ class Notifications
   {
     self::notifyAll('giveTileTo', clienttranslate('${player_name} receives a new tunnel tile'), [
       'player' => $player,
-      'tile' => $tile,
+      'tile' => $tile->getUiData(),
     ]);
   }
   public static function moveCoalToTile($player, $tile, $coal)

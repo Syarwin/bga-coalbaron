@@ -162,6 +162,10 @@
                         background-position: 66.6666% 100%;
                     }
                 }
+
+                .space-workers-container {
+                    height: 100%;
+                }
             }
 
             &#mining_4,
@@ -332,18 +336,39 @@
                 .space-title-container::before {
                     background-position: 100% 100%;
                 }
+
+                .space-workers-container {
+                    height: 100%;
+                }
             }
 
             &#canteen,
             &#bank_1 {
-                top: 280px;
-                left: 275px;
+                top: 395px;
+                left: 708px;
                 width: 300px;
                 height: 150px;
                 background: none;
                 box-shadow: none;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
                 &::before {
                     display: none;
+                }
+
+                .space-workers-container {
+                    padding: 10px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background: rgba(255, 255, 255, 0.6);
+                    border-radius: 5px;
+
+                    &:empty {
+                        background: none;
+                    }
                 }
             }
 

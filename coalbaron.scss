@@ -40,6 +40,11 @@ html {
     }
 }
 
+.bgabutton.selected,
+.bgabutton.selected:hover {
+    background: #d97050;
+}
+
 #box-reserve {
     position: absolute;
     top: 0%;

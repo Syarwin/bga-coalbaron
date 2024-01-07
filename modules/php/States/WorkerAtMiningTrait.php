@@ -21,10 +21,11 @@ trait WorkerAtMiningTrait
 {
     
     function argMiningSteps(){
+        $nbMoves = Globals::getMiningMoves();
         $player = Players::getActive();
         $cageLevel = $player->getCageLevel();
         $cagePossiblesLevels = self::getPossiblesMovesForPitCage($cageLevel);
-        $movableCoals = $this->getPossiblesMovesForCoals($player);
+        $movableCoals = $this->getPossiblesMovesForCoals($player,$nbMoves);
 
         return array(
         'cageLevel' => $cageLevel,
@@ -32,7 +33,7 @@ trait WorkerAtMiningTrait
         //'coals' => Meeples::getCoalsUiData($player->getId()),
         // KEEP MOVABLE only
         'movableCoals' => $movableCoals,
-        'moves' => Globals::getMiningMoves(),
+        'moves' => $nbMoves,
         'totalMoves' => Globals::getMiningMovesTotal(),
         );
     }
@@ -226,10 +227,11 @@ trait WorkerAtMiningTrait
     /**
      * Study each player coal
      * @param Player $player
+     * @param int $nbMoves number of moves to play
      * @return Collection of array : return list of location to send a coal (empty by default)
      */
-    function getPossiblesMovesForCoals($player){
-        self::trace("getPossiblesMovesForCoals()...");
+    function getPossiblesMovesForCoals($player,$nbMoves){
+        self::trace("getPossiblesMovesForCoals($nbMoves)...");
         $pId = $player->getId();
         $coals = Meeples::getPlayerCoals($pId);
         $coalsInCage = Meeples::getPlayerCageCoals($pId);
@@ -238,12 +240,12 @@ trait WorkerAtMiningTrait
         foreach($pendingOrders as $cardId => $card) {
             $cardCoalsStatusArray[$cardId] = Cards::getCardCoalsStatus($cardId);
         }
-
-        return $coals->map(function ($coal) use ($player, $nbCoalsInCage, $pendingOrders, $cardCoalsStatusArray) {
+        
+        $possibleMoves = [];
+        //Check moving coals by 1
+        $possibleMoves["solo"] = $coals->map(function ($coal) use ($player, $nbCoalsInCage, $pendingOrders, $cardCoalsStatusArray) {
             $possibleLocations = [];
-            $possibleLocations["solo"] = [];
             //Send another array for possibles moves in combination with another cube
-            $possibleLocations["duo"] = [];
             if($this->canMoveToPitCage($coal,$player,$nbCoalsInCage)){
                 $possibleLocations[] = SPACE_PIT_CAGE;
             }
@@ -255,16 +257,33 @@ trait WorkerAtMiningTrait
                 $maxSpot = count($cardCoalsStatus);
                 for($spotIndex = 0; $spotIndex < $maxSpot; $spotIndex++ ){
                     if($this->canMoveToCard($coal,$player,$card,$cardCoalsStatus,$spotIndex,1)){
-                        $possibleLocations["solo"][] = COAL_LOCATION_CARD.$cardId.'_'.$spotIndex;
+                        $possibleLocations[] = COAL_LOCATION_CARD.$cardId.'_'.$spotIndex;
                     }
-                    //TODO JSA duo outside of this loop because it is the empty spot list
-                    if($this->canMoveToCard($coal,$player,$card,$cardCoalsStatus,$spotIndex,2)){
-                        $possibleLocations["duo"][] = COAL_LOCATION_CARD.$cardId.'_'.$spotIndex;
+                    else if(!in_array("duo",$possibleLocations) && $this->canMoveToCard($coal,$player,$card,$cardCoalsStatus,$spotIndex,2)){
+                        //Don't resend all duo array, only a reference to it
+                        $possibleLocations[] = "duo";
                     }
                 }
             }
             return $possibleLocations;
           });
+        
+        //Check moving coals by 2
+        $possibleMoves["duo"] = [];
+        if($nbMoves >= 2 ){
+            //use fake coal to check empty spots in the same way :
+            $coal = new CoalCube(["player_id" => $pId, "meeple_location" => COAL_LOCATION_STORAGE, ], []);
+            foreach($pendingOrders as $cardId => $card){
+                $cardCoalsStatus = $cardCoalsStatusArray[$cardId];
+                $maxSpot = count($cardCoalsStatus);
+                for($spotIndex = 0; $spotIndex < $maxSpot; $spotIndex++ ){
+                    if($this->canMoveToCard($coal,$player,$card,$cardCoalsStatus,$spotIndex,2)){
+                        $possibleMoves["duo"][] = COAL_LOCATION_CARD.$cardId.'_'.$spotIndex;
+                    }
+                }
+            }
+        }
+        return $possibleMoves;
     }
     /**
      * @param CoalCube $coal

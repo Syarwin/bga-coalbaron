@@ -2,7 +2,9 @@
 
 namespace COAL\Managers;
 
+use COAL\Core\Game;
 use COAL\Core\Notifications;
+use COAL\Helpers\Collection;
 
 /* Class to manage all the god cards for CoalBaron */
 
@@ -141,6 +143,7 @@ class Cards extends \COAL\Helpers\Pieces
    */
   public static function getCardCoalsStatus($cardId)
   {
+    Game::get()->trace("getCardCoalsStatus($cardId)...");
     $datas = [];
     $card = self::get($cardId);
     $wantedCoals = $card->getCoals();
@@ -203,6 +206,16 @@ class Cards extends \COAL\Helpers\Pieces
     return self::getFilteredQuery($pId, CARD_LOCATION_OUTSTANDING)
       ->get()
       ->filter($filter);
+  }
+  /**
+   * Return all pending cards of this player
+   * @param int
+   * @return Collection
+   */
+  public static function getPlayerPendingOrders($pId)
+  {
+    return self::getFilteredQuery($pId, CARD_LOCATION_OUTSTANDING)
+      ->get();
   }
   /**
    * Return the list of this player ($pId) order cards of type $deliveryType, which contain all needed coal cubes

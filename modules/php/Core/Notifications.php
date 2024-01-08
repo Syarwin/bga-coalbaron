@@ -175,7 +175,7 @@ class Notifications
   {
     self::notifyAll('cardDelivered', clienttranslate('${player_name} delivers an order card and receives ${n} points'), [
       'player' => $player,
-      'card' => $card,
+      'cardId' => $card->getId(),
       'n' => $card->getPoints(),
     ]);
   }

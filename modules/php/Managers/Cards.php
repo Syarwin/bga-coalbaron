@@ -23,10 +23,17 @@ class Cards extends \COAL\Helpers\Pieces
     return new \COAL\Models\Card($row, $data);
   }
 
-  public static function getUiData()
+  /**
+   * @param int $currentPlayerId Id of current player loading the game
+   * @return array all cards visible by this player
+   */
+  public static function getUiData($currentPlayerId)
   {
+    $privateCards = self::getPlayerDeliveredOrders($currentPlayerId);
+
     return self::getInLocation(CARD_LOCATION_OUTSTANDING)
       ->merge(self::getInLocation(SPACE_ORDER . '_%'))
+      ->merge($privateCards)
       ->map(function ($card) {
         return $card->getUiData();
       })
@@ -215,6 +222,16 @@ class Cards extends \COAL\Helpers\Pieces
   public static function getPlayerPendingOrders($pId)
   {
     return self::getFilteredQuery($pId, CARD_LOCATION_OUTSTANDING)
+      ->get();
+  }
+  /**
+   * Return all delivered cards of this player
+   * @param int
+   * @return Collection
+   */
+  public static function getPlayerDeliveredOrders($pId)
+  {
+    return self::getFilteredQuery($pId, CARD_LOCATION_DELIVERED)
       ->get();
   }
   /**

@@ -87,7 +87,7 @@ class CoalBaron extends Table
       'shift' => Globals::getShift(),
       'meeples' => Meeples::getUiData(),
       'coalsInReserve' => Meeples::countAvailableCoalsColorArray(),
-      'cards' => Cards::getUiData(),
+      'cards' => Cards::getUiData($pId),
       'cardsDeckSize' => Cards::getDeckSize(),
       'tiles' => Tiles::getUiData(),
       'tilesDeckSize' => Tiles::getDeckSize(),

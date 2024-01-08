@@ -3,6 +3,7 @@
 namespace COAL\Managers;
 
 use COAL\Core\Game;
+use COAL\Core\Globals;
 use COAL\Core\Notifications;
 use COAL\Helpers\Collection;
 
@@ -29,7 +30,13 @@ class Cards extends \COAL\Helpers\Pieces
    */
   public static function getUiData($currentPlayerId)
   {
-    $privateCards = self::getPlayerDeliveredOrders($currentPlayerId);
+    $visibilityOption = Globals::getCardsVisibility();
+    if($visibilityOption == OPTION_VISIBLE_ALL){
+      $privateCards = self::getInLocation(CARD_LOCATION_DELIVERED);
+    } else {
+      //DEFAULT OPTION_VISIBLE_PLAYER_ONLY
+      $privateCards = self::getPlayerDeliveredOrders($currentPlayerId);
+    }
 
     return self::getInLocation(CARD_LOCATION_OUTSTANDING)
       ->merge(self::getInLocation(SPACE_ORDER . '_%'))

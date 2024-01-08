@@ -89,6 +89,9 @@ const COAL_LOCATION_STORAGE = "storage";
 /*
  * Game options
  */
+const OPTION_CARDS_VISIBILITY = 101;
+const OPTION_VISIBLE_PLAYER_ONLY = 0;
+const OPTION_VISIBLE_ALL = 1;
 
 /*
  * User preferences

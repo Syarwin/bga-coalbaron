@@ -17,6 +17,9 @@ class Globals extends \COAL\Helpers\DB_Manager
 
     'miningMoves' => 'int',
     'miningMovesTotal' => 'int',
+    
+    // Game options
+    'cardsVisibility' => 'int',
   ];
 
   /*
@@ -26,6 +29,8 @@ class Globals extends \COAL\Helpers\DB_Manager
   {
     self::setTurn(0);
     self::setShift(0);
+
+    self::setCardsVisibility($options[OPTION_CARDS_VISIBILITY]);
     
     foreach($players as $pId => $player){
       if($player['player_table_order'] == 1){

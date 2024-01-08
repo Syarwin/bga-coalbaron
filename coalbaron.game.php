@@ -59,6 +59,8 @@ class CoalBaron extends Table
     self::$instance = $this;
     self::initGameStateLabels([
       'logging' => 10,
+      //game options :
+      'option_visibility' => OPTION_CARDS_VISIBILITY,
     ]);
     Stats::checkExistence();
   }
@@ -83,6 +85,7 @@ class CoalBaron extends Table
     $nbPlayers = Players::count();
     return [
       'prefs' => Preferences::getUiData($pId),
+      'optionCardsVisibility' => Globals::getCardsVisibility(),
       'players' => Players::getUiData($pId),
       'shift' => Globals::getShift(),
       'meeples' => Meeples::getUiData(),

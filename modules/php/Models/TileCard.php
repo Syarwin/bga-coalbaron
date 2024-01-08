@@ -38,10 +38,17 @@ class TileCard extends \COAL\Helpers\DB_Model
     }
   }
 
-  public function getUiData()
+  /**
+   * @param int $currentPlayerMoney when we want to know if that player can buy the tile
+   */
+  public function getUiData($currentPlayerMoney = null)
   {
     $data = parent::getUiData();
     $data['cost'] = $this->getCost();
+    if(isset($currentPlayerMoney) ){
+      $data['buyable'] = ($this->getCost() <= $currentPlayerMoney );
+    }
+    
     return $data;
   }
 

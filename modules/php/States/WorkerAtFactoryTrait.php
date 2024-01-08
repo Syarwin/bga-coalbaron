@@ -15,11 +15,13 @@ functions about workers at the Minecarts Factory spaces
 trait WorkerAtFactoryTrait
 {
     function argChooseTile(){
-        $player_id = Players::getActive()->getId();
+        $player = Players::getActive();
+        $player_id = $player->getId();
+        $playerMoney = $player->getMoney();
         $privateDatas = array ();
 
-        $tiles = Tiles::getInLocation(TILE_LOCATION_DRAW)->map(function ($tile) {
-            return $tile->getUiData();
+        $tiles = Tiles::getInLocation(TILE_LOCATION_DRAW)->map(function ($tile) use ($playerMoney) {
+            return $tile->getUiData($playerMoney);
           }) ->toAssoc();
 
         $privateDatas[$player_id] = array(

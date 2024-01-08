@@ -49,6 +49,7 @@ class CoalBaron extends Table
   use COAL\States\NextPlayerTrait;
   use COAL\States\NewShiftTrait;
   use COAL\States\PlaceWorkerTrait;
+  use COAL\States\ChooseCoalTrait;
   use COAL\States\EndGameScoringTrait;
   use COAL\States\EndShiftTrait;
 

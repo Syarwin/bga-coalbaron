@@ -139,6 +139,11 @@ trait DebugTrait
     $this->testReplaceMeeplesInReserve();
     $this->actPlaceWorker(SPACE_FACTORY_1);
   }
+  
+  function testMissingCoals()
+  {
+    Meeples::moveAllByType(YELLOW_COAL,"FAKE_SPACE");
+  }
 
   function testActionOrder()
   {

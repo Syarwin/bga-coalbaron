@@ -29,19 +29,19 @@
         draftNextPlayer
         | 
         v
-    /-- nextShift   <---------------------------\
-    |     |                                      |
-    |     v                                      |
-    |   placeWorker <----------------------\     |
-    |   |    |          |           |      |     |
-    |   |    v          v           v      |     |
-    |   |miningSteps chooseCard chooseTile |     |
-    |   |    |          |           |      |     |
-    |   \    v          v           v      /     |
-    |    ----------------> nextPlayer  ----      |
-    |                        |                   |
-    |                        v                   |
-    |                      endShift -------------/
+    /-- nextShift   <-----------------------------------------\
+    |     |                                                    |
+    |     v                                                    |
+    |   placeWorker <------------------------------------\     |
+    |   |    |          |           |          |         |     |
+    |   |    v          v           v          v         |     |
+    |   |miningSteps chooseCard chooseTile -> chooseCoal |     |
+    |   |    |          |           |          |         |     |
+    |   v    v          v           v          v         /     |
+    |    ----------------> nextPlayer  ------------------      |
+    |                        |                                 |
+    |                        v                                 |
+    |                      endShift ---------------------------/
     |     
     \-> endGameScoring
         | 
@@ -131,6 +131,7 @@ $machinestates = [
       'startMining' => ST_MINING,
       'chooseCard' => ST_CHOOSE_CARD,
       'chooseTile' => ST_CHOOSE_TILE,
+      'chooseCoal' => ST_CHOOSE_COAL,
       'next' => ST_NEXT_PLAYER,
     ],
   ],
@@ -178,7 +179,20 @@ $machinestates = [
     'type' => 'activeplayer',
     'possibleactions' => ['actChooseTile'],
     'transitions' => [
+      'chooseCoal' => ST_CHOOSE_COAL,
       'next' => ST_NEXT_PLAYER,
+    ],
+  ],
+  
+  ST_CHOOSE_COAL => [
+    'name' => 'chooseCoal',
+    'description' => clienttranslate('${actplayer} must choose the color of ${n} coals to get'),
+    'descriptionmyturn' => clienttranslate('${you} must choose the color of ${n} coals to get'),
+    'args' => 'argChooseCoal',
+    'type' => 'activeplayer',
+    'possibleactions' => ['actChooseCoal'],
+    'transitions' => [
+      'next' => ST_CONFIRM_CHOICES,
     ],
   ],
 

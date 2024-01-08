@@ -8,6 +8,7 @@ const YELLOW_COAL = 'yellow_coal';
 const BLACK_COAL = 'black_coal';
 const GREY_COAL = 'grey_coal';
 const BROWN_COAL = 'brown_coal';
+const COAL_TYPES = [YELLOW_COAL, BLACK_COAL, GREY_COAL, BROWN_COAL];
 const MINECART_YELLOW = 'minecart_yellow';
 const MINECART_BROWN = 'minecart_brown';
 const MINECART_GREY = 'minecart_grey';
@@ -121,6 +122,7 @@ const ST_CONFIRM_CHOICES = 20;
 const ST_MINING = 30;
 const ST_CHOOSE_CARD = 40;
 const ST_CHOOSE_TILE = 50;
+const ST_CHOOSE_COAL = 60;
 
 const ST_END_SCORING = 90;
 const ST_PRE_END_OF_GAME = 98;

@@ -123,6 +123,21 @@ class action_coalbaron extends APP_GameAction
     $this->game->actChooseTile($tileId, $returnDest, $otherTilesArray);
     self::ajaxResponse();
   }
+  
+  public function actChooseCoal()
+  {
+    self::setAjaxMode();
+    // ---------- ---------- array of String  --------------------
+    $colors_raw = self::getArg( "colors", AT_alphanum, true );
+    $colors_raw = trim($colors_raw);
+    if( $colors_raw == '' )
+        $colorsArray = array();
+    else
+        $colorsArray = explode( ' ', $colors_raw );
+    // ---------- ---------- -------------------- --------------------
+    $this->game->actChooseCoal($colorsArray);
+    self::ajaxResponse();
+  }
 
   ///////////////////
   /////  PREFS  /////

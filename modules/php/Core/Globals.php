@@ -17,7 +17,10 @@ class Globals extends \COAL\Helpers\DB_Manager
 
     'miningMoves' => 'int',
     'miningMovesTotal' => 'int',
-    
+
+    'nbCoalsToChoose' => 'int',
+    'tileCoalsToChoose' => 'int',
+
     // Game options
     'cardsVisibility' => 'int',
   ];

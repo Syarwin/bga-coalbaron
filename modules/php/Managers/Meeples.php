@@ -2,10 +2,14 @@
 
 namespace COAL\Managers;
 
+use COAL\Core\Game;
+use COAL\Core\Globals;
 use COAL\Helpers\Utils;
 use COAL\Helpers\Collection;
 use COAL\Core\Notifications;
 use COAL\Core\Stats;
+use COAL\Exceptions\MissingCoalException;
+use COAL\Models\TileCard;
 
 /* Class to manage all the meeples for CoalBaron */
 
@@ -315,23 +319,52 @@ class Meeples extends \COAL\Helpers\Pieces
   }
   /**
    * ADD 1 COAL in each minecart on the tile
+   * @param Player $player
+   * @param TileCard $tile
    */
   public static function placeCoalsOnTile($player, $tile)
   {
+    $tileId = $tile->getId();
     $nb = $tile->getNumber();
-    $coals = self::getFirstAvailableCoals($tile->getColor(), $nb);
-    foreach ($coals as $coal) {
-      $coal->moveToTile($player, $tile);
-    }
+    $color = $tile->getColor();
+    Game::get()->trace("placeCoalsOnTile( $tileId, $color,$nb)");
+    $coals = Meeples::placeAnyCoalOnTile($player, $tile, $color,$nb);
 
     $missingCoals = $nb - count($coals);
     if ($missingCoals > 0) {
-      //TODO JSA SPECIFIC STATE to choose a coal
       /*
+      GAME RULE (last additional note): 
       If, when a player acquires a tunnel tile, the supply contains fewer coal cubes of the color he needs to fill the minecarts on that tile, the player may place 1 coal cube of
-      any color onto each minecart on that tile which he cannot fill properly. This does not affect any costs paid for the tile.
+      ANY COLOR onto each minecart on that tile which he cannot fill properly. This does not affect any costs paid for the tile.
       */
-      throw new \BgaVisibleSystemException('Not supported feature : choose coal');
+      $coalsInReserve = Meeples::countAvailableCoalsColorArray();
+
+      //TODO JSA SPECIAL CASE : only 1 color in reserve : auto choose with confirmation ?
+      //TODO JSA SPECIAL CASE : $missingCoals coals in reserve : auto choose with confirmation ?
+      //TODO JSA SPECIAL CASE : 0 coal in reserve -> confirm user empty choice ?
+
+      Globals::setNbCoalsToChoose($missingCoals);
+      Globals::setTileCoalsToChoose($tileId);
+
+      throw new MissingCoalException("$missingCoals missing coal for tile $tileId");
     }
+  }
+  /**
+   * ADD N COALS of a specific color on the tile
+   * @param Player $player
+   * @param TileCard $tile
+   * @param string $color type of the coal
+   * @param int $number number of coals of this colors to add
+   * @return Collection coals placed on that tile
+   */
+  public static function placeAnyCoalOnTile($player, $tile, $color, $number)
+  {
+    $tileId = $tile->getId();
+    Game::get()->trace("placeAnyCoalOnTile( $tileId, $color, $number)");
+    $coals = self::getFirstAvailableCoals($color, $number);
+    foreach ($coals as $coal) {
+      $coal->moveToTile($player, $tile);
+    }
+    return $coals;
   }
 }

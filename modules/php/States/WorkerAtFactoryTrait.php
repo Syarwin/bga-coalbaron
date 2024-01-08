@@ -2,7 +2,9 @@
 
 namespace COAL\States;
 
+use COAL\Core\Game;
 use COAL\Core\Notifications;
+use COAL\Exceptions\MissingCoalException;
 use COAL\Managers\Meeples;
 use COAL\Managers\Players;
 use COAL\Managers\Tiles;
@@ -54,7 +56,7 @@ trait WorkerAtFactoryTrait
               throw new \BgaVisibleSystemException("Tile $tileId is not selectable");
             }
             //$cardsNb++;
-            self::giveTileToPlayer($player,$tile);
+            $this->giveTileToPlayer($player,$tile);
         }
         $cardsNb += count($othersTilesOrder);
         
@@ -70,7 +72,10 @@ trait WorkerAtFactoryTrait
             Notifications::returnTilesToBottom($player,count($othersTilesOrder));
         }
     
-        $this->gamestate->nextState('next');
+        if( ST_CHOOSE_TILE == $this->gamestate->state_id()){
+            //GO TO NEXT STATE ONLY IF not already changed by a previous method
+            $this->gamestate->nextState('next');
+        }
     }
     /**
      * List all Worker Spaces to play in "Factory"
@@ -110,7 +115,7 @@ trait WorkerAtFactoryTrait
         self::trace("placeWorkerInFactory($space)...");
         Meeples::placeWorkersInSpace($player,$space);
         $tile = Tiles::getTileInFactory($space);
-        self::giveTileToPlayer($player,$tile);
+        $this->giveTileToPlayer($player,$tile);
 
         //TODO JSA refillFactorySpace only when player confirmed the turn 
         $newTile = Tiles::refillFactorySpace($space);
@@ -133,11 +138,19 @@ trait WorkerAtFactoryTrait
     /**
      * Move a tile to a given player
      */
-    public static function giveTileToPlayer($player,$tile)
+    public function giveTileToPlayer($player,$tile)
     {
         Players::spendMoney($player,$tile->getCost());
         $column = Tiles::getPlayerNextColumnForTile($player->getId(),$tile);
         $tile->moveToPlayerBoard($player,$column);
-        Meeples::placeCoalsOnTile($player,$tile);
+        try {
+            Meeples::placeCoalsOnTile($player,$tile);
+        }
+        catch (MissingCoalException $e){
+            //throw $e;
+            
+            //Go to another state to manage selection of coals color :
+            $this->gamestate->nextState( 'chooseCoal' );
+        }
     }
 }

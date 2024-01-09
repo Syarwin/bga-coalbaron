@@ -56,6 +56,13 @@ class Player extends \COAL\Helpers\DB_Model
     $name = 'get' . \ucfirst($name);
     return Stats::$name($this->id);
   }
+  /*
+  public function initStats($nbPlayers)
+  { 
+    $initialMoney = Players::getInitialMoney($nbPlayers);
+    Stats::inc( "moneyReceived", $this, $initialMoney );
+    Stats::inc( "moneyLeft", $this, $initialMoney );
+  }*/
   
   public function addPoints($points)
   {

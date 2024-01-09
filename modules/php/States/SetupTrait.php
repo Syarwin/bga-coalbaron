@@ -22,6 +22,10 @@ trait SetupTrait
     Globals::setupNewGame($players, $options);
     Preferences::setupNewGame($players, $this->player_preferences);
     //    Stats::checkExistence();
+    /*foreach ($players as $pId => $player) {
+      Players::get($player['id'])->initStats(count($players));
+    }
+    */
     Tiles::setupNewGame($players, $options);
     Cards::setupNewGame($players, $options);
     Meeples::setupNewGame($players, $options);

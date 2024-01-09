@@ -66,5 +66,15 @@ $stats_type = [
     "cardsDelivered" => array("id"=> 32,
       "name" => totranslate("Cards delivered"),
       "type" => "int" ),
+      
+    "moneyReceived" => array("id"=> 33,
+      "name" => totranslate("Money received"),
+      "type" => "int" ),
+    "moneySpent" => array("id"=> 34,
+      "name" => totranslate("Money spent"),
+      "type" => "int" ),
+    "moneyLeft" => array("id"=> 35,
+      "name" => totranslate("Money at the end"),
+      "type" => "int" ),
    ],
 ];

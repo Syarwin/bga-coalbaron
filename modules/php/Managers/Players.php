@@ -30,7 +30,7 @@ class Players extends \COAL\Helpers\DB_Manager
     $query = self::DB()->multipleInsert(['player_id', 'player_color', 'player_canal', 'player_name', 'player_avatar', 'money']);
 
     $values = [];
-    $initialMoney = 12 - count($players);
+    $initialMoney = Players::getInitialMoney(count($players));
     foreach ($players as $pId => $player) {
       $color = array_shift($colors);
       $values[] = [$pId, $color, $player['player_canal'], $player['player_name'], $player['player_avatar'], $initialMoney];
@@ -39,6 +39,15 @@ class Players extends \COAL\Helpers\DB_Manager
 
     Game::get()->reattributeColorsBasedOnPreferences($players, $gameInfos['player_colors']);
     Game::get()->reloadPlayersBasicInfos();
+
+    foreach ($players as $pId => $player) {
+      Stats::inc( "moneyReceived", $pId, $initialMoney );
+      Stats::inc( "moneyLeft", $pId, $initialMoney );
+    }
+  }
+
+  public static function getInitialMoney($nbPlayers){
+    return 12 - $nbPlayers;
   }
 
   public function getActiveId()
@@ -132,6 +141,8 @@ class Players extends \COAL\Helpers\DB_Manager
     $pId = $player->getId();
     self::DB()->inc(['money' => $money], $pId);
     Notifications::giveMoney($player,$money);
+    Stats::inc("moneyReceived",$player,$money);
+    Stats::inc("moneyLeft",$player,$money);
   }
   
   public static function spendMoney($player,$money){
@@ -142,5 +153,7 @@ class Players extends \COAL\Helpers\DB_Manager
     }
     self::DB()->inc(['money' => 0-$money], $pId);
     Notifications::spendMoney($player,$money);
+    Stats::inc("moneySpent",$player,$money);
+    Stats::inc("moneyLeft",$player,-$money);
   }
 }

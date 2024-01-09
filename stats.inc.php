@@ -22,5 +22,11 @@ $stats_type = [
 
   'value_labels' => [],
 
-  'player' => [  ],
+  'player' => [ 
+    //A score stat to enable comparison with average player's score
+    "score" => array("id"=> 10,
+      "name" => totranslate("Score"),
+      "type" => "int" ),
+
+   ],
 ];

@@ -60,6 +60,7 @@ class Player extends \COAL\Helpers\DB_Model
   public function addPoints($points)
   {
     $this->setScore( $this->getScore() + $points);
+    Stats::inc( "score", $this->id, $points );
   }
 
   public function movePitCageTo($toLevel)

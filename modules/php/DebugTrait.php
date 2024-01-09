@@ -27,6 +27,11 @@ trait DebugTrait
     $this->gamestate->jumpToState(ST_PLACE_WORKER);
   }
 
+  function testGoNextShift()
+  {
+    $this->gamestate->jumpToState(ST_NEXT_SHIFT);
+  }
+  
   function testSimulateDraft()
   {
     $players = Players::getAll();

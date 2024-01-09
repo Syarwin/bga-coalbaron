@@ -5,6 +5,7 @@ namespace COAL\States;
 use COAL\Core\Game;
 use COAL\Core\Globals;
 use COAL\Core\Notifications;
+use COAL\Core\Stats;
 use COAL\Managers\Cards;
 use COAL\Managers\Meeples;
 use COAL\Managers\Players;
@@ -73,5 +74,6 @@ trait WorkerAtDeliveryTrait
             Notifications::cardDelivered($player,$card);
         }
 
+        Stats::inc( "nbActions3", $player );
     }
 }

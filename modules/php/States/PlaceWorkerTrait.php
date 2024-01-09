@@ -3,6 +3,7 @@
 namespace COAL\States;
 
 use COAL\Core\Globals;
+use COAL\Core\Stats;
 use COAL\Managers\Cards;
 use COAL\Managers\Meeples;
 use COAL\Managers\Players;
@@ -44,6 +45,8 @@ trait PlaceWorkerTrait
         throw new \BgaVisibleSystemException("Incorrect place to place a worker : $space");
 
         $this->placeWorker($player,$space);
+        Stats::inc( "nbActions", $player );
+
         if( ST_PLACE_WORKER == $this->gamestate->state_id()){
         //GO TO NEXT STATE ONLY IF not already changed by the previous method
         $this->gamestate->nextState( 'next' );

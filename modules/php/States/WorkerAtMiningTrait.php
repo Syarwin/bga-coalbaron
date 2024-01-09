@@ -5,6 +5,7 @@ namespace COAL\States;
 use COAL\Core\Game;
 use COAL\Core\Globals;
 use COAL\Core\Notifications;
+use COAL\Core\Stats;
 use COAL\Helpers\Collection;
 use COAL\Helpers\Utils;
 use COAL\Managers\Cards;
@@ -210,6 +211,8 @@ trait WorkerAtMiningTrait
         Globals::setMiningMoves($nbMoves);
         Globals::setMiningMovesTotal($nbMoves);
         Notifications::startMining($player,$nbMoves);
+        
+        Stats::inc( "nbActions2", $player );
         //Go to another state to manage moves :
         $this->gamestate->nextState( 'startMining' );
     }

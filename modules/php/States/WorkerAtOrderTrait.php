@@ -3,6 +3,7 @@
 namespace COAL\States;
 
 use COAL\Core\Notifications;
+use COAL\Core\Stats;
 use COAL\Managers\Cards;
 use COAL\Managers\Meeples;
 use COAL\Managers\Players;
@@ -111,6 +112,8 @@ trait WorkerAtOrderTrait
         $card = Cards::getCardInOrder($space);
         Cards::giveCardTo($player,$card);
 
+        Stats::inc( "nbActions5", $player );
+
         //TODO JSA refillOrderSpace only when player confirmed the turn 
         $newCard = Cards::refillOrderSpace($space);
         Notifications::refillOrderSpace($newCard);
@@ -124,6 +127,8 @@ trait WorkerAtOrderTrait
 
         $cards = Cards::pickForLocation(CARDS_DRAW_NUMBER,CARD_LOCATION_DECK,CARD_LOCATION_DRAW);
         
+        Stats::inc( "nbActions5", $player );
+
         //Go to another state to manage selection of cards :
         $this->gamestate->nextState( 'chooseCard' );
     }

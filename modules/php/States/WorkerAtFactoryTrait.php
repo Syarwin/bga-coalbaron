@@ -4,6 +4,7 @@ namespace COAL\States;
 
 use COAL\Core\Game;
 use COAL\Core\Notifications;
+use COAL\Core\Stats;
 use COAL\Exceptions\MissingCoalException;
 use COAL\Managers\Meeples;
 use COAL\Managers\Players;
@@ -120,6 +121,7 @@ trait WorkerAtFactoryTrait
         //TODO JSA refillFactorySpace only when player confirmed the turn 
         $newTile = Tiles::refillFactorySpace($space);
         Notifications::refillFactorySpace($newTile);
+        Stats::inc( "nbActions1", $player );
     }
     
      /**
@@ -131,6 +133,8 @@ trait WorkerAtFactoryTrait
 
         $tiles = Tiles::pickForLocation(TILES_DRAW_NUMBER,TILE_LOCATION_DECK,TILE_LOCATION_DRAW);
         
+        Stats::inc( "nbActions1", $player );
+
         //Go to another state to manage selection of tiles :
         $this->gamestate->nextState( 'chooseTile' );
     }

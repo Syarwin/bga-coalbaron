@@ -3,6 +3,7 @@ namespace COAL\States;
 
 use COAL\Core\Globals;
 use COAL\Core\Notifications;
+use COAL\Core\Stats;
 use COAL\Managers\Meeples;
 use COAL\Managers\Players;
 
@@ -58,11 +59,14 @@ trait NewShiftTrait
         Globals::setFirstPlayer($newFirstPlayerId);
       }
       $player_id = Globals::getFirstPlayer();
+      $shift = Globals::getShift();
 
-      Notifications::newShift(Globals::getShift());
+      Notifications::newShift($shift);
       Players::changeActive( $player_id );
       $player = Players::get($player_id);
       Notifications::updateFirstPlayer($player);
+      //TODO JSA stat turnOrder
+      //Stats::set(1,"turnOrder$shitft",$player_id);
 
       //UNREVEAL delivered orders : only UI effect
 

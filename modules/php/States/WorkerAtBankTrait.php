@@ -5,6 +5,7 @@ namespace COAL\States;
 use COAL\Core\Game;
 use COAL\Core\Globals;
 use COAL\Core\Notifications;
+use COAL\Core\Stats;
 use COAL\Managers\Meeples;
 use COAL\Managers\Players;
 
@@ -63,5 +64,6 @@ trait WorkerAtBankTrait
         }
         Meeples::placeWorkersInSpace($player,$space,$fixedNbNeededWorkers);
         Players::giveMoney($player,$money);
+        Stats::inc( "nbActions4", $player );
     }
 }

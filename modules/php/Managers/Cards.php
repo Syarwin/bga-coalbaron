@@ -5,6 +5,7 @@ namespace COAL\Managers;
 use COAL\Core\Game;
 use COAL\Core\Globals;
 use COAL\Core\Notifications;
+use COAL\Core\Stats;
 use COAL\Helpers\Collection;
 
 /* Class to manage all the god cards for CoalBaron */
@@ -150,6 +151,7 @@ class Cards extends \COAL\Helpers\Pieces
   {
     $card->moveToOutstanding($player);
     Notifications::giveCardTo($player, $card);
+    Stats::inc( "cardsReceived", $player );
   }
 
   /**

@@ -71,6 +71,7 @@ trait WorkerAtDeliveryTrait
         foreach($cards as $card){
             $player->addPoints($card->getPoints());
             $card->moveToDelivered();
+            Stats::inc( "cardsDelivered", $player );
             Notifications::cardDelivered($player,$card);
         }
 

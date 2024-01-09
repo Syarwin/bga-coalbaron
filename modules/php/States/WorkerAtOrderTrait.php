@@ -53,6 +53,7 @@ trait WorkerAtOrderTrait
             }
             //$cardsNb++;
             Cards::giveCardTo($player,$card);
+            Stats::inc( "cardsDrawn", $player );
         }
         $cardsNb += count($otherCardsOrder);
         /*

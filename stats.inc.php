@@ -57,5 +57,14 @@ $stats_type = [
       "name" => totranslate("New order actions done"),
       "type" => "int" ),   
     
+    "cardsReceived" => array("id"=> 30,
+      "name" => totranslate("Cards received"),
+      "type" => "int" ),
+    "cardsDrawn" => array("id"=> 31,
+      "name" => totranslate("Cards taken from the deck"),
+      "type" => "int" ),
+    "cardsDelivered" => array("id"=> 32,
+      "name" => totranslate("Cards delivered"),
+      "type" => "int" ),
    ],
 ];

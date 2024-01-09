@@ -58,6 +58,7 @@ trait WorkerAtFactoryTrait
             }
             //$cardsNb++;
             $this->giveTileToPlayer($player,$tile);
+            Stats::inc( "tilesDrawn", $player );
         }
         $cardsNb += count($othersTilesOrder);
         
@@ -147,6 +148,14 @@ trait WorkerAtFactoryTrait
         Players::spendMoney($player,$tile->getCost());
         $column = Tiles::getPlayerNextColumnForTile($player->getId(),$tile);
         $tile->moveToPlayerBoard($player,$column);
+        Stats::inc( "tilesReceived", $player );
+        if($tile->isLight()){
+            Stats::inc( "tilesLight", $player );
+        }
+        else {
+            Stats::inc( "tilesDark", $player );
+        }
+
         try {
             Meeples::placeCoalsOnTile($player,$tile);
         }

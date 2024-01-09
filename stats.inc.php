@@ -76,5 +76,18 @@ $stats_type = [
     "moneyLeft" => array("id"=> 35,
       "name" => totranslate("Money at the end"),
       "type" => "int" ),
+
+    "tilesReceived" => array("id"=> 36,
+      "name" => totranslate("Tiles received"),
+      "type" => "int" ),
+    "tilesDrawn" => array("id"=> 37,
+      "name" => totranslate("Tiles taken from the deck"),
+      "type" => "int" ),
+    "tilesLight" => array("id"=> 38,
+      "name" => totranslate("Light tiles"),
+      "type" => "int" ),
+    "tilesDark" => array("id"=> 39,
+      "name" => totranslate("Dark tiles"),
+      "type" => "int" ),
    ],
 ];

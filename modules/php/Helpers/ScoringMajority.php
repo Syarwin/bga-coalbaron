@@ -9,11 +9,13 @@ use COAL\Helpers\ScoringMajorityPlace;
  */
 class ScoringMajority
 { 
+  /**Game round where this majority is scored */
+  public string $gameRound;
   /**
    * Type of element scored for this majority
    */
   public string $elementType;
-  public string $elementTypeIndex;
+  public int $elementTypeIndex;
   /**
    * Podium First place for this majority
    */
@@ -23,8 +25,9 @@ class ScoringMajority
    */
   public ScoringMajorityPlace $secondPlace;
 
-  public function __construct(int $typeIndex, string $type, int $firstPlacePoints, int $secondPlacePoints)
+  public function __construct(int $gameRound, int $typeIndex, string $type, int $firstPlacePoints, int $secondPlacePoints)
   {
+    $this->gameRound = $gameRound;
     $this->elementType = $type;
     $this->elementTypeIndex = $typeIndex;
     $this->firstPlace = new ScoringMajorityPlace($firstPlacePoints);
@@ -44,11 +47,11 @@ class ScoringMajority
    * return the number of scored players for this majority
    */
   public function doScore($players){
-    $counter = $this->firstPlace->doScore($players,$this->elementType,$this->elementTypeIndex);
+    $counter = $this->firstPlace->doScore($players,$this->elementType,$this->elementTypeIndex,$this->gameRound);
     if( $counter <=2 && count($players) >2){
       //IF >2 players : 2nd majority gives points
       //SECOND PLACE is not scored if first place has 2+ players
-      $counter += $this->secondPlace->doScore($players,$this->elementType,$this->elementTypeIndex);
+      $counter += $this->secondPlace->doScore($players,$this->elementType,$this->elementTypeIndex,$this->gameRound);
     }
     return $counter;
   }

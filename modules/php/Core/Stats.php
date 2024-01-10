@@ -110,6 +110,107 @@ class Stats extends \COAL\Helpers\DB_Manager
         ->values($values);
     }
   }
+  
+  protected static function getValue($id, $pId)
+  {
+    return self::getAll()
+      ->filter(function ($stat) use ($id, $pId) {
+        return $stat['type'] == $id &&
+          ((is_null($pId) && is_null($stat['pId'])) || (!is_null($pId) && $stat['pId'] == (is_int($pId) ? $pId : $pId->getId())));
+      })
+      ->first()['value'];
+  }
+
+  protected static function getFilteredQuery($id, $pId)
+  {
+    $query = self::DB()->where('stats_type', $id);
+    if (is_null($pId)) {
+      $query = $query->whereNull('stats_player_id');
+    } else {
+      $query = $query->where('stats_player_id', is_int($pId) ? $pId : $pId->getId());
+    }
+    return $query;
+  }
+  /*
+   * Magic method that intercept not defined static method and do the appropriate stuff
+   */
+  public static function __callStatic($method, $args)
+  {
+    if (preg_match('/^([gs]et|inc)([A-Z])(.*)$/', $method, $match)) {
+      $stats = Game::get()->getStatTypes();
+
+      // Sanity check : does the name correspond to a declared variable ?
+      $name = mb_strtolower($match[2]) . $match[3];
+      $isTableStat = \array_key_exists($name, $stats['table']);
+      $isPlayerStat = \array_key_exists($name, $stats['player']);
+      if (!$isTableStat && !$isPlayerStat) {
+        throw new \InvalidArgumentException("Statistic {$name} doesn't exist");
+      }
+
+      if ($match[1] == 'get') {
+        // Basic getters
+        $id = null;
+        $pId = null;
+        if ($isTableStat) {
+          $id = $stats['table'][$name]['id'];
+        } else {
+          if (empty($args)) {
+            throw new \InvalidArgumentException("You need to specify the player for the stat {$name}");
+          }
+          $id = $stats['player'][$name]['id'];
+          $pId = $args[0];
+        }
+
+        return self::getValue($id, $pId);
+      } elseif ($match[1] == 'set') {
+        // Setters in DB and update cache
+        $id = null;
+        $pId = null;
+        $value = null;
+
+        if ($isTableStat) {
+          $id = $stats['table'][$name]['id'];
+          $value = $args[0];
+        } else {
+          if (count($args) < 2) {
+            throw new \InvalidArgumentException("You need to specify the player for the stat {$name}");
+          }
+          $id = $stats['player'][$name]['id'];
+          $pId = $args[0];
+          $value = $args[1];
+        }
+
+        self::getFilteredQuery($id, $pId)
+          ->update(['stats_value' => $value])
+          ->run();
+        self::invalidate();
+        return $value;
+      } elseif ($match[1] == 'inc') {
+        $id = null;
+        $pId = null;
+        $value = null;
+
+        if ($isTableStat) {
+          $id = $stats['table'][$name]['id'];
+          $value = $args[0] ?? 1;
+        } else {
+          if (count($args) < 1) {
+            throw new \InvalidArgumentException("You need to specify the player for the stat {$name}");
+          }
+          $id = $stats['player'][$name]['id'];
+          $pId = $args[0];
+          $value = $args[1] ?? 1;
+        }
+
+        self::getFilteredQuery($id, $pId)
+          ->inc(['stats_value' => $value])
+          ->run();
+        self::invalidate();
+        return $value;
+      }
+    }
+    return null;
+  }
 
   /*********************
    **********************

@@ -233,7 +233,7 @@ trait DebugTrait
   {
     //COMMENT NExt line to test the same deliveries
     //$this->testSimulateDeliveries();
-    
+    /*
     //SIMULATE MOVING certain COALS :
     $player = Players::getCurrent();
     $coals = Meeples::getPlayerCoals($player->getId());
@@ -247,8 +247,8 @@ trait DebugTrait
     }
     Meeples::moveAllInLocation(SPACE_PIT_TILE . "_1_1","FAKE_FOR_TEST_1_1");
     Meeples::moveAllInLocation(SPACE_PIT_TILE . "_4_1","FAKE_FOR_TEST_1_4");
-    
-    $this->computeEndShiftScoring(3);
+    */
+    $this->computeEndShiftScoring(1);
   }
 
   

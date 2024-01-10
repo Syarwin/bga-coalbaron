@@ -37,18 +37,18 @@ trait EndShiftTrait
 
     //We use a class to manage list elements of majorities
     $majorities = array(
-      YELLOW_COAL => new ScoringMajority(1,YELLOW_COAL, 2,1),
-      BROWN_COAL  => new ScoringMajority(2,BROWN_COAL,  3,1),
-      GREY_COAL   => new ScoringMajority(3,GREY_COAL,   4,2),
-      BLACK_COAL  => new ScoringMajority(4,BLACK_COAL,  5,2),
-      TRANSPORT_BARROW    => new ScoringMajority(5,TRANSPORT_BARROW  ,6,3),
-      TRANSPORT_CARRIAGE  => new ScoringMajority(6,TRANSPORT_CARRIAGE,7,3),
-      TRANSPORT_MOTORCAR  => new ScoringMajority(7,TRANSPORT_MOTORCAR,8,4),
-      TRANSPORT_ENGINE    => new ScoringMajority(8,TRANSPORT_ENGINE  ,9,4),
-      MINECART_YELLOW => new ScoringMajority(9,MINECART_YELLOW  ,10,5),
-      MINECART_BROWN  => new ScoringMajority(10,MINECART_BROWN  ,11,5),
-      MINECART_GREY   => new ScoringMajority(11,MINECART_GREY   ,12,6),
-      MINECART_BLACK  => new ScoringMajority(12,MINECART_BLACK  ,13,6),
+      YELLOW_COAL => new ScoringMajority($shift,1,YELLOW_COAL, 2,1),
+      BROWN_COAL  => new ScoringMajority($shift,2,BROWN_COAL,  3,1),
+      GREY_COAL   => new ScoringMajority($shift,3,GREY_COAL,   4,2),
+      BLACK_COAL  => new ScoringMajority($shift,4,BLACK_COAL,  5,2),
+      TRANSPORT_BARROW    => new ScoringMajority($shift,5,TRANSPORT_BARROW  ,6,3),
+      TRANSPORT_CARRIAGE  => new ScoringMajority($shift,6,TRANSPORT_CARRIAGE,7,3),
+      TRANSPORT_MOTORCAR  => new ScoringMajority($shift,7,TRANSPORT_MOTORCAR,8,4),
+      TRANSPORT_ENGINE    => new ScoringMajority($shift,8,TRANSPORT_ENGINE  ,9,4),
+      MINECART_YELLOW => new ScoringMajority($shift,9,MINECART_YELLOW  ,10,5),
+      MINECART_BROWN  => new ScoringMajority($shift,10,MINECART_BROWN  ,11,5),
+      MINECART_GREY   => new ScoringMajority($shift,11,MINECART_GREY   ,12,6),
+      MINECART_BLACK  => new ScoringMajority($shift,12,MINECART_BLACK  ,13,6),
     );
 
     $this->computeMajorities($majorities,$players,$deliveredOrders,$playersTiles);

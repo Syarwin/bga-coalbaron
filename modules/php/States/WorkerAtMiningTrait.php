@@ -126,6 +126,7 @@ trait WorkerAtMiningTrait
             $coal->moveToCage($player);
             Globals::incMiningMoves(-1);
             Notifications::moveCoalToCage($player,$coalId);
+            Stats::inc( "miningMovesDone", $player );
         }
     }
     /**
@@ -142,6 +143,7 @@ trait WorkerAtMiningTrait
             $coal->moveToStorage($player);
             Globals::incMiningMoves(-1);
             Notifications::moveCoalToStorage($player,$coalId);
+            Stats::inc( "miningMovesDone", $player );
         }
     }
     /**
@@ -158,6 +160,8 @@ trait WorkerAtMiningTrait
             $coal->moveToCard($cardId,$spotIndex);
             Globals::incMiningMoves(-1);
             Notifications::moveCoalToCard($player,$cardId,$spotIndex,$coalId);
+            Stats::inc( "coalsPlacedOnCard", $player );
+            Stats::inc( "miningMovesDone", $player );
         }
     }
 
@@ -213,6 +217,7 @@ trait WorkerAtMiningTrait
         Notifications::startMining($player,$nbMoves);
         
         Stats::inc( "nbActions2", $player );
+        Stats::inc( "miningMovesReceived", $player, $nbMoves );
         //Go to another state to manage moves :
         $this->gamestate->nextState( 'startMining' );
     }

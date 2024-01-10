@@ -364,7 +364,10 @@ class Meeples extends \COAL\Helpers\Pieces
     $coals = self::getFirstAvailableCoals($color, $number);
     foreach ($coals as $coal) {
       $coal->moveToTile($player, $tile);
+      Stats::inc( $coal->getType()."Received", $player );
     }
+    Stats::inc( "coalsReceived", $player, count($coals) );
+    Stats::inc( "coalsLeft", $player, count($coals) );
     return $coals;
   }
 }

@@ -79,6 +79,7 @@ class Player extends \COAL\Helpers\DB_Model
     $this->setCageLevel($toLevel);
     Globals::incMiningMoves(-1);
     Notifications::movePitCage($this, $from, $toLevel);
+    Stats::inc( "miningMovesDone", $this );
   }
   
   /**

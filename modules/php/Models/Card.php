@@ -2,6 +2,7 @@
 
 namespace COAL\Models;
 
+use COAL\Core\Stats;
 use COAL\Managers\Cards;
 
 /*
@@ -57,6 +58,9 @@ class Card extends \COAL\Helpers\DB_Model
   
   public function removeCoalCubes()
   {
+    $nbCoals = count($this->getCoals());
+    Stats::inc( "coalsDelivered", $this->getPId(), $nbCoals );
+    Stats::inc( "coalsLeft", $this->getPId(), -$nbCoals );
     Cards::removeCoalCubesOnCard($this);
   }
  

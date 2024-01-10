@@ -65,8 +65,12 @@ trait NewShiftTrait
       Players::changeActive( $player_id );
       $player = Players::get($player_id);
       Notifications::updateFirstPlayer($player);
-      //TODO JSA stat turnOrder
-      //Stats::set(1,"turnOrder$shitft",$player_id);
+      //Stat turnOrder :
+      $turnOrder = Players::getTurnOrder($player_id);
+      foreach($turnOrder as $key => $orderPId){ 
+        $setterStatName = "setTurnOrder$shift";
+        Stats::$setterStatName( $orderPId, $key + 1);
+      }
 
       //UNREVEAL delivered orders : only UI effect
 

@@ -29,13 +29,13 @@ $stats_type = [
       "type" => "int" ),
 
     "turnOrder1" => array("id"=> 11,
-      "name" => totranslate("Shift 1 - Turn order"),
+      "name" => totranslate("Shift #1 - Turn order"),
       "type" => "int" ),
     "turnOrder2" => array("id"=> 12,
-      "name" => totranslate("Shift 2 - Turn order"),
+      "name" => totranslate("Shift #2 - Turn order"),
       "type" => "int" ),
     "turnOrder3" => array("id"=> 13,
-      "name" => totranslate("Shift 3 - Turn order"),
+      "name" => totranslate("Shift #3 - Turn order"),
       "type" => "int" ),
 
     "nbActions" => array("id"=> 14,

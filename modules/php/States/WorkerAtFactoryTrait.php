@@ -98,7 +98,7 @@ trait WorkerAtFactoryTrait
         // & FILTER EMPTY TILE (because deck may be empty )
         $filter = function ($space) use ($money) {
             //FACTORY DRAW ALWAYS POSSIBLE with 0 money 
-            if($space == SPACE_FACTORY_DRAW) return true;//TODO JSA CHECK DECKSIZE
+            if($space == SPACE_FACTORY_DRAW && Tiles::getDeckSize() > 0) return true;
             $tile = Tiles::getTileInFactory($space);
             if($tile == null || $tile->getCost()> $money){
                 return false;

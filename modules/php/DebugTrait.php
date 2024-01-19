@@ -61,9 +61,11 @@ trait DebugTrait
     $this->testReplaceMeeplesInReserve();
     Notifications::message("START DEBUG TEST 1");
 
-    $pId = Players::getCurrentId();
+    $player = Players::getCurrent();
+    $pId = $player->getId();
+    $money = $player->getMoney();
     $nbPlayers = 2;
-    $spaces = self::getPossibleSpaces($pId, $nbPlayers);
+    $spaces = self::getPossibleSpaces($pId, $nbPlayers, $money);
     Notifications::possibleWorkerSpaces($pId,$spaces);
 
     Notifications::message("END DEBUG TEST 1");
@@ -71,7 +73,7 @@ trait DebugTrait
     Notifications::message("START DEBUG TEST 2");
 
     $nbPlayers = 3;
-    $spaces = self::getPossibleSpaces($pId, $nbPlayers);
+    $spaces = self::getPossibleSpaces($pId, $nbPlayers, $money);
     Notifications::possibleWorkerSpaces($pId,$spaces);
 
     Notifications::message("END DEBUG TEST 2");
@@ -79,7 +81,7 @@ trait DebugTrait
     Notifications::message("START DEBUG TEST 3");
 
     $nbPlayers = 4;
-    $spaces = self::getPossibleSpaces($pId, $nbPlayers);
+    $spaces = self::getPossibleSpaces($pId, $nbPlayers, $money);
     Notifications::possibleWorkerSpaces($pId,$spaces);
 
     Notifications::message("END DEBUG TEST 3");

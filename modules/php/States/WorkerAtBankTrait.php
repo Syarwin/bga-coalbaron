@@ -35,6 +35,7 @@ trait WorkerAtBankTrait
      * List all possible Worker Spaces to play by player $pId and specified action "bank"
      */
     function getPossibleSpacesInBank($pId, $nbPlayers) {
+        self::trace("getPossibleSpacesInBank($pId, $nbPlayers)");
         return $this->getAllSpacesInBank($nbPlayers);
     }
 

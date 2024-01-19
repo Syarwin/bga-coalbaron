@@ -20,7 +20,7 @@ trait PlaceWorkerTrait
     function argPlaceWorker(){
         $player = Players::getActive();
         $nbPlayers = Players::count();
-        $spaces = $this->getPossibleSpaces($player->getId(), $nbPlayers);
+        $spaces = $this->getPossibleSpaces($player->getId(), $nbPlayers, $player->getMoney());
         $nbAvailableWorkers = Meeples::getNbAvailableWorkers($player);
     
         return array(
@@ -41,7 +41,7 @@ trait PlaceWorkerTrait
         $nbAvailableWorkers = Meeples::getNbAvailableWorkers($player);
         if($nbAvailableWorkers == 0) 
         throw new \BgaVisibleSystemException("Not enough workers to play");
-        if(! $this->isPossibleSpace($player->getId(), $nbPlayers,$space) )
+        if(! $this->isPossibleSpace($player->getId(), $nbPlayers,$space, $player->getMoney()) )
         throw new \BgaVisibleSystemException("Incorrect place to place a worker : $space");
 
         $this->placeWorker($player,$space);
@@ -54,11 +54,14 @@ trait PlaceWorkerTrait
     }
 
     /**
+     * @param int $pId player id
+     * @param int $nbPlayers number of player
+     * @param string $space where to play
      * @return bool true if $space is possible to play, 
      *       false otherwise
      */
-    function isPossibleSpace($pId, $nbPlayers,$space) {
-        $spaces = $this->getPossibleSpaces($pId, $nbPlayers);
+    function isPossibleSpace($pId, $nbPlayers,$space, $money) {
+        $spaces = $this->getPossibleSpaces($pId, $nbPlayers, $money);
         foreach($spaces as $type => $typeSpaces){
             foreach($typeSpaces as $possibleSpace){
                 if($space == $possibleSpace){
@@ -112,15 +115,18 @@ trait PlaceWorkerTrait
     }
     /**
      * List all possible Worker Spaces to play by player $pId
+     * @param int $pId player id
+     * @param int $nbPlayers number of players
+     * @param int $money player money to spend
      */
-    function getPossibleSpaces($pId, $nbPlayers) {
-        self::trace("getPossibleSpaces($pId, $nbPlayers)");
+    function getPossibleSpaces($pId, $nbPlayers, $money) {
+        self::trace("getPossibleSpaces($pId, $nbPlayers, $money)");
         $nbrWorkersNeeded = $this->getSpacesNeededWorkers($nbPlayers);
         //$nbAvailableWorkers = Meeples::findAvailableWorkersInCollection($allWorkers,$pId)->count();
         $nbAvailableWorkers = Meeples::getNbAvailableWorkers($pId);
 
         $spaces = array(
-            SPACE_FACTORY => $this->getPossibleSpacesInFactory($pId),
+            SPACE_FACTORY => $this->getPossibleSpacesInFactory($pId, $money),
             SPACE_MINING => $this->getPossibleSpacesInMining($pId, $nbPlayers),
             SPACE_DELIVERY => $this->getPossibleSpacesInDelivery($pId),
             SPACE_BANK => $this->getPossibleSpacesInBank($pId, $nbPlayers),

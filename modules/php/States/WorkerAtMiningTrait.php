@@ -185,6 +185,7 @@ trait WorkerAtMiningTrait
      * List all possible Worker Spaces to play by player $pId and specified action "Mining"
      */
     function getPossibleSpacesInMining($pId, $nbPlayers) {
+        self::trace("getPossibleSpacesInMining($pId, $nbPlayers)");
         $spaces = $this->getAllSpacesInMining($nbPlayers);
         return $spaces;
     }

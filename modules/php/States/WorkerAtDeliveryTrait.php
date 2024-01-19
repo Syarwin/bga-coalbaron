@@ -31,6 +31,7 @@ trait WorkerAtDeliveryTrait
      * List all possible Worker Spaces to play by player $pId and specified action "Delivery"
      */
     function getPossibleSpacesInDelivery($pId) {
+        self::trace("getPossibleSpacesInDelivery($pId)");
         $spaces = $this->getAllSpacesInDelivery();
 
         //FILTER on player filled Orders (type)

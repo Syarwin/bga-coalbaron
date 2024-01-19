@@ -87,12 +87,13 @@ trait WorkerAtFactoryTrait
         return $spaces;
     }
     /**
-     * List all possible Worker Spaces to play by player $pId and specified action "Factory"
+     * @param int $pId player id
+     * @param int $money player money to spend
+     * @return array List all possible Worker Spaces to play by player $pId and specified action "Factory"
      */
-    function getPossibleSpacesInFactory($pId) {
+    function getPossibleSpacesInFactory($pId,$money) {
+        self::trace("getPossibleSpacesInFactory($pId,$money)");
         $spaces = $this->getAllSpacesInFactory();
-        //TODO JSA PERFS : add $money in param to avoid another query
-        $money = Players::get($pId)->getMoney();
 
         // FILTER on available money VS cost 
         // & FILTER EMPTY TILE (because deck may be empty )

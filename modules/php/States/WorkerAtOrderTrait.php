@@ -86,6 +86,7 @@ trait WorkerAtOrderTrait
      * List all possible Worker Spaces to play by player $pId and specified action "Order"
      */
     function getPossibleSpacesInOrder($pId,$nbPlayers) {
+        self::trace("getPossibleSpacesInOrder($pId, $nbPlayers)");
         $spaces = $this->getAllSpacesInOrder($nbPlayers);
         $deckSize = Cards::countInLocation(CARD_LOCATION_DECK);
         //TODO JSA PERFS ? could be more efficient to get all distinct "order_%" location in cards in order to filter

@@ -88,6 +88,23 @@ trait WorkerAtFactoryTrait
     }
     /**
      * @param int $pId player id
+     * @param string $space where to play
+     * @param int $money player money to spend
+     * @return bool true if $space is possible to play, 
+     *       false otherwise
+     */
+    function isPossibleSpaceInFactory($pId,$space,$money) {
+        self::trace("isPossibleSpaceInFactory($pId,$space,$money)");
+        //FACTORY DRAW ALWAYS POSSIBLE with 0 money 
+        if($space == SPACE_FACTORY_DRAW && Tiles::getDeckSize() > 0) return true;
+        $tile = Tiles::getTileInFactory($space);
+        if($tile == null || $tile->getCost()> $money){
+            return false;
+        }
+        return true;
+    }
+    /**
+     * @param int $pId player id
      * @param int $money player money to spend
      * @return array List all possible Worker Spaces to play by player $pId and specified action "Factory"
      */
@@ -97,14 +114,8 @@ trait WorkerAtFactoryTrait
 
         // FILTER on available money VS cost 
         // & FILTER EMPTY TILE (because deck may be empty )
-        $filter = function ($space) use ($money) {
-            //FACTORY DRAW ALWAYS POSSIBLE with 0 money 
-            if($space == SPACE_FACTORY_DRAW && Tiles::getDeckSize() > 0) return true;
-            $tile = Tiles::getTileInFactory($space);
-            if($tile == null || $tile->getCost()> $money){
-                return false;
-            }
-            return true;
+        $filter = function ($space) use ($pId,$money) {
+            return $this->isPossibleSpaceInFactory($pId,$space,$money);
         };
 
         $spaces = array_values(array_filter($spaces,$filter));

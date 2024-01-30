@@ -27,6 +27,21 @@ trait WorkerAtDeliveryTrait
         );
         return $spaces;
     }
+     /**
+     * @param int $pId player id
+     * @param string $space where to play
+     * @return bool true if $space is possible to play, 
+     *       false otherwise
+     */
+    function isPossibleSpaceInDelivery($pId,$space) {
+        self::trace("isPossibleSpaceInDelivery($pId,$space)");
+        $deliveryType = $this->getDeliveryTypeFromSpace($space);
+        $cards = Cards::getPlayerCompletedOrdersToDeliver($pId,$deliveryType);
+        if(count($cards) ==0){
+            return false;
+        }
+        return true;
+    }
     /**
      * List all possible Worker Spaces to play by player $pId and specified action "Delivery"
      */
@@ -36,12 +51,7 @@ trait WorkerAtDeliveryTrait
 
         //FILTER on player filled Orders (type)
         $filter = function ($space) use ($pId) {
-            $deliveryType = $this->getDeliveryTypeFromSpace($space);
-            $cards = Cards::getPlayerCompletedOrdersToDeliver($pId,$deliveryType);
-            if(count($cards) ==0){
-                return false;
-            }
-            return true;
+            return $this->isPossibleSpaceInDelivery($pId,$space);
         };
 
         $spaces = array_values(array_filter($spaces,$filter));

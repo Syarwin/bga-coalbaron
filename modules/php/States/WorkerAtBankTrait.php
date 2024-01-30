@@ -38,6 +38,18 @@ trait WorkerAtBankTrait
         self::trace("getPossibleSpacesInBank($pId, $nbPlayers)");
         return $this->getAllSpacesInBank($nbPlayers);
     }
+    /**
+    * @param int $pId player id
+    * @param string $space where to play
+    * @param int $nbPlayers number of players
+    * @return bool true if $space is possible to play, 
+    *       false otherwise
+    */
+    function isPossibleSpaceInBank($pId,$space, $nbPlayers) {
+       self::trace("isPossibleSpaceInBank($pId,$space, $nbPlayers)");
+       $spaces = $this->getAllSpacesInBank($nbPlayers);
+       return array_search($space,$spaces) !== FALSE;
+    }
 
     function placeWorkerInBank($player, $space){
         self::trace("placeWorkerInBank($space)...");

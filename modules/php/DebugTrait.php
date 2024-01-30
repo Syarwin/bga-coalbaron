@@ -86,6 +86,27 @@ trait DebugTrait
 
     Notifications::message("END DEBUG TEST 3");
   }
+
+  function testIsPWS(){
+    $player = Players::getCurrent();
+    $nbPlayers = Players::count();
+    $nbAvailableWorkers = Meeples::getNbAvailableWorkers($player);
+    
+    $spacesToTest = [ 
+      SPACE_BANK_1,SPACE_BANK_3,SPACE_BANK_4,SPACE_BANK_5,SPACE_BANK_6,
+      SPACE_FACTORY_1,SPACE_FACTORY_2,SPACE_FACTORY_3,SPACE_FACTORY_4,SPACE_FACTORY_5,SPACE_FACTORY_6,SPACE_FACTORY_7,SPACE_FACTORY_8,
+      SPACE_FACTORY_DRAW,
+      SPACE_ORDER_1,SPACE_ORDER_2,SPACE_ORDER_3,SPACE_ORDER_4,
+      SPACE_ORDER_DRAW,
+      SPACE_DELIVERY_BARROW,SPACE_DELIVERY_CARRIAGE,SPACE_DELIVERY_MOTORCAR,SPACE_DELIVERY_ENGINE,
+      SPACE_MINING_4,SPACE_MINING_6,SPACE_MINING_8,SPACE_MINING_10,
+    ];
+
+    foreach($spacesToTest as $space){
+      $isPossible = $this->isPossibleSpace($player->getId(), $nbPlayers,$space, $player->getMoney(),$nbAvailableWorkers);
+      Notifications::messageTo($player,"Possible space $space ? ".($isPossible ? 'true' : 'false'),[]);
+    }
+  }
   
   function testBank()
   {

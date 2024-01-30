@@ -41,7 +41,7 @@ trait PlaceWorkerTrait
         $nbAvailableWorkers = Meeples::getNbAvailableWorkers($player);
         if($nbAvailableWorkers == 0) 
         throw new \BgaVisibleSystemException("Not enough workers to play");
-        if(! $this->isPossibleSpace($player->getId(), $nbPlayers,$space, $player->getMoney()) )
+        if(! $this->isPossibleSpace($player->getId(), $nbPlayers,$space, $player->getMoney(), $nbAvailableWorkers) )
         throw new \BgaVisibleSystemException("Incorrect place to place a worker : $space");
 
         $this->placeWorker($player,$space);
@@ -55,31 +55,66 @@ trait PlaceWorkerTrait
 
     /**
      * @param int $pId player id
-     * @param int $nbPlayers number of player
+     * @param int $nbPlayers number of players
      * @param string $space where to play
+     * @param int $money money to spend
+     * @param int $nbAvailableWorkers number of available workers
      * @return bool true if $space is possible to play, 
      *       false otherwise
      */
-    function isPossibleSpace($pId, $nbPlayers,$space, $money) {
-        $spaces = $this->getPossibleSpaces($pId, $nbPlayers, $money);
-        foreach($spaces as $type => $typeSpaces){
-            foreach($typeSpaces as $possibleSpace){
-                if($space == $possibleSpace){
-                    self::trace("isPossibleSpace($pId, $nbPlayers,$space)... : OK $space in $type array");
-                    return true;
-                }
-            }
-            /* KO
-            if(array_search($space,array_values($typeSpaces))){
-                self::trace("isPossibleSpace($pId, $nbPlayers,$space)... : $space in $type array");
-                return true;
-            }
-            */
-            self::trace("isPossibleSpace($pId, $nbPlayers,$space)... : ko $space NOT in $type array");
-            self::dump("isPossibleSpace($pId, $nbPlayers,$space)...",$typeSpaces);
-            
+    function isPossibleSpace($pId, $nbPlayers,$space, $money, $nbAvailableWorkers) {
+        self::trace("isPossibleSpace($pId, $nbPlayers,$space, $money,$nbAvailableWorkers)");
+
+        switch($space)
+        {
+            case SPACE_BANK_1: 
+            case SPACE_BANK_3: 
+            case SPACE_BANK_4: 
+            case SPACE_BANK_5: 
+            case SPACE_BANK_6: 
+                $possible = $this->isPossibleSpaceInBank($pId,$space, $nbPlayers);
+                break;
+            case SPACE_FACTORY_1: 
+            case SPACE_FACTORY_2: 
+            case SPACE_FACTORY_3: 
+            case SPACE_FACTORY_4: 
+            case SPACE_FACTORY_5: 
+            case SPACE_FACTORY_6: 
+            case SPACE_FACTORY_7: 
+            case SPACE_FACTORY_8: 
+            case SPACE_FACTORY_DRAW: 
+                $possible = $this->isPossibleSpaceInFactory($pId,$space,$money);
+                break;
+            case SPACE_ORDER_1: 
+            case SPACE_ORDER_2: 
+            case SPACE_ORDER_3: 
+            case SPACE_ORDER_4: 
+            case SPACE_ORDER_DRAW: 
+                $deckSize = Cards::countInLocation(CARD_LOCATION_DECK);
+                $possible = $this->isPossibleSpaceInOrder($pId,$space,$deckSize);
+                break;
+            case SPACE_DELIVERY_BARROW: 
+            case SPACE_DELIVERY_CARRIAGE: 
+            case SPACE_DELIVERY_ENGINE: 
+            case SPACE_DELIVERY_MOTORCAR:
+                $possible = $this->isPossibleSpaceInDelivery($pId,$space);
+                break;
+            case SPACE_MINING_4: 
+            case SPACE_MINING_6: 
+            case SPACE_MINING_8: 
+            case SPACE_MINING_10: 
+                $possible = $this->isPossibleSpaceInMining($pId,$space, $nbPlayers);
+                break;
+            default:
+                $possible = false;   
+                break; 
         }
-        return false;
+        if(!$possible) return false;
+
+        //filterAvailableWorkers
+        $workersAtWork = Meeples::countWorkers($space);
+        $nbrWorkersNeeded = $workersAtWork + 1;
+        return self::hasEnoughWorkers($space,$nbAvailableWorkers,$nbrWorkersNeeded);
     }
 
     /**
@@ -137,6 +172,24 @@ trait PlaceWorkerTrait
         return $spaces;
     }
 
+     /**
+     * @param string $space where to play
+     * @param int $nbAvailableWorkers
+     * @param int $nbrWorkersNeeded
+     * @return bool true if player has enough workers to play, 
+     *       false otherwise
+     */
+    static function hasEnoughWorkers($space,$nbAvailableWorkers,$nbrWorkersNeeded) {
+        self::trace("hasEnoughWorkers($space,$nbAvailableWorkers,$nbrWorkersNeeded) ");
+        if($space == SPACE_BANK_1) return true;//don't remove default space SPACE_BANK_1
+
+        if($nbAvailableWorkers < $nbrWorkersNeeded){
+            self::trace("hasEnoughWorkers($nbAvailableWorkers)... Impossible $space because $nbrWorkersNeeded workers are needed");
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Update list of possible Worker Spaces to play according to $nbAvailableWorkers (number) and $nbrWorkersNeeded (collection)
      */
@@ -144,17 +197,9 @@ trait PlaceWorkerTrait
         self::trace("filterAvailableWorkers($nbAvailableWorkers)");
         
         // FILTER on available meeples 
-        $filter = function ($value ) use ($nbAvailableWorkers, $nbrWorkersNeeded) {
-            $space = $value;
-            if($space == SPACE_BANK_1) return true;//don't remove default space SPACE_BANK_1
-
+        $filter = function ($space ) use ($nbAvailableWorkers, $nbrWorkersNeeded) {
             $nbrWorkersNeeded = $nbrWorkersNeeded[$space];
-            if($nbAvailableWorkers < $nbrWorkersNeeded){
-                //IMPOSSIBLE to add a worker => delete from array
-                self::trace("filterAvailableWorkers($nbAvailableWorkers)... Impossible $space because $nbrWorkersNeeded workers are needed");
-                return false;
-            }
-            return true;
+            return self::hasEnoughWorkers($space,$nbAvailableWorkers,$nbrWorkersNeeded);
         };
         foreach($spaces as $type => $typeSpaces){
             $spaces[$type] = array_values(array_filter($typeSpaces,$filter));

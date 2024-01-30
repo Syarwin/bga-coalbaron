@@ -82,6 +82,23 @@ trait WorkerAtOrderTrait
         $spaces = Cards::getUnlockedOrderSpaces($nbPlayers);
         return $spaces;
     }
+    
+    /**
+     * @param int $pId player id
+     * @param string $space where to play
+     * @param int $deckSize number of cards in deck
+     * @return bool true if $space is possible to play, 
+     *       false otherwise
+     */
+    function isPossibleSpaceInOrder($pId,$space,$deckSize) {
+        self::trace("isPossibleSpaceInOrder($pId,$space,$deckSize)");
+        if($space == SPACE_ORDER_DRAW && $deckSize >0 ) return true;
+        $card = Cards::getCardInOrder($space);
+        if(!isset($card)){
+            return false;
+        }
+        return true;
+    }
     /**
      * List all possible Worker Spaces to play by player $pId and specified action "Order"
      */
@@ -91,13 +108,8 @@ trait WorkerAtOrderTrait
         $deckSize = Cards::countInLocation(CARD_LOCATION_DECK);
         //TODO JSA PERFS ? could be more efficient to get all distinct "order_%" location in cards in order to filter
         //FILTER EMPTY ORDERS (because deck may be empty )
-        $filter = function ($space) use ($deckSize) {
-            if($space == SPACE_ORDER_DRAW && $deckSize >0 ) return true;
-            $card = Cards::getCardInOrder($space);
-            if(!isset($card)){
-                return false;
-            }
-            return true;
+        $filter = function ($space) use ($pId,$deckSize) {
+            return $this->isPossibleSpaceInOrder($pId,$space,$deckSize);
         };
 
         $spaces = array_values(array_filter($spaces,$filter));

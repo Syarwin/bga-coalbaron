@@ -191,6 +191,19 @@ trait WorkerAtMiningTrait
     }
     
     /**
+    * @param int $pId player id
+    * @param string $space where to play
+    * @param int $nbPlayers number of players
+    * @return bool true if $space is possible to play, 
+    *       false otherwise
+    */
+    function isPossibleSpaceInMining($pId,$space, $nbPlayers) {
+        self::trace("isPossibleSpaceInMining($pId,$space, $nbPlayers)");
+        $spaces = $this->getAllSpacesInMining($nbPlayers);
+        return array_search($space,$spaces) !== FALSE;
+     }
+    
+    /**
      * FOLLOW THE RULES of ACTION 2 
      */
     function placeWorkerInMining($player, $space){

@@ -232,8 +232,10 @@ class Tiles extends \COAL\Helpers\Pieces
       SPACE_FACTORY_DRAW,
     ];
 
-    if ($nbPlayers >= 4) {
+    if ($nbPlayers >= 3) {
       $spaces[] = SPACE_FACTORY_4;
+    }
+    if ($nbPlayers >= 4) {
       $spaces[] = SPACE_FACTORY_8;
     }
     return $spaces;

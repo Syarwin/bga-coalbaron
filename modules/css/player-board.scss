@@ -100,6 +100,30 @@
             background-repeat: no-repeat;
             position: relative;
 
+            .storage {
+                position: absolute;
+                right: 2px;
+                top: 83px;
+                height: 113px;
+                width: 120px;
+                display: flex;
+                border: 1px solid transparent;
+                justify-content: center;
+                align-items: flex-end;
+                flex-wrap: wrap;
+
+                &.selectable {
+                    border: 1px solid black;
+                    border-radius: 5px;
+                    background: #ff00006b;
+                    cursor: pointer;
+
+                    &:hover {
+                        background: #ff0000aa;
+                    }
+                }
+            }
+
             .elevator {
                 position: absolute;
                 width: 110px;
@@ -109,6 +133,7 @@
                 background-repeat: no-repeat;
                 left: 141px;
                 transition: top 0.8s;
+                z-index: 10;
 
                 &[data-y="0"] {
                     top: 90px;
@@ -123,6 +148,66 @@
                     top: 484px;
                 }
                 &[data-y="4"] {
+                    top: 622px;
+                }
+
+                .coalbaron-meeple {
+                    position: absolute;
+
+                    &:nth-child(1) {
+                        top: 8px;
+                        left: 36px;
+                    }
+                    &:nth-child(2) {
+                        top: 40px;
+                        left: 18px;
+                    }
+                    &:nth-child(3) {
+                        top: 40px;
+                        left: 53px;
+                    }
+                    &:nth-child(4) {
+                        top: 75px;
+                        left: 18px;
+                    }
+                    &:nth-child(5) {
+                        top: 75px;
+                        left: 53px;
+                    }
+                }
+            }
+
+            .elevator-level {
+                width: 90px;
+                height: 120px;
+                position: absolute;
+                left: 150px;
+                border: 1px solid transparent;
+
+                &.selectable {
+                    border: 1px solid black;
+                    border-radius: 5px;
+                    background: #ff00006b;
+                    cursor: pointer;
+
+                    &:hover {
+                        background: #ff0000aa;
+                    }
+                }
+
+                &.level-0 {
+                    top: 90px;
+                }
+                &.level-1 {
+                    top: 215px;
+                }
+                &.level-2 {
+                    top: 342px;
+                }
+                &.level-3 {
+                    top: 484px;
+                }
+                &.level-4 {
                     top: 622px;
                 }
             }

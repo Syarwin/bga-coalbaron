@@ -145,6 +145,24 @@
     background-size: 100% auto;
     background-repeat: no-repeat;
     position: relative; }
+    #coalbaron-player-boards-container .coalbaron-board .board-elevator .storage {
+      position: absolute;
+      right: 2px;
+      top: 83px;
+      height: 113px;
+      width: 120px;
+      display: flex;
+      border: 1px solid transparent;
+      justify-content: center;
+      align-items: flex-end;
+      flex-wrap: wrap; }
+      #coalbaron-player-boards-container .coalbaron-board .board-elevator .storage.selectable {
+        border: 1px solid black;
+        border-radius: 5px;
+        background: #ff00006b;
+        cursor: pointer; }
+        #coalbaron-player-boards-container .coalbaron-board .board-elevator .storage.selectable:hover {
+          background: #ff0000aa; }
     #coalbaron-player-boards-container .coalbaron-board .board-elevator .elevator {
       position: absolute;
       width: 110px;
@@ -153,7 +171,8 @@
       background-size: 100% auto;
       background-repeat: no-repeat;
       left: 141px;
-      transition: top 0.8s; }
+      transition: top 0.8s;
+      z-index: 10; }
       #coalbaron-player-boards-container .coalbaron-board .board-elevator .elevator[data-y="0"] {
         top: 90px; }
       #coalbaron-player-boards-container .coalbaron-board .board-elevator .elevator[data-y="1"] {
@@ -163,6 +182,46 @@
       #coalbaron-player-boards-container .coalbaron-board .board-elevator .elevator[data-y="3"] {
         top: 484px; }
       #coalbaron-player-boards-container .coalbaron-board .board-elevator .elevator[data-y="4"] {
+        top: 622px; }
+      #coalbaron-player-boards-container .coalbaron-board .board-elevator .elevator .coalbaron-meeple {
+        position: absolute; }
+        #coalbaron-player-boards-container .coalbaron-board .board-elevator .elevator .coalbaron-meeple:nth-child(1) {
+          top: 8px;
+          left: 36px; }
+        #coalbaron-player-boards-container .coalbaron-board .board-elevator .elevator .coalbaron-meeple:nth-child(2) {
+          top: 40px;
+          left: 18px; }
+        #coalbaron-player-boards-container .coalbaron-board .board-elevator .elevator .coalbaron-meeple:nth-child(3) {
+          top: 40px;
+          left: 53px; }
+        #coalbaron-player-boards-container .coalbaron-board .board-elevator .elevator .coalbaron-meeple:nth-child(4) {
+          top: 75px;
+          left: 18px; }
+        #coalbaron-player-boards-container .coalbaron-board .board-elevator .elevator .coalbaron-meeple:nth-child(5) {
+          top: 75px;
+          left: 53px; }
+    #coalbaron-player-boards-container .coalbaron-board .board-elevator .elevator-level {
+      width: 90px;
+      height: 120px;
+      position: absolute;
+      left: 150px;
+      border: 1px solid transparent; }
+      #coalbaron-player-boards-container .coalbaron-board .board-elevator .elevator-level.selectable {
+        border: 1px solid black;
+        border-radius: 5px;
+        background: #ff00006b;
+        cursor: pointer; }
+        #coalbaron-player-boards-container .coalbaron-board .board-elevator .elevator-level.selectable:hover {
+          background: #ff0000aa; }
+      #coalbaron-player-boards-container .coalbaron-board .board-elevator .elevator-level.level-0 {
+        top: 90px; }
+      #coalbaron-player-boards-container .coalbaron-board .board-elevator .elevator-level.level-1 {
+        top: 215px; }
+      #coalbaron-player-boards-container .coalbaron-board .board-elevator .elevator-level.level-2 {
+        top: 342px; }
+      #coalbaron-player-boards-container .coalbaron-board .board-elevator .elevator-level.level-3 {
+        top: 484px; }
+      #coalbaron-player-boards-container .coalbaron-board .board-elevator .elevator-level.level-4 {
         top: 622px; }
 
 #coalbaron-main-container #coalbaron-board {
@@ -283,6 +342,8 @@
       #coalbaron-main-container #coalbaron-board .board-space#mining_4 .space-title-container, #coalbaron-main-container #coalbaron-board .board-space#mining_6 .space-title-container, #coalbaron-main-container #coalbaron-board .board-space#mining_8 .space-title-container, #coalbaron-main-container #coalbaron-board .board-space#mining_10 .space-title-container {
         position: absolute;
         top: -12px; }
+      #coalbaron-main-container #coalbaron-board .board-space#mining_4 .space-workers-container, #coalbaron-main-container #coalbaron-board .board-space#mining_6 .space-workers-container, #coalbaron-main-container #coalbaron-board .board-space#mining_8 .space-workers-container, #coalbaron-main-container #coalbaron-board .board-space#mining_10 .space-workers-container {
+        height: 100%; }
     #coalbaron-main-container #coalbaron-board .board-space#mining_4 {
       left: 650px; }
       #coalbaron-main-container #coalbaron-board .board-space#mining_4 .space-title-container::before {
@@ -534,6 +595,17 @@
       background-position-x: 66.6666%; }
     .coalbaron-meeple.icon-yellow_coal.icon-black_coal, .coalbaron-meeple.icon-brown_coal.icon-black_coal, .coalbaron-meeple.icon-grey_coal.icon-black_coal, .coalbaron-meeple.icon-black_coal.icon-black_coal {
       background-position-x: 100%; }
+    .coalbaron-meeple.icon-yellow_coal.selectable, .coalbaron-meeple.icon-brown_coal.selectable, .coalbaron-meeple.icon-grey_coal.selectable, .coalbaron-meeple.icon-black_coal.selectable {
+      cursor: pointer;
+      background-color: #ffd700d1;
+      box-shadow: 0px 0px 10px 5px gold;
+      border-radius: 5px; }
+      .coalbaron-meeple.icon-yellow_coal.selectable:hover, .coalbaron-meeple.icon-brown_coal.selectable:hover, .coalbaron-meeple.icon-grey_coal.selectable:hover, .coalbaron-meeple.icon-black_coal.selectable:hover {
+        transform: scale(1.1); }
+    .coalbaron-meeple.icon-yellow_coal.selected, .coalbaron-meeple.icon-brown_coal.selected, .coalbaron-meeple.icon-grey_coal.selected, .coalbaron-meeple.icon-black_coal.selected {
+      background-color: rgba(16, 201, 16, 0.747);
+      box-shadow: 0px 0px 10px 5px #10c910;
+      border-radius: 5px; }
   .coalbaron-meeple.icon-worker {
     width: 2em;
     height: 2.5em;
@@ -765,6 +837,37 @@
     left: 45px;
     font-size: 21px;
     font-weight: bold; }
+  .coalbaron-card .coal-slot {
+    width: 42px;
+    height: 42px;
+    position: absolute; }
+    .coalbaron-card .coal-slot.selectable {
+      background: #ffd7001c;
+      box-shadow: 0px 0px 7px 6px gold;
+      cursor: pointer; }
+      .coalbaron-card .coal-slot.selectable:hover {
+        background: #ffd70033; }
+  .coalbaron-card[data-n="1"] .coal-slot:nth-child(1) {
+    top: 88px;
+    left: 42px; }
+  .coalbaron-card[data-n="2"] .coal-slot:nth-child(1) {
+    top: 88px;
+    left: 21px; }
+  .coalbaron-card[data-n="2"] .coal-slot:nth-child(2) {
+    top: 88px;
+    left: 67px; }
+  .coalbaron-card[data-n="3"] .coal-slot {
+    width: 36px;
+    height: 36px; }
+    .coalbaron-card[data-n="3"] .coal-slot:nth-child(1) {
+      top: 72px;
+      left: 46px; }
+    .coalbaron-card[data-n="3"] .coal-slot:nth-child(2) {
+      top: 107px;
+      left: 30px; }
+    .coalbaron-card[data-n="3"] .coal-slot:nth-child(3) {
+      top: 107px;
+      left: 66px; }
 
 #player_board_config {
   position: relative;

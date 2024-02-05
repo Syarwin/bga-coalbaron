@@ -35,13 +35,14 @@ define([
         ['giveMoney', 1300],
         ['spendMoney', 1300],
         ['giveTileTo', 1200],
-        ['moveCoalToTile', 1000],
         ['giveCardTo', 1200],
         ['endDraft', 1200],
         ['refillOrderSpace', 1200],
         ['refillFactorySpace', 1200],
         ['returnTiles', 1400],
         ['returnCards', 1400],
+        ['movePitCage', 800],
+        ['moveCoal', 900],
         // ["newTurn", 1000],
         // ["updateFirstPlayer", 500],
       ];
@@ -71,8 +72,8 @@ define([
       this.setupPlayers();
       this.setupInfoPanel();
       this.setupTiles();
-      this.setupMeeples();
       this.setupCards();
+      this.setupMeeples();
 
       // Create round counter
       this._roundCounter = this.createCounter('round-counter');
@@ -269,7 +270,13 @@ define([
             </div>
          </div>
          <div class='board-elevator'>
-           <div class='elevator' id='elevator-${player.id}' data-y="0"></div>
+           <div class='elevator' id='elevator-${player.id}' data-y="${player.cageLevel}"></div>
+           <div class='elevator-level level-0' id='elevator-${player.id}-level-0'></div>
+           <div class='elevator-level level-1' id='elevator-${player.id}-level-1'></div>
+           <div class='elevator-level level-2' id='elevator-${player.id}-level-2'></div>
+           <div class='elevator-level level-3' id='elevator-${player.id}-level-3'></div>
+           <div class='elevator-level level-4' id='elevator-${player.id}-level-4'></div>
+           <div class='storage' id='storage-${player.id}'></div>
          </div>
          <div class='board-right-side'>
             <div class='pending-orders' id='pending-orders-${player.id}'></div>
@@ -594,6 +601,18 @@ define([
         let side = t[3] == '-1' ? 'left' : 'right';
         return $(`${side}-pit-${meeple.pId}-${t[2]}`).querySelector('.pit-tile');
       }
+      // Coal on pit cage
+      if (meeple.location == 'pit_cage') {
+        return $(`elevator-${meeple.pId}`);
+      }
+      // Coal in storage
+      if (meeple.location == 'storage') {
+        return $(`storage-${meeple.pId}`);
+      }
+      // Coal on card
+      if (t[0] == 'card') {
+        return $(`coal-slot-${t[1]}-${t[2]}`);
+      }
       // Worker on board
       if (meeple.type == 'worker' && $(meeple.location)) {
         return $(meeple.location).querySelector('.space-workers-container');
@@ -605,11 +624,6 @@ define([
 
       console.error('Trying to get container of a meeple', meeple);
       return 'game_play_area';
-    },
-
-    notif_moveCoalToTile(n) {
-      debug('Notif: putting coal on tile', n);
-      this.slide(`meeple-${n.args.coal.id}`, this.getMeepleContainer(n.args.coal));
     },
 
     ////////////////////////////////////////////////////////
@@ -662,7 +676,15 @@ define([
     },
 
     tplCard(card) {
-      return `<div class="coalbaron-card" id="card-${card.id}" data-id="${card.id}" data-type="${card.type}"></div>`;
+      let slots = '';
+      let nCoals = card.coals.length;
+      for (let i = 0; i < nCoals; i++) {
+        slots += `<div class='coal-slot' id='coal-slot-${card.id}-${i}'></div>`;
+      }
+
+      return `<div class="coalbaron-card" id="card-${card.id}" data-id="${card.id}" data-type="${card.type}" data-n="${nCoals}">
+        ${slots}
+      </div>`;
     },
 
     getCardContainer(card) {
@@ -802,6 +824,80 @@ define([
         this.wait((i - 1) * 200).then(() => this.slide(oCard, this.getVisibleTitleContainer(), { destroy: true }));
       }
     },
+
+    onEnteringStateMiningSteps(args) {
+      args.movableCage.forEach((level) => {
+        this.onClick(`elevator-${this.player_id}-level-${level}`, () => this.takeAction('actMovePitCage', { level }));
+      });
+
+      let allLocations = [];
+      Object.keys(args.movableCoals.solo).forEach((meepleId) => {
+        let locations = args.movableCoals.solo[meepleId];
+        if (locations.length == 0) return;
+        locations.forEach((loc) => {
+          if (allLocations[loc]) allLocations[loc].push(meepleId);
+          else allLocations[loc] = [meepleId];
+        });
+
+        this.onClick(`meeple-${meepleId}`, () => {
+          if (locations.length == 1) {
+            this.takeAction('actMoveCoals', { spaceId: locations[0], coalId: meepleId });
+          } else {
+            this.clientState('miningStepsChooseTarget', _('Where do you want to move that coal?'), {
+              meepleId,
+              movableCoals: args.movableCoals,
+            });
+          }
+        });
+      });
+
+      Object.keys(allLocations).forEach((location) => {
+        let t = location.split('_');
+        if (t[0] == 'card') {
+          let meepleId = allLocations[location][0]; // TODO : something smarter
+          this.onClick(`coal-slot-${t[1]}-${t[2]}`, () => {
+            this.takeAction('actMoveCoals', { spaceId: location, coalId: meepleId });
+          });
+        }
+      });
+
+      this.addDangerActionButton('btnStopMining', _('Stop mining'), () => this.takeAction('actStopMining', {}));
+    },
+
+    onEnteringStateMiningStepsChooseTarget(args) {
+      this.addCancelStateBtn();
+      let meepleId = args.meepleId;
+      $(`meeple-${meepleId}`).classList.add('selected');
+      let locations = args.movableCoals.solo[meepleId];
+      locations.forEach((location) => {
+        let t = location.split('_');
+        // Card
+        if (t[0] == 'card') {
+          this.onClick(`coal-slot-${t[1]}-${t[2]}`, () => {
+            this.takeAction('actMoveCoals', { spaceId: location, coalId: meepleId });
+          });
+        }
+        // Storage
+        if (location == 'storage') {
+          this.onClick(`storage-${this.player_id}`, () => {
+            this.takeAction('actMoveCoals', { spaceId: location, coalId: meepleId });
+          });
+        }
+      });
+    },
+
+    notif_movePitCage(n) {
+      debug('Notif: move pit cage', n);
+      $(`elevator-${n.args.player_id}`).dataset.y = n.args.b;
+    },
+
+    notif_moveCoal(n) {
+      debug('Notif: moving coald', n);
+      $(`meeple-${n.args.coal.id}`).classList.remove('selected');
+      $(`meeple-${n.args.coal.id}`).classList.remove('selectable');
+      this.slide(`meeple-${n.args.coal.id}`, this.getMeepleContainer(n.args.coal));
+    },
+
     ////////////////////////////////////////////////////////////
     // _____                          _   _   _
     // |  ___|__  _ __ _ __ ___   __ _| |_| |_(_)_ __   __ _

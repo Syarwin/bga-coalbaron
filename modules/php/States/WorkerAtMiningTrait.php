@@ -125,7 +125,7 @@ trait WorkerAtMiningTrait
             $this->canMoveToPitCage($coal,$player,count($coalsInCage),true);
             $coal->moveToCage($player);
             Globals::incMiningMoves(-1);
-            Notifications::moveCoalToCage($player,$coalId);
+            Notifications::moveCoalToCage($player,$coal);
             Stats::inc( "miningMovesDone", $player );
         }
     }
@@ -142,7 +142,7 @@ trait WorkerAtMiningTrait
             $this->canMoveToStorage($coal,$player,true);
             $coal->moveToStorage($player);
             Globals::incMiningMoves(-1);
-            Notifications::moveCoalToStorage($player,$coalId);
+            Notifications::moveCoalToStorage($player,$coal);
             Stats::inc( "miningMovesDone", $player );
         }
     }
@@ -159,7 +159,7 @@ trait WorkerAtMiningTrait
 
             $coal->moveToCard($cardId,$spotIndex);
             Globals::incMiningMoves(-1);
-            Notifications::moveCoalToCard($player,$cardId,$spotIndex,$coalId);
+            Notifications::moveCoalToCard($player,$cardId,$spotIndex,$coal);
             Stats::inc( "coalsPlacedOnCard", $player );
             Stats::inc( "miningMovesDone", $player );
         }

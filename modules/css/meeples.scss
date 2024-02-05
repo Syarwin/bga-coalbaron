@@ -25,6 +25,22 @@
         &.icon-black_coal {
             background-position-x: 100%;
         }
+
+        &.selectable {
+            cursor: pointer;
+            background-color: #ffd700d1;
+            box-shadow: 0px 0px 10px 5px gold;
+            border-radius: 5px;
+            &:hover {
+                transform: scale(1.1);
+            }
+        }
+
+        &.selected {
+            background-color: rgba(16, 201, 16, 0.747);
+            box-shadow: 0px 0px 10px 5px rgb(16, 201, 16);
+            border-radius: 5px;
+        }
     }
 
     &.icon-worker {

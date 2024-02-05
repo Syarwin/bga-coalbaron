@@ -67,4 +67,55 @@
         font-size: 21px;
         font-weight: bold;
     }
+
+    .coal-slot {
+        width: 42px;
+        height: 42px;
+        position: absolute;
+        &.selectable {
+            background: #ffd7001c;
+            box-shadow: 0px 0px 7px 6px gold;
+            cursor: pointer;
+            &:hover {
+                background: #ffd70033;
+            }
+        }
+    }
+
+    &[data-n="1"] .coal-slot {
+        &:nth-child(1) {
+            top: 88px;
+            left: 42px;
+        }
+    }
+
+    &[data-n="2"] .coal-slot {
+        &:nth-child(1) {
+            top: 88px;
+            left: 21px;
+        }
+
+        &:nth-child(2) {
+            top: 88px;
+            left: 67px;
+        }
+    }
+
+    &[data-n="3"] .coal-slot {
+        width: 36px;
+        height: 36px;
+
+        &:nth-child(1) {
+            top: 72px;
+            left: 46px;
+        }
+        &:nth-child(2) {
+            top: 107px;
+            left: 30px;
+        }
+        &:nth-child(3) {
+            top: 107px;
+            left: 66px;
+        }
+    }
 }

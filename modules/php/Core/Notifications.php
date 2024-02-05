@@ -188,7 +188,7 @@ class Notifications
   }
   public static function moveCoalToTile($player, $tile, $coal)
   {
-    self::notifyAll('moveCoalToTile', clienttranslate('${player_name} receives a new coal on the new tunnel tile'), [
+    self::notifyAll('moveCoal', clienttranslate('${player_name} receives a new coal on the new tunnel tile'), [
       'player' => $player,
       'tile' => $tile,
       'coal' => $coal,
@@ -196,7 +196,7 @@ class Notifications
   }
   public static function moveCoalToCard($player, $card, $spotIndex, $coal)
   {
-    self::notifyAll('moveCoalToCard', clienttranslate('${player_name} moves a coal to an order card'), [
+    self::notifyAll('moveCoal', clienttranslate('${player_name} moves a coal to an order card'), [
       'player' => $player,
       'card' => $card,
       'spotIndex' => $spotIndex,
@@ -205,14 +205,14 @@ class Notifications
   }
   public static function moveCoalToCage($player, $coal)
   {
-    self::notifyAll('moveCoalToCage', clienttranslate('${player_name} moves a coal to the pit cage'), [
+    self::notifyAll('moveCoal', clienttranslate('${player_name} moves a coal to the pit cage'), [
       'player' => $player,
       'coal' => $coal,
     ]);
   }
   public static function moveCoalToStorage($player, $coal)
   {
-    self::notifyAll('moveCoalToStorage', clienttranslate('${player_name} moves a coal to the private storage'), [
+    self::notifyAll('moveCoal', clienttranslate('${player_name} moves a coal to the private storage'), [
       'player' => $player,
       'coal' => $coal,
     ]);

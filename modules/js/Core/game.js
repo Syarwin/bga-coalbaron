@@ -174,6 +174,7 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
       });
       this._selectableNodes = [];
       dojo.query('.unselectable').removeClass('unselectable');
+      dojo.query('.selectable').removeClass('selectable');
     },
 
     /**

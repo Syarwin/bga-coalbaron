@@ -25,13 +25,13 @@ html {
     #coalbaron-resizable-board {
         // scroll-snap-align: start;
         width: calc(var(--boardScale) * 1650px);
-        height: calc(var(--boardScale) * 786px);
+        height: calc(var(--boardScale) * 740px);
         margin-bottom: 10px;
     }
 
     #coalbaron-board {
         width: 1650px;
-        height: 786px;
+        height: 740px;
         transform: scale(var(--boardScale));
         transform-origin: top left;
         background-image: url("img/board.jpg");

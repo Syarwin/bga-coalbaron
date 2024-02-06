@@ -885,6 +885,8 @@ define([
       this.addCancelStateBtn();
       let meepleId = args.meepleId;
       $(`meeple-${meepleId}`).classList.add('selected');
+      this.onClick(`meeple-${meepleId}`, () => this.clearClientState());
+
       let locations = args.movableCoals.solo[meepleId];
       locations.forEach((location) => {
         let t = location.split('_');
@@ -1095,7 +1097,7 @@ define([
       const WIDTH = $('coalbaron-main-container').getBoundingClientRect()['width'];
       const HEIGHT = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) - 62;
       const BOARD_WIDTH = 1650;
-      const BOARD_HEIGHT = 850;
+      const BOARD_HEIGHT = 750;
 
       let widthScale = ((this.settings.boardWidth / 100) * WIDTH) / BOARD_WIDTH,
         heightScale = HEIGHT / BOARD_HEIGHT,

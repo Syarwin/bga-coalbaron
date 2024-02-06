@@ -1,214 +1,242 @@
-#coalbaron-player-boards-container {
+#coalbaron-main-container {
     .coalbaron-board {
+        scroll-snap-align: start;
+        scroll-padding: 20px;
         margin: 5px 0px;
         width: 1650px;
         border-radius: 10px;
         border: 2px solid black;
         box-shadow: 1px 1px 10px black;
         background-color: #d5a257;
-
-        // background-image: url("img/board.jpg");
-        // background-size: 100% auto;
-        // background-repeat: no-repeat;
-
         position: relative;
-        display: flex;
+        width: calc(var(--playerBoardScale) * 1650px);
+        height: calc(var(--playerBoardScale) * 837px);
 
-        .player-name {
-            position: absolute;
-        }
-
-        .board-left-side {
-            flex-grow: 1;
+        .player-board-fixed-size {
             display: flex;
-            flex-flow: column;
-
-            .completed-orders {
-                height: 223px;
-                background: red;
-            }
-            .left-pit {
-                .pit-level {
-                    height: 136px;
-                    display: flex;
-                    justify-content: flex-end;
-                    position: relative;
-
-                    .pit-tile {
-                        position: absolute;
-                        width: 40px;
-                        height: 40px;
-                        right: -69px;
-                        top: 20px;
-                        z-index: 2;
-                    }
-
-                    .coalbaron-tile {
-                        width: 123px;
-                        height: 136px;
-                        box-shadow: none;
-                        border: none;
-                        flex-shrink: 0;
-                    }
-                }
-            }
-        }
-        .board-right-side {
-            flex-grow: 1;
-            display: flex;
-            flex-flow: column;
-            .pending-orders {
-                height: 223px;
-                display: flex;
-                flex-flow: row;
-                align-items: center;
-                padding: 0px 5px;
-                .coalbaron-card {
-                    margin: 2px 5px;
-                }
-            }
-            .right-pit {
-                .pit-level {
-                    height: 136px;
-                    display: flex;
-                    position: relative;
-
-                    .pit-tile {
-                        position: absolute;
-                        width: 40px;
-                        height: 40px;
-                        left: -63px;
-                        top: 22px;
-                    }
-
-                    .coalbaron-tile {
-                        width: 123px;
-                        height: 136px;
-                        box-shadow: none;
-                        border: none;
-                        flex-shrink: 0;
-                    }
-                }
-            }
-        }
-        .board-elevator {
-            width: 400px;
+            width: 1650px;
             height: 837px;
-            flex-shrink: 0;
-            background-image: url("img/player-board.jpg");
-            background-size: 100% auto;
-            background-repeat: no-repeat;
-            position: relative;
+            transform: scale(var(--playerBoardScale));
+            transform-origin: top left;
 
-            .storage {
-                position: absolute;
-                right: 2px;
-                top: 83px;
-                height: 113px;
-                width: 120px;
+            .board-left-side {
+                flex-grow: 1;
                 display: flex;
-                border: 1px solid transparent;
-                justify-content: center;
-                align-items: flex-end;
-                flex-wrap: wrap;
+                flex-flow: column;
 
-                &.selectable {
-                    border: 1px solid black;
-                    border-radius: 5px;
-                    background: #ff00006b;
-                    cursor: pointer;
+                .completed-orders {
+                    height: 223px;
+                }
+                .left-pit {
+                    .pit-level {
+                        height: 136px;
+                        display: flex;
+                        justify-content: flex-end;
+                        position: relative;
 
-                    &:hover {
-                        background: #ff0000aa;
+                        .pit-tile {
+                            position: absolute;
+                            width: 40px;
+                            height: 40px;
+                            right: -69px;
+                            top: 20px;
+                            z-index: 2;
+                        }
+
+                        .coalbaron-tile {
+                            width: 123px;
+                            height: 136px;
+                            box-shadow: none;
+                            border: none;
+                            flex-shrink: 0;
+                        }
                     }
                 }
             }
+            .board-right-side {
+                flex-grow: 1;
+                display: flex;
+                flex-flow: column;
+                .pending-orders {
+                    height: 223px;
+                    display: flex;
+                    flex-flow: row;
+                    align-items: center;
+                    padding: 0px 5px;
+                    .coalbaron-card {
+                        margin: 2px 5px;
+                    }
+                }
+                .right-pit {
+                    .pit-level {
+                        height: 136px;
+                        display: flex;
+                        position: relative;
 
-            .elevator {
-                position: absolute;
-                width: 110px;
-                height: 142px;
-                background-image: url("img/elevator.jpg");
+                        .pit-tile {
+                            position: absolute;
+                            width: 40px;
+                            height: 40px;
+                            left: -63px;
+                            top: 22px;
+                        }
+
+                        .coalbaron-tile {
+                            width: 123px;
+                            height: 136px;
+                            box-shadow: none;
+                            border: none;
+                            flex-shrink: 0;
+                        }
+                    }
+                }
+            }
+            .board-elevator {
+                width: 400px;
+                height: 837px;
+                flex-shrink: 0;
+                background-image: url("img/player-board.jpg");
                 background-size: 100% auto;
                 background-repeat: no-repeat;
-                left: 141px;
-                transition: top 0.8s;
-                z-index: 10;
+                position: relative;
 
-                &[data-y="0"] {
-                    top: 90px;
-                }
-                &[data-y="1"] {
-                    top: 215px;
-                }
-                &[data-y="2"] {
-                    top: 342px;
-                }
-                &[data-y="3"] {
-                    top: 484px;
-                }
-                &[data-y="4"] {
-                    top: 622px;
-                }
-
-                .coalbaron-meeple {
+                .player-name {
                     position: absolute;
-
-                    &:nth-child(1) {
-                        top: 8px;
-                        left: 36px;
-                    }
-                    &:nth-child(2) {
-                        top: 40px;
-                        left: 18px;
-                    }
-                    &:nth-child(3) {
-                        top: 40px;
-                        left: 53px;
-                    }
-                    &:nth-child(4) {
-                        top: 75px;
-                        left: 18px;
-                    }
-                    &:nth-child(5) {
-                        top: 75px;
-                        left: 53px;
-                    }
-                }
-            }
-
-            .elevator-level {
-                width: 90px;
-                height: 120px;
-                position: absolute;
-                left: 150px;
-                border: 1px solid transparent;
-
-                &.selectable {
-                    border: 1px solid black;
+                    text-align: center;
+                    background: #e1e1e1;
+                    left: 50%;
+                    transform: translateX(-50%);
                     border-radius: 5px;
-                    background: #ff00006b;
-                    cursor: pointer;
+                    padding: 6px 20px;
+                    top: 3px;
 
-                    &:hover {
-                        background: #ff0000aa;
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        top: -5px;
+                        left: -8px;
+                        right: -8px;
+                        bottom: -5px;
+                        border: 1px solid transparent;
+                        border-image-slice: 64 88 64 88;
+                        border-image-width: 20px 20px 20px 20px;
+                        border-image-outset: 0px 0px 0px 0px;
+                        border-image-repeat: stretch stretch;
+                        border-image-source: url("img/frame.png");
+                        pointer-events: none;
                     }
                 }
 
-                &.level-0 {
-                    top: 90px;
+                .storage {
+                    position: absolute;
+                    right: 2px;
+                    top: 83px;
+                    height: 113px;
+                    width: 120px;
+                    display: flex;
+                    border: 1px solid transparent;
+                    justify-content: center;
+                    align-items: flex-end;
+                    flex-wrap: wrap;
+
+                    &.selectable {
+                        border: 1px solid black;
+                        border-radius: 5px;
+                        background: #ff00006b;
+                        cursor: pointer;
+
+                        &:hover {
+                            background: #ff0000aa;
+                        }
+                    }
                 }
-                &.level-1 {
-                    top: 215px;
+
+                .elevator {
+                    position: absolute;
+                    width: 110px;
+                    height: 142px;
+                    background-image: url("img/elevator.jpg");
+                    background-size: 100% auto;
+                    background-repeat: no-repeat;
+                    left: 141px;
+                    transition: top 0.8s;
+                    z-index: 10;
+
+                    &[data-y="0"] {
+                        top: 90px;
+                    }
+                    &[data-y="1"] {
+                        top: 215px;
+                    }
+                    &[data-y="2"] {
+                        top: 342px;
+                    }
+                    &[data-y="3"] {
+                        top: 484px;
+                    }
+                    &[data-y="4"] {
+                        top: 622px;
+                    }
+
+                    .coalbaron-meeple {
+                        position: absolute;
+
+                        &:nth-child(1) {
+                            top: 8px;
+                            left: 36px;
+                        }
+                        &:nth-child(2) {
+                            top: 40px;
+                            left: 18px;
+                        }
+                        &:nth-child(3) {
+                            top: 40px;
+                            left: 53px;
+                        }
+                        &:nth-child(4) {
+                            top: 75px;
+                            left: 18px;
+                        }
+                        &:nth-child(5) {
+                            top: 75px;
+                            left: 53px;
+                        }
+                    }
                 }
-                &.level-2 {
-                    top: 342px;
-                }
-                &.level-3 {
-                    top: 484px;
-                }
-                &.level-4 {
-                    top: 622px;
+
+                .elevator-level {
+                    width: 90px;
+                    height: 120px;
+                    position: absolute;
+                    left: 150px;
+                    border: 1px solid transparent;
+
+                    &.selectable {
+                        border: 1px solid black;
+                        border-radius: 5px;
+                        background: #ff00006b;
+                        cursor: pointer;
+
+                        &:hover {
+                            background: #ff0000aa;
+                        }
+                    }
+
+                    &.level-0 {
+                        top: 90px;
+                    }
+                    &.level-1 {
+                        top: 215px;
+                    }
+                    &.level-2 {
+                        top: 342px;
+                    }
+                    &.level-3 {
+                        top: 484px;
+                    }
+                    &.level-4 {
+                        top: 622px;
+                    }
                 }
             }
         }

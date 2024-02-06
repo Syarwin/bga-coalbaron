@@ -54,6 +54,32 @@ define([
     getSettingsConfig() {
       return {
         confirmMode: { type: 'pref', prefId: 103 },
+        boardWidth: {
+          default: 90,
+          name: _('Board width'),
+          type: 'slider',
+          sliderConfig: {
+            step: 3,
+            padding: 0,
+            range: {
+              min: [30],
+              max: [100],
+            },
+          },
+        },
+        playerBoardWidth: {
+          default: 90,
+          name: _('Player board scale'),
+          type: 'slider',
+          sliderConfig: {
+            step: 3,
+            padding: 0,
+            range: {
+              min: [30],
+              max: [100],
+            },
+          },
+        },
       };
     },
 
@@ -201,16 +227,7 @@ define([
       this.forEachPlayer((player) => {
         let isCurrent = player.id == this.player_id;
         this.place('tplPlayerPanel', player, `player_panel_content_${player.color}`, 'after');
-
-        this.place('tplPlayerBoard', player, 'coalbaron-player-boards-container');
-        // player.biomes.forEach((biome) => {
-        //   this.addBiome(biome);
-        // });
-
-        // if (player.hand !== null) {
-        //   this.addBiome(player.hand, 'pending-biomes');
-        //   $('pending-biomes-wrapper').classList.remove('empty');
-        // }
+        this.place('tplPlayerBoard', player, 'coalbaron-main-container');
 
         let pId = player.id;
         this._counters[pId] = {
@@ -256,37 +273,37 @@ define([
     },
 
     tplPlayerBoard(player) {
-      let content = '';
-
       return `<div class='coalbaron-board' id='board-${player.id}' data-color='${player.color}'>
-         <div class='player-name' style='color:#${player.color}'>${player.name}</div>
-         <div class='board-left-side'>
-            <div class='completed-orders' id='completed-orders-${player.id}'></div>
-            <div class='left-pit'>
-              <div class='pit-level' id='left-pit-${player.id}-1'></div>
-              <div class='pit-level' id='left-pit-${player.id}-2'><div class='pit-tile'></div></div>
-              <div class='pit-level' id='left-pit-${player.id}-3'><div class='pit-tile'></div></div>
-              <div class='pit-level' id='left-pit-${player.id}-4'></div>
-            </div>
-         </div>
-         <div class='board-elevator'>
-           <div class='elevator' id='elevator-${player.id}' data-y="${player.cageLevel}"></div>
-           <div class='elevator-level level-0' id='elevator-${player.id}-level-0'></div>
-           <div class='elevator-level level-1' id='elevator-${player.id}-level-1'></div>
-           <div class='elevator-level level-2' id='elevator-${player.id}-level-2'></div>
-           <div class='elevator-level level-3' id='elevator-${player.id}-level-3'></div>
-           <div class='elevator-level level-4' id='elevator-${player.id}-level-4'></div>
-           <div class='storage' id='storage-${player.id}'></div>
-         </div>
-         <div class='board-right-side'>
-            <div class='pending-orders' id='pending-orders-${player.id}'></div>
-            <div class='right-pit'>
-              <div class='pit-level' id='right-pit-${player.id}-1'><div class='pit-tile'></div></div>
-              <div class='pit-level' id='right-pit-${player.id}-2'></div>
-              <div class='pit-level' id='right-pit-${player.id}-3'></div>
-              <div class='pit-level' id='right-pit-${player.id}-4'><div class='pit-tile'></div></div>
-            </div>
-         </div>
+        <div class='player-board-fixed-size'>
+          <div class='board-left-side'>
+              <div class='completed-orders' id='completed-orders-${player.id}'></div>
+              <div class='left-pit'>
+                <div class='pit-level' id='left-pit-${player.id}-1'></div>
+                <div class='pit-level' id='left-pit-${player.id}-2'><div class='pit-tile'></div></div>
+                <div class='pit-level' id='left-pit-${player.id}-3'><div class='pit-tile'></div></div>
+                <div class='pit-level' id='left-pit-${player.id}-4'></div>
+              </div>
+          </div>
+          <div class='board-elevator'>
+            <div class='player-name' style='color:#${player.color}'>${player.name}</div>
+            <div class='elevator' id='elevator-${player.id}' data-y="${player.cageLevel}"></div>
+            <div class='elevator-level level-0' id='elevator-${player.id}-level-0'></div>
+            <div class='elevator-level level-1' id='elevator-${player.id}-level-1'></div>
+            <div class='elevator-level level-2' id='elevator-${player.id}-level-2'></div>
+            <div class='elevator-level level-3' id='elevator-${player.id}-level-3'></div>
+            <div class='elevator-level level-4' id='elevator-${player.id}-level-4'></div>
+            <div class='storage' id='storage-${player.id}'></div>
+          </div>
+          <div class='board-right-side'>
+              <div class='pending-orders' id='pending-orders-${player.id}'></div>
+              <div class='right-pit'>
+                <div class='pit-level' id='right-pit-${player.id}-1'><div class='pit-tile'></div></div>
+                <div class='pit-level' id='right-pit-${player.id}-2'></div>
+                <div class='pit-level' id='right-pit-${player.id}-3'></div>
+                <div class='pit-level' id='right-pit-${player.id}-4'><div class='pit-tile'></div></div>
+              </div>
+          </div>
+        </div>
       </div>`;
     },
 
@@ -1056,6 +1073,41 @@ define([
     notif_newTurnScoring(n) {
       debug('Notif: starting a new turn', n);
       this.notif_newTurn(n);
+    },
+
+    onChangeBoardWidthSetting(val) {
+      this.updateLayout();
+    },
+
+    onLoadingComplete() {
+      this.updateLayout();
+      this.inherited(arguments);
+    },
+
+    onScreenWidthChange() {
+      if (this.settings) this.updateLayout();
+    },
+
+    updateLayout() {
+      if (!this.settings) return;
+      const ROOT = document.documentElement;
+
+      const WIDTH = $('coalbaron-main-container').getBoundingClientRect()['width'];
+      const HEIGHT = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) - 62;
+      const BOARD_WIDTH = 1650;
+      const BOARD_HEIGHT = 850;
+
+      let widthScale = ((this.settings.boardWidth / 100) * WIDTH) / BOARD_WIDTH,
+        heightScale = HEIGHT / BOARD_HEIGHT,
+        scale = Math.min(widthScale, heightScale);
+      ROOT.style.setProperty('--boardScale', scale);
+
+      const PLAYER_BOARD_WIDTH = 1650;
+      const PLAYER_BOARD_HEIGHT = 840;
+      widthScale = ((this.settings.playerBoardWidth / 100) * WIDTH) / PLAYER_BOARD_WIDTH;
+      heightScale = HEIGHT / PLAYER_BOARD_HEIGHT;
+      scale = Math.min(widthScale, heightScale);
+      ROOT.style.setProperty('--playerBoardScale', scale);
     },
   });
 });

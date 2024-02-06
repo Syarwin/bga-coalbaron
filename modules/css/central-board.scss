@@ -1,7 +1,39 @@
+html {
+    scroll-snap-type: y proximity;
+    //    scroll-snap-type: y mandatory;
+    scroll-padding: 55px;
+
+    #overall-content {
+        overflow: initial;
+    }
+
+    #topbar {
+        scroll-snap-align: start;
+    }
+
+    #left-side .whiteblock.debug_section,
+    #overall-footer {
+        scroll-snap-align: start;
+    }
+}
+
 #coalbaron-main-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    #coalbaron-resizable-board {
+        // scroll-snap-align: start;
+        width: calc(var(--boardScale) * 1650px);
+        height: calc(var(--boardScale) * 786px);
+        margin-bottom: 10px;
+    }
+
     #coalbaron-board {
         width: 1650px;
         height: 786px;
+        transform: scale(var(--boardScale));
+        transform-origin: top left;
         background-image: url("img/board.jpg");
         background-size: 100% auto;
         background-repeat: no-repeat;

@@ -2,9 +2,9 @@
 
 <div id="draft-container"></div>
 <div id="coalbaron-main-container">
-  <div id="coalbaron-board"></div>
-</div>
-<div id="coalbaron-player-boards-container">
+  <div id="coalbaron-resizable-board">
+    <div id="coalbaron-board"></div>
+  </div>
 </div>
 
 

@@ -43,6 +43,7 @@ define([
         ['returnCards', 1400],
         ['movePitCage', 800],
         ['moveCoal', 900],
+        ['cardDelivered', 1300],
         // ["newTurn", 1000],
         // ["updateFirstPlayer", 500],
       ];
@@ -175,13 +176,15 @@ define([
 
     onEnteringStatePlaceWorker(args) {
       let selectedSpace = null;
-      Object.keys(args.nbrWorkersNeeded).forEach((spaceId) => {
-        this.onClick(spaceId, () => {
-          if (selectedSpace !== null) $(selectedSpace).classList.remove('selected');
-          selectedSpace = spaceId;
-          $(selectedSpace).classList.add('selected');
-          this.addPrimaryActionButton('btnConfirm', '', () => this.takeAction('actPlaceWorker', { spaceId: selectedSpace }));
-          $('btnConfirm').innerHTML = this.fsr(_('Confirm and place ${n} worker(s)'), { n: args.nbrWorkersNeeded[spaceId] });
+      Object.keys(args.spaces).forEach((spaceCategory) => {
+        args.spaces[spaceCategory].forEach((spaceId) => {
+          this.onClick(spaceId, () => {
+            if (selectedSpace !== null) $(selectedSpace).classList.remove('selected');
+            selectedSpace = spaceId;
+            $(selectedSpace).classList.add('selected');
+            this.addPrimaryActionButton('btnConfirm', '', () => this.takeAction('actPlaceWorker', { spaceId: selectedSpace }));
+            $('btnConfirm').innerHTML = this.fsr(_('Confirm and place ${n} worker(s)'), { n: args.nbrWorkersNeeded[spaceId] });
+          });
         });
       });
     },
@@ -238,6 +241,11 @@ define([
         // Useful to order boards
         nPlayers++;
         if (isCurrent) currentPlayerNo = player.no;
+        else {
+          for (let i = 0; i < player.ordersDone; i++) {
+            $(`completed-orders-${player.id}`).insertAdjacentHTML(`beforeend`, `<div class="coalbaron-card back-card"></div>`);
+          }
+        }
       });
 
       // Order them
@@ -712,6 +720,9 @@ define([
       if (card.location == 'outstanding') {
         return $(`pending-orders-${card.pId}`);
       }
+      if (card.location == 'delivered') {
+        return $(`completed-orders-${card.pId}`);
+      }
 
       console.error('Trying to get container of a card', card);
       return 'game_play_area';
@@ -915,6 +926,19 @@ define([
       $(`meeple-${n.args.coal.id}`).classList.remove('selected');
       $(`meeple-${n.args.coal.id}`).classList.remove('selectable');
       this.slide(`meeple-${n.args.coal.id}`, this.getMeepleContainer(n.args.coal));
+    },
+
+    notif_cardDelivered(n) {
+      debug('Notif: card delivered', n);
+      [...$(`card-${n.args.cardId}`).querySelectorAll('.coal-slot .coalbaron-meeple')].forEach((oMeeple) =>
+        this.slide(oMeeple, this.getVisibleTitleContainer(), { destroy: true })
+      );
+      let oCard = $(`card-${n.args.cardId}`);
+      this.slide(oCard, `completed-orders-${n.args.player_id}`).then(() => {
+        if (this.player_id != n.args.player_id) {
+          this.flipAndReplace(oCard, `<div class="coalbaron-card back-card"></div>`);
+        }
+      });
     },
 
     ////////////////////////////////////////////////////////////

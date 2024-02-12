@@ -1,21 +1,21 @@
-html {
-    scroll-snap-type: y proximity;
-    //    scroll-snap-type: y mandatory;
-    scroll-padding: 55px;
+// html {
+//     scroll-snap-type: y proximity;
+//     //    scroll-snap-type: y mandatory;
+//     scroll-padding: 55px;
 
-    #overall-content {
-        overflow: initial;
-    }
+//     #overall-content {
+//         overflow: initial;
+//     }
 
-    #topbar {
-        scroll-snap-align: start;
-    }
+//     #topbar {
+//         scroll-snap-align: start;
+//     }
 
-    #left-side .whiteblock.debug_section,
-    #overall-footer {
-        scroll-snap-align: start;
-    }
-}
+//     #left-side .whiteblock.debug_section,
+//     #overall-footer {
+//         scroll-snap-align: start;
+//     }
+// }
 
 #coalbaron-main-container {
     display: flex;
@@ -287,6 +287,10 @@ html {
                     top: -12px;
                 }
                 top: 580px;
+
+                .space-workers-container {
+                    height: 100%;
+                }
             }
             &#delivery_1 {
                 left: 630px;

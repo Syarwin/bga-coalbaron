@@ -26,6 +26,23 @@
 
                 .completed-orders {
                     height: 223px;
+                    display: flex;
+                    flex-flow: row;
+                    align-items: center;
+                    padding: 0px 5px;
+                    .coalbaron-card {
+                        margin: 2px 5px;
+                    }
+
+                    .flip-container {
+                        width: 132px;
+                        height: 202px;
+                        margin: 2px 5px;
+
+                        .coalbaron-card {
+                            margin: 0px;
+                        }
+                    }
                 }
                 .left-pit {
                     .pit-level {

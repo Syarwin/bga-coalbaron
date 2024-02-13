@@ -30,6 +30,8 @@ define([
     constructor() {
       this._inactiveStates = ['draft'];
       this._notifications = [
+        ['newShift', null],
+        ['updateFirstPlayer', 1000],
         ['placeWorkers', null],
         ['moveToCanteen', null],
         ['giveMoney', 1300],
@@ -49,8 +51,6 @@ define([
         ['endMajorityScoring', 700],
         ['endShiftMajority', 1300],
         ['endShiftScoring', 1200],
-        // ["newTurn", 1000],
-        // ["updateFirstPlayer", 500],
       ];
 
       // Fix mobile viewport (remove CSS zoom)
@@ -260,8 +260,10 @@ define([
         let order = ((player.no - currentPlayerNo + nPlayers) % nPlayers) + 1;
         $(`board-${player.id}`).style.order = order;
 
-        if (order == 1) {
-          dojo.place('<div id="coalbaron-first-player"></div>', `overall_player_board_${player.id}`);
+        if (player.id == this.gamedatas.firstPlayer) {
+          $(`overall_player_board_${player.id}`)
+            .querySelector('.first-player-holder')
+            .insertAdjacentHTML('beforeend', '<div id="coalbaron-first-player"></div>');
           this.addCustomTooltip('coalbaron-first-player', _('First player'));
         }
       });
@@ -271,10 +273,10 @@ define([
 
     updateFirstPlayer() {
       let pId = this.gamedatas.firstPlayer;
-      // let container = $(`overall_player_board_${pId}`);
-      // this.slide('coalbaron-first-player', container.querySelector('.first-player-holder'), {
-      //   phantom: false,
-      // });
+      let container = $(`overall_player_board_${pId}`);
+      this.slide('coalbaron-first-player', container.querySelector('.first-player-holder'), {
+        phantom: false,
+      });
     },
 
     getPlayerColor(pId) {
@@ -283,7 +285,7 @@ define([
 
     notif_updateFirstPlayer(n) {
       debug('Notif: updating first player', n);
-      this.gamedatas.firstPlayer = n.args.pId;
+      this.gamedatas.firstPlayer = n.args.player_id;
       this.updateFirstPlayer();
     },
 
@@ -614,7 +616,7 @@ define([
     tplMeeple(meeple) {
       let type = meeple.type.charAt(0).toLowerCase() + meeple.type.substr(1);
       const PERSONAL = ['worker'];
-      let color = PERSONAL.includes(type) ? ` data-color="${this.getPlayerColor(meeple.pId)}" ` : '';
+      let color = PERSONAL.includes(type) ? ` data-color="${this.getPlayerColor(meeple.pId)}" data-pId="${meeple.pId}" ` : '';
       return `<div class="coalbaron-meeple coalbaron-icon icon-${type}" id="meeple-${meeple.id}" data-id="${meeple.id}" data-type="${type}" ${color}></div>`;
     },
 
@@ -1245,15 +1247,20 @@ define([
       this._roundCounter.toValue(this.gamedatas.shift);
     },
 
-    notif_newTurn(n) {
-      debug('Notif: starting a new turn', n);
-      this.gamedatas.turn = n.args.step;
+    notif_newShift(n) {
+      debug('Notif: starting a new shift', n);
+      this.gamedatas.shift = n.args.n;
       this.updateTurn();
-    },
 
-    notif_newTurnScoring(n) {
-      debug('Notif: starting a new turn', n);
-      this.notif_newTurn(n);
+      Promise.all(
+        [...$('coalbaron-board').querySelectorAll('.icon-worker')].map((oMeeple, i) => {
+          return this.slide(oMeeple, $(`reserve-${oMeeple.dataset.pid}-worker`), { delay: 30 * i }).then(() =>
+            this._counters[oMeeple.dataset.pid]['worker'].incValue(1)
+          );
+        })
+      ).then(() => {
+        this.notifqueue.setSynchronousDuration(this.isFastMode() ? 0 : 10);
+      });
     },
 
     onChangeBoardWidthSetting(val) {

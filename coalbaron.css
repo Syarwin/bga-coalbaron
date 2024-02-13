@@ -73,6 +73,25 @@
         background-image: url("img/money.png");
         background-size: 100% auto; }
 
+.coalbaron-panel .first-player-holder {
+  position: absolute;
+  height: 34px;
+  right: 45px;
+  top: 0px;
+  width: 30px; }
+
+#coalbaron-first-player {
+  width: 30px;
+  height: 30px;
+  background: url("img/first-player.png");
+  background-size: 100%;
+  border-radius: 50%;
+  box-shadow: 1px 1px 3px -1px black;
+  position: relative; }
+  #coalbaron-first-player .help-marker {
+    left: -6px;
+    top: -6px; }
+
 #coalbaron-main-container .coalbaron-board {
   scroll-snap-align: start;
   scroll-padding: 20px;

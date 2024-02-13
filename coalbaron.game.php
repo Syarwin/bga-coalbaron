@@ -97,6 +97,7 @@ class CoalBaron extends Table
       'tilesDeckSize' => Tiles::getDeckSize(),
       'firstPlayer' => Globals::getFirstPlayer(),
       'nbrWorkersNeeded' => $this->getSpacesNeededWorkers($nbPlayers),
+      'majorities' => Globals::getAllMajorityWinners(),
     ];
   }
 

@@ -3,6 +3,7 @@
 namespace COAL\Helpers;
 
 use ArrayObject;
+use COAL\Core\Globals;
 use COAL\Core\Notifications;
 use COAL\Core\Stats;
 
@@ -41,9 +42,10 @@ class ScoringMajorityPlace
    * @param string $type
    * @param int $typeIndex
    * @param int $gameRound game round when this score is done
+   * @param int $podiumIndex
    * @return int the number of scored players at this place
    */
-  public function doScore($players,$type,$typeIndex, $gameRound = 1){
+  public function doScore($players,$type,$typeIndex, $gameRound = 1, $podiumIndex){
     foreach($this->pIds as $pId){
       $player = $players[$pId];
       $player->addPoints($this->reward);
@@ -51,6 +53,7 @@ class ScoringMajorityPlace
       $setterStatName = "setScoreMajority$typeIndex"."_$gameRound";
       Stats::$setterStatName( $player, $this->reward );
     }
+    Globals::saveMajorityWinners($this->pIds, $typeIndex, $gameRound, $podiumIndex );
     return count($this->pIds);
   }
 }

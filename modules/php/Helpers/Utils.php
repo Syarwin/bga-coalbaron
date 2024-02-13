@@ -1,7 +1,5 @@
 <?php
 namespace COAL\Helpers;
-use COAL\Managers\ZooCards;
-use COAL\Managers\ActionCards;
 
 abstract class Utils extends \APP_DbObject
 {

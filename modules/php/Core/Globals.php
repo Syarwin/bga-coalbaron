@@ -21,6 +21,84 @@ class Globals extends \COAL\Helpers\DB_Manager
     'nbCoalsToChoose' => 'int',
     'tileCoalsToChoose' => 'int',
 
+    // -- SHIFT 1
+    'majorityWinners1_1_1'  => 'obj',
+    'majorityWinners2_1_1'  => 'obj',
+    'majorityWinners3_1_1'  => 'obj',
+    'majorityWinners4_1_1'  => 'obj',
+    'majorityWinners5_1_1'  => 'obj',
+    'majorityWinners6_1_1'  => 'obj',
+    'majorityWinners7_1_1'  => 'obj',
+    'majorityWinners8_1_1'  => 'obj',
+    'majorityWinners9_1_1'  => 'obj',
+    'majorityWinners10_1_1' => 'obj',
+    'majorityWinners11_1_1' => 'obj',
+    'majorityWinners12_1_1' => 'obj',
+    'majorityWinners1_2_1'  => 'obj',
+    'majorityWinners2_2_1'  => 'obj',
+    'majorityWinners3_2_1'  => 'obj',
+    'majorityWinners4_2_1'  => 'obj',
+    'majorityWinners5_2_1'  => 'obj',
+    'majorityWinners6_2_1'  => 'obj',
+    'majorityWinners7_2_1'  => 'obj',
+    'majorityWinners8_2_1'  => 'obj',
+    'majorityWinners9_2_1'  => 'obj',
+    'majorityWinners10_2_1' => 'obj',
+    'majorityWinners11_2_1' => 'obj',
+    'majorityWinners12_2_1' => 'obj',
+
+    // -- SHIFT 2
+    'majorityWinners1_1_2'  => 'obj',
+    'majorityWinners2_1_2'  => 'obj',
+    'majorityWinners3_1_2'  => 'obj',
+    'majorityWinners4_1_2'  => 'obj',
+    'majorityWinners5_1_2'  => 'obj',
+    'majorityWinners6_1_2'  => 'obj',
+    'majorityWinners7_1_2'  => 'obj',
+    'majorityWinners8_1_2'  => 'obj',
+    'majorityWinners9_1_2'  => 'obj',
+    'majorityWinners10_1_2' => 'obj',
+    'majorityWinners11_1_2' => 'obj',
+    'majorityWinners12_1_2' => 'obj',
+    'majorityWinners1_2_2'  => 'obj',
+    'majorityWinners2_2_2'  => 'obj',
+    'majorityWinners3_2_2'  => 'obj',
+    'majorityWinners4_2_2'  => 'obj',
+    'majorityWinners5_2_2'  => 'obj',
+    'majorityWinners6_2_2'  => 'obj',
+    'majorityWinners7_2_2'  => 'obj',
+    'majorityWinners8_2_2'  => 'obj',
+    'majorityWinners9_2_2'  => 'obj',
+    'majorityWinners10_2_2' => 'obj',
+    'majorityWinners11_2_2' => 'obj',
+    'majorityWinners12_2_2' => 'obj',
+    // -- SHIFT 3
+    'majorityWinners1_1_3'  => 'obj',
+    'majorityWinners2_1_3'  => 'obj',
+    'majorityWinners3_1_3'  => 'obj',
+    'majorityWinners4_1_3'  => 'obj',
+    'majorityWinners5_1_3'  => 'obj',
+    'majorityWinners6_1_3'  => 'obj',
+    'majorityWinners7_1_3'  => 'obj',
+    'majorityWinners8_1_3'  => 'obj',
+    'majorityWinners9_1_3'  => 'obj',
+    'majorityWinners10_1_3' => 'obj',
+    'majorityWinners11_1_3' => 'obj',
+    'majorityWinners12_1_3' => 'obj',
+    'majorityWinners1_2_3'  => 'obj',
+    'majorityWinners2_2_3'  => 'obj',
+    'majorityWinners3_2_3'  => 'obj',
+    'majorityWinners4_2_3'  => 'obj',
+    'majorityWinners5_2_3'  => 'obj',
+    'majorityWinners6_2_3'  => 'obj',
+    'majorityWinners7_2_3'  => 'obj',
+    'majorityWinners8_2_3'  => 'obj',
+    'majorityWinners9_2_3'  => 'obj',
+    'majorityWinners10_2_3' => 'obj',
+    'majorityWinners11_2_3' => 'obj',
+    'majorityWinners12_2_3' => 'obj',
+
+
     // Game options
     'cardsVisibility' => 'int',
   ];
@@ -41,8 +119,35 @@ class Globals extends \COAL\Helpers\DB_Manager
         break;
       }
     }
+    self::initAllMajorityWinners();
   }
 
+  public static function saveMajorityWinners($playerIds, $typeIndex,$gameRound, $podiumIndex ){
+    $globalvar = "majorityWinners$typeIndex"."_$podiumIndex"."_$gameRound";
+    //self::$variables["$globalvar"] = 'obj';
+    $setterName = "set".ucfirst($globalvar);
+    self::$setterName( $playerIds );
+  }
+
+  public static function getAllMajorityWinners(){
+    $values = [];
+    foreach(self::$variables as $name => $type){
+      if(str_starts_with($name,"majorityWinners")){
+        $getter ="get".ucfirst($name);
+        $values[$name] = self::$getter();
+      }
+    }
+    return $values;
+  }
+
+  public static function initAllMajorityWinners(){
+    foreach(self::$variables as $name => $type){
+      if(str_starts_with($name,"majorityWinners")){
+        $setter ="set".ucfirst($name);
+        self::$setter([]);
+      }
+    }
+  }
 
   protected static $table = 'global_variables';
   protected static $primary = 'name';

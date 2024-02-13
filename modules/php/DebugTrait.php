@@ -271,10 +271,20 @@ trait DebugTrait
     Meeples::moveAllInLocation(SPACE_PIT_TILE . "_1_1","FAKE_FOR_TEST_1_1");
     Meeples::moveAllInLocation(SPACE_PIT_TILE . "_4_1","FAKE_FOR_TEST_1_4");
     */
-    $this->computeEndShiftScoring(1);
+    $this->computeEndShiftScoring(3);
   }
 
   
+  function testSMW()
+  { 
+    Globals::initAllMajorityWinners();
+    $gameRound =2;
+    $reward=5;
+    $typeIndex = 2;
+    $pIds = Players::getAll()->getIds();
+    Globals::saveMajorityWinners($pIds, $typeIndex, $gameRound,1 );
+  }
+
   function testEndGameScoring()
   { 
     $this->computeEndGameScoring();

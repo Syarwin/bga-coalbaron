@@ -2,6 +2,7 @@
 
 namespace COAL\Helpers;
 
+use COAL\Core\Globals;
 use COAL\Core\Notifications;
 use COAL\Helpers\ScoringMajorityPlace;
 /*

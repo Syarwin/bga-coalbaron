@@ -25,13 +25,13 @@
     #coalbaron-resizable-board {
         // scroll-snap-align: start;
         width: calc(var(--boardScale) * 1650px);
-        height: calc(var(--boardScale) * 740px);
+        height: calc(var(--boardScale) * 665px);
         margin-bottom: 10px;
     }
 
     #coalbaron-board {
         width: 1650px;
-        height: 740px;
+        height: 665px;
         transform: scale(var(--boardScale));
         transform-origin: top left;
         background-image: url("img/board.jpg");
@@ -47,18 +47,16 @@
 
         .board-space {
             width: 100px;
-            height: 138px;
-            // width: 160px;
-            // height: 200px;
+            height: 115px;
             margin: 10px;
-            background: rgba(255, 255, 255, 0.548);
+            background: rgba(204, 204, 204, 0.8);
             position: absolute;
             top: 400px;
             box-shadow: 1px 1px 5px 1px black;
             border-radius: 7px;
 
             &.disabled {
-                opacity: 0.4;
+                opacity: 0.2;
             }
 
             &.selectable {
@@ -170,33 +168,33 @@
                 left: 472px;
             }
             &#factory_5 {
-                top: 470px;
+                top: 395px;
                 left: -2px;
             }
             &#factory_6 {
-                top: 470px;
+                top: 395px;
                 left: 156px;
             }
             &#factory_7 {
-                top: 470px;
+                top: 395px;
                 left: 314px;
             }
             &#factory_8 {
-                top: 470px;
+                top: 395px;
                 left: 472px;
             }
             &#factory_draw {
-                width: 100px;
-                height: 140px;
-                left: 16px;
-                top: 280px;
+                width: 178px;
+                height: 100px;
+                left: 13px;
+                top: 270px;
 
                 .space-title-container {
                     position: absolute;
                     transform: rotate(-90deg);
-                    left: 73px;
+                    left: 158px;
                     transform-origin: top left;
-                    top: 120px;
+                    top: 100px;
 
                     &::before {
                         background-position: 66.6666% 100%;
@@ -297,7 +295,7 @@
                     position: absolute;
                     top: -12px;
                 }
-                top: 580px;
+                top: 530px;
 
                 .space-workers-container {
                     height: 100%;
@@ -333,7 +331,7 @@
             &#order_2,
             &#order_3,
             &#order_4 {
-                top: 447px;
+                top: 375px;
                 width: 120px;
                 height: 270px;
                 .space-title-container {
@@ -377,7 +375,7 @@
             }
 
             &#order_draw {
-                top: 300px;
+                top: 233px;
                 left: 1300px;
                 width: 120px;
                 height: 120px;
@@ -398,7 +396,7 @@
 
             &#canteen,
             &#bank_1 {
-                top: 395px;
+                top: 360px;
                 left: 708px;
                 width: 300px;
                 height: 150px;
@@ -417,7 +415,7 @@
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    background: rgba(255, 255, 255, 0.6);
+                    background: rgba(204, 204, 204, 0.8);
                     border: 1px solid black;
                     border-radius: 5px;
 

@@ -1035,6 +1035,18 @@ define([
            <div id="settings-controls-container"></div>
          </div>`,
       });
+
+      this._scoresheetModal = new customgame.modal('showScoresheet', {
+        class: 'coalbaron_popin',
+        closeIcon: 'fa-times',
+        title: _('Scoring board'),
+        closeAction: 'hide',
+        verticalAlign: 'flex-start',
+        contentsTpl: `<div id='scoring-board'></div>`,
+        breakpoint: 905,
+        scale: 0.9,
+      });
+      $('show-scoresheet').addEventListener('click', () => this._scoresheetModal.show());
     },
 
     tplConfigPlayerBoard() {
@@ -1043,10 +1055,18 @@ define([
    <div id="player_config" class="player_board_content">
 
      <div class="player_config_row" id="round-counter-wrapper">
-       ${_('Round')} <span id='round-counter'></span> / <span id='round-counter-total'></span>
+       ${_('Shift')} <span id='round-counter'></span> / <span id='round-counter-total'>3</span>
      </div>
-     <div class="player_config_row" id="round-phase"></div>
      <div class="player_config_row">
+      <div id="show-scoresheet">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+          <g class="fa-group">
+            <path class="fa-secondary" fill="currentColor" d="M0 192v272a48 48 0 0 0 48 48h352a48 48 0 0 0 48-48V192zm324.13 141.91a11.92 11.92 0 0 1-3.53 6.89L281 379.4l9.4 54.6a12 12 0 0 1-17.4 12.6l-49-25.8-48.9 25.8a12 12 0 0 1-17.4-12.6l9.4-54.6-39.6-38.6a12 12 0 0 1 6.6-20.5l54.7-8 24.5-49.6a12 12 0 0 1 21.5 0l24.5 49.6 54.7 8a12 12 0 0 1 10.13 13.61zM304 128h32a16 16 0 0 0 16-16V16a16 16 0 0 0-16-16h-32a16 16 0 0 0-16 16v96a16 16 0 0 0 16 16zm-192 0h32a16 16 0 0 0 16-16V16a16 16 0 0 0-16-16h-32a16 16 0 0 0-16 16v96a16 16 0 0 0 16 16z" opacity="0.4"></path>
+            <path class="fa-primary" fill="currentColor" d="M314 320.3l-54.7-8-24.5-49.6a12 12 0 0 0-21.5 0l-24.5 49.6-54.7 8a12 12 0 0 0-6.6 20.5l39.6 38.6-9.4 54.6a12 12 0 0 0 17.4 12.6l48.9-25.8 49 25.8a12 12 0 0 0 17.4-12.6l-9.4-54.6 39.6-38.6a12 12 0 0 0-6.6-20.5zM400 64h-48v48a16 16 0 0 1-16 16h-32a16 16 0 0 1-16-16V64H160v48a16 16 0 0 1-16 16h-32a16 16 0 0 1-16-16V64H48a48 48 0 0 0-48 48v80h448v-80a48 48 0 0 0-48-48z"></path>
+          </g>
+        </svg>
+      </div>
+      
        <div id="help-mode-switch">
          <input type="checkbox" class="checkbox" id="help-mode-chk" />
          <label class="label" for="help-mode-chk">
@@ -1065,7 +1085,6 @@ define([
          </svg>
        </div>
      </div>
-     <div class="player_config_row" id="pending-gods"></div>
    </div>
  </div>
  `;
@@ -1077,25 +1096,7 @@ define([
     },
 
     updateTurn() {
-      // $('game_play_area').dataset.step = this.gamedatas.turn;
-      // let round = parseInt(this.gamedatas.turn / 4) + 1;
-      // if (round > 4) round = 4;
-      // let turn = this.gamedatas.turn % 4;
-      // if (this.prefs && this.prefs[105].value == 1) {
-      //   this._roundCounter.toValue(this.gamedatas.turn);
-      //   $('round-counter-total').innerHTML = 16;
-      //   $('round-phase').innerHTML = turn == 0 ? _('Scoring phase') : '';
-      // } else {
-      //   $('round-counter-total').innerHTML = 4;
-      //   this._roundCounter.toValue(round);
-      //   let msgs = {
-      //     0: _('Scoring phase'),
-      //     1: _('First turn'),
-      //     2: _('Second turn'),
-      //     3: _('Third turn'),
-      //   };
-      //   $('round-phase').innerHTML = msgs[turn];
-      // }
+      this._roundCounter.toValue(this.gamedatas.shift);
     },
 
     notif_newTurn(n) {

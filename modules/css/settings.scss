@@ -13,6 +13,22 @@
         &:last-child {
             border-bottom: none;
         }
+
+        #show-scoresheet {
+            &:hover {
+                color: grey;
+            }
+
+            cursor: pointer;
+            &:hover {
+                color: grey;
+            }
+
+            svg {
+                width: auto;
+                height: 40px;
+            }
+        }
     }
 
     #round-counter-wrapper {
@@ -71,7 +87,9 @@
             height: 22px;
             width: 22px;
             transform: translateX(0px);
-            transition: transform 0.2s linear, color 0.7s linear;
+            transition:
+                transform 0.2s linear,
+                color 0.7s linear;
         }
 
         .checkbox:checked + .label .ball {
@@ -162,7 +180,6 @@
     }
 
     h2 {
-        font-family: "Oranienbaum";
         text-align: center;
         font-size: 23px;
         margin: 0px;

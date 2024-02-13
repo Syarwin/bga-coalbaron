@@ -1,0 +1,56 @@
+#popin_showScoresheet_underlay {
+    background-color: black !important;
+    opacity: 0.6;
+}
+
+#popin_showScoresheet {
+    background-color: #ebd5bd;
+    border-radius: 8px;
+    box-shadow: 0 3px 8px black;
+    position: relative;
+
+    .coalbaron_popin_closeicon {
+        background-color: #a47a77;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: -18px;
+        right: -18px;
+        font-size: 90%;
+        color: white !important;
+        border: 1px solid #dfbda8;
+
+        &:hover {
+            text-decoration: none;
+            color: #ccc !important;
+            transform: scale(1.1);
+        }
+
+        i {
+            margin-top: -2px;
+        }
+    }
+
+    h2 {
+        text-align: center;
+        font-size: 23px;
+        margin: 0px;
+        background: #b79570;
+        border-radius: 8px 8px 0px 0px;
+        padding: 7px 0px;
+        border-bottom: 1px solid #734f2a;
+    }
+
+    #scoring-board {
+        width: 905px;
+        height: 400px;
+        background: url("img/scoring-board.jpg");
+        background-size: 100% auto;
+        border-radius: 0px 0px 8px 8px;
+        box-shadow: 2px 3px 5px 1px black;
+    }
+}

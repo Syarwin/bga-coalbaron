@@ -959,6 +959,15 @@
   border-bottom: 1px solid #80502e; }
   #player_config .player_config_row:last-child {
     border-bottom: none; }
+  #player_config .player_config_row #show-scoresheet {
+    cursor: pointer; }
+    #player_config .player_config_row #show-scoresheet:hover {
+      color: grey; }
+    #player_config .player_config_row #show-scoresheet:hover {
+      color: grey; }
+    #player_config .player_config_row #show-scoresheet svg {
+      width: auto;
+      height: 40px; }
 #player_config #round-counter-wrapper {
   text-align: center;
   margin: -5px -3px 0px;
@@ -1061,7 +1070,6 @@
     #popin_showSettings .coalbaron_popin_closeicon i {
       margin-top: -2px; }
   #popin_showSettings h2 {
-    font-family: "Oranienbaum";
     text-align: center;
     font-size: 23px;
     margin: 0px;
@@ -1448,6 +1456,51 @@
       transform: rotateY(180deg); }
   .flip-container.flipped .flip-inner {
     transform: rotateY(180deg); }
+
+#popin_showScoresheet_underlay {
+  background-color: black !important;
+  opacity: 0.6; }
+
+#popin_showScoresheet {
+  background-color: #ebd5bd;
+  border-radius: 8px;
+  box-shadow: 0 3px 8px black;
+  position: relative; }
+  #popin_showScoresheet .coalbaron_popin_closeicon {
+    background-color: #a47a77;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: -18px;
+    right: -18px;
+    font-size: 90%;
+    color: white !important;
+    border: 1px solid #dfbda8; }
+    #popin_showScoresheet .coalbaron_popin_closeicon:hover {
+      text-decoration: none;
+      color: #ccc !important;
+      transform: scale(1.1); }
+    #popin_showScoresheet .coalbaron_popin_closeicon i {
+      margin-top: -2px; }
+  #popin_showScoresheet h2 {
+    text-align: center;
+    font-size: 23px;
+    margin: 0px;
+    background: #b79570;
+    border-radius: 8px 8px 0px 0px;
+    padding: 7px 0px;
+    border-bottom: 1px solid #734f2a; }
+  #popin_showScoresheet #scoring-board {
+    width: 905px;
+    height: 400px;
+    background: url("img/scoring-board.jpg");
+    background-size: 100% auto;
+    border-radius: 0px 0px 8px 8px;
+    box-shadow: 2px 3px 5px 1px black; }
 
 .phantom {
   visibility: hidden; }

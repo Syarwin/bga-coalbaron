@@ -112,9 +112,9 @@ class Globals extends \COAL\Helpers\DB_Manager
     self::setShift(0);
 
     self::setCardsVisibility($options[OPTION_CARDS_VISIBILITY]);
-    
-    foreach($players as $pId => $player){
-      if($player['player_table_order'] == 1){
+
+    foreach ($players as $pId => $player) {
+      if ($player['player_table_order'] == 1) {
         self::setFirstPlayer($pId);
         break;
       }
@@ -122,28 +122,31 @@ class Globals extends \COAL\Helpers\DB_Manager
     self::initAllMajorityWinners();
   }
 
-  public static function saveMajorityWinners($playerIds, $typeIndex,$gameRound, $podiumIndex ){
-    $globalvar = "majorityWinners$typeIndex"."_$podiumIndex"."_$gameRound";
+  public static function saveMajorityWinners($playerIds, $typeIndex, $gameRound, $podiumIndex)
+  {
+    $globalvar = "majorityWinners$typeIndex" . "_$podiumIndex" . "_$gameRound";
     //self::$variables["$globalvar"] = 'obj';
-    $setterName = "set".ucfirst($globalvar);
-    self::$setterName( $playerIds );
+    $setterName = "set" . ucfirst($globalvar);
+    self::$setterName($playerIds);
   }
 
-  public static function getAllMajorityWinners(){
+  public static function getAllMajorityWinners()
+  {
     $values = [];
-    foreach(self::$variables as $name => $type){
-      if(str_starts_with($name,"majorityWinners")){
-        $getter ="get".ucfirst($name);
-        $values[$name] = self::$getter();
+    foreach (self::$variables as $name => $type) {
+      if (str_starts_with($name, "majorityWinners")) {
+        $getter = "get" . ucfirst($name);
+        $values[substr($name, 15)] = self::$getter();
       }
     }
     return $values;
   }
 
-  public static function initAllMajorityWinners(){
-    foreach(self::$variables as $name => $type){
-      if(str_starts_with($name,"majorityWinners")){
-        $setter ="set".ucfirst($name);
+  public static function initAllMajorityWinners()
+  {
+    foreach (self::$variables as $name => $type) {
+      if (str_starts_with($name, "majorityWinners")) {
+        $setter = "set" . ucfirst($name);
         self::$setter([]);
       }
     }
@@ -168,8 +171,8 @@ class Globals extends \COAL\Helpers\DB_Manager
     self::$log = false;
 
     foreach (self::DB()
-        ->select(['value', 'name'])
-        ->get(false)
+      ->select(['value', 'name'])
+      ->get(false)
       as $name => $variable) {
       if (\array_key_exists($name, self::$variables)) {
         self::$data[$name] = $variable;

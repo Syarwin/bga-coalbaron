@@ -1,5 +1,7 @@
 <?php
+
 namespace COAL;
+
 use COAL\Core\Globals;
 use COAL\Core\Game;
 use COAL\Core\Notifications;
@@ -14,13 +16,13 @@ trait DebugTrait
 {
   function testGoToNextPlayer()
   {
-    $this->gamestate->nextState( 'next' );
+    $this->gamestate->nextState('next');
   }
   function testGoToDraft()
   {
     $this->gamestate->jumpToState(ST_DRAFT_INIT);
   }
-  
+
   function testGoToPlaceWorkers()
   {
     Globals::setShift(1);
@@ -31,7 +33,7 @@ trait DebugTrait
   {
     $this->gamestate->jumpToState(ST_NEXT_SHIFT);
   }
-  
+
   function testSimulateDraft()
   {
     $players = Players::getAll();
@@ -42,10 +44,10 @@ trait DebugTrait
     Cards::moveAllInLocation(SPACE_ORDER_3, CARD_LOCATION_DECK);
     Cards::moveAllInLocation(SPACE_ORDER_4, CARD_LOCATION_DECK);
 
-    foreach($players as $player){
-      for($k =0; $k< CARDS_START_NB;$k++){
+    foreach ($players as $player) {
+      for ($k = 0; $k < CARDS_START_NB; $k++) {
         $card = Cards::getTopOf(CARD_LOCATION_DECK);
-        Cards::giveCardTo($player,$card);
+        Cards::giveCardTo($player, $card);
       }
     }
 
@@ -66,54 +68,55 @@ trait DebugTrait
     $money = $player->getMoney();
     $nbPlayers = 2;
     $spaces = self::getPossibleSpaces($pId, $nbPlayers, $money);
-    Notifications::possibleWorkerSpaces($pId,$spaces);
+    Notifications::possibleWorkerSpaces($pId, $spaces);
 
     Notifications::message("END DEBUG TEST 1");
-    
+
     Notifications::message("START DEBUG TEST 2");
 
     $nbPlayers = 3;
     $spaces = self::getPossibleSpaces($pId, $nbPlayers, $money);
-    Notifications::possibleWorkerSpaces($pId,$spaces);
+    Notifications::possibleWorkerSpaces($pId, $spaces);
 
     Notifications::message("END DEBUG TEST 2");
-    
+
     Notifications::message("START DEBUG TEST 3");
 
     $nbPlayers = 4;
     $spaces = self::getPossibleSpaces($pId, $nbPlayers, $money);
-    Notifications::possibleWorkerSpaces($pId,$spaces);
+    Notifications::possibleWorkerSpaces($pId, $spaces);
 
     Notifications::message("END DEBUG TEST 3");
   }
 
-  function testIsPWS(){
+  function testIsPWS()
+  {
     $player = Players::getCurrent();
     $nbPlayers = Players::count();
     $nbAvailableWorkers = Meeples::getNbAvailableWorkers($player);
-    
-    $spacesToTest = [ 
-      SPACE_BANK_1,SPACE_BANK_3,SPACE_BANK_4,SPACE_BANK_5,SPACE_BANK_6,
-      SPACE_FACTORY_1,SPACE_FACTORY_2,SPACE_FACTORY_3,SPACE_FACTORY_4,SPACE_FACTORY_5,SPACE_FACTORY_6,SPACE_FACTORY_7,SPACE_FACTORY_8,
+
+    $spacesToTest = [
+      SPACE_BANK_1, SPACE_BANK_3, SPACE_BANK_4, SPACE_BANK_5, SPACE_BANK_6,
+      SPACE_FACTORY_1, SPACE_FACTORY_2, SPACE_FACTORY_3, SPACE_FACTORY_4, SPACE_FACTORY_5, SPACE_FACTORY_6, SPACE_FACTORY_7, SPACE_FACTORY_8,
       SPACE_FACTORY_DRAW,
-      SPACE_ORDER_1,SPACE_ORDER_2,SPACE_ORDER_3,SPACE_ORDER_4,
+      SPACE_ORDER_1, SPACE_ORDER_2, SPACE_ORDER_3, SPACE_ORDER_4,
       SPACE_ORDER_DRAW,
-      SPACE_DELIVERY_BARROW,SPACE_DELIVERY_CARRIAGE,SPACE_DELIVERY_MOTORCAR,SPACE_DELIVERY_ENGINE,
-      SPACE_MINING_4,SPACE_MINING_6,SPACE_MINING_8,SPACE_MINING_10,
+      SPACE_DELIVERY_BARROW, SPACE_DELIVERY_CARRIAGE, SPACE_DELIVERY_MOTORCAR, SPACE_DELIVERY_ENGINE,
+      SPACE_MINING_4, SPACE_MINING_6, SPACE_MINING_8, SPACE_MINING_10,
     ];
 
-    foreach($spacesToTest as $space){
-      $isPossible = $this->isPossibleSpace($player->getId(), $nbPlayers,$space, $player->getMoney(),$nbAvailableWorkers);
-      Notifications::messageTo($player,"Possible space $space ? ".($isPossible ? 'true' : 'false'),[]);
+    foreach ($spacesToTest as $space) {
+      $isPossible = $this->isPossibleSpace($player->getId(), $nbPlayers, $space, $player->getMoney(), $nbAvailableWorkers);
+      Notifications::messageTo($player, "Possible space $space ? " . ($isPossible ? 'true' : 'false'), []);
     }
   }
-  
+
   function testBank()
   {
     $this->testReplaceMeeplesInReserve();
 
     $player = Players::getCurrent();
-    self::dump("testBank() : player",$player);
+    self::dump("testBank() : player", $player);
     $money = $player->getMoney();
 
     Notifications::message("START DEBUG TEST with player money $money");
@@ -123,20 +126,20 @@ trait DebugTrait
     $money = $player->getMoney();
     Notifications::message("START DEBUG TEST Place in Bank 6 with player money $money");
     self::placeWorkerInBank($player, SPACE_BANK_6);
-    
+
     $player = Players::getCurrent();
     $money = $player->getMoney();
     Notifications::message("START DEBUG TEST Place in Bank 4 more workers with player money $money");
     self::placeWorkerInBank($player, SPACE_BANK_4);
-    
+
     Notifications::message("START DEBUG TEST Place in Bank 1");
     self::placeWorkerInBank($player, SPACE_BANK_1);
-    
+
     $player = Players::getCurrent();
     $money = $player->getMoney();
     Notifications::message("END DEBUG TEST with player money $money");
   }
-  
+
   function testActionBank()
   {
     $this->testReplaceMeeplesInReserve();
@@ -155,22 +158,22 @@ trait DebugTrait
     //$this->actPlaceWorker(SPACE_BANK_5);
     $this->actPlaceWorker(SPACE_BANK_6);
     $this->actPlaceWorker(SPACE_BANK_6);
-    
+
     $this->actPlaceWorker(SPACE_BANK_4);
     $this->actPlaceWorker(SPACE_BANK_1);
-    
+
     //$this->actPlaceWorker("FAKE_BANK_SPACE");
   }
-  
+
   function testActionFactory()
   {
     $this->testReplaceMeeplesInReserve();
     $this->actPlaceWorker(SPACE_FACTORY_1);
   }
-  
+
   function testMissingCoals()
   {
-    Meeples::moveAllByType(YELLOW_COAL,"FAKE_SPACE");
+    Meeples::moveAllByType(YELLOW_COAL, "FAKE_SPACE");
   }
 
   function testActionOrder()
@@ -184,7 +187,7 @@ trait DebugTrait
     $this->testReplaceMeeplesInReserve();
     $this->actPlaceWorker(SPACE_MINING_6);
   }
-  
+
   function testActionMovePitCage()
   {
     //RESET for the test :
@@ -198,7 +201,7 @@ trait DebugTrait
     $this->actMovePitCage(LEVEL_TUNNEL_MAX);
     $this->actStopMining();
   }
-  
+
   function testActionMoveCoal()
   {
     //RESET for the test :
@@ -206,27 +209,27 @@ trait DebugTrait
     $player->setCageLevel(LEVEL_SURFACE);
     Globals::setMiningMoves(6);
     $coals = Meeples::getPlayerCoals($player->getId());
-    $coalIds = array( );
-    foreach($coals as $coal){
+    $coalIds = array();
+    foreach ($coals as $coal) {
       //if($coal->getLocation() == ( SPACE_PIT_TILE . '_1_1' )  ){
-        //ALWAYS TAKE FIRST
-        $coalIds[] = $coal->getId();
-        $coal->setLocation(SPACE_PIT_TILE . '_1_1');
-        break;
+      //ALWAYS TAKE FIRST
+      $coalIds[] = $coal->getId();
+      $coal->setLocation(SPACE_PIT_TILE . '_1_1');
+      break;
       //}
     }
 
     $this->actMovePitCage(1);
-    $this->actMoveCoals($coalIds,SPACE_PIT_CAGE);
+    $this->actMoveCoals($coalIds, SPACE_PIT_CAGE);
     $this->actMovePitCage(LEVEL_SURFACE);
-    $this->actMoveCoals($coalIds,COAL_LOCATION_STORAGE); 
+    $this->actMoveCoals($coalIds, COAL_LOCATION_STORAGE);
   }
-  
+
   function testPossibleSpacesInDelivery()
   {
     $player = Players::getCurrent();
     $pId = $player->getId();
-    self::dump("testPossibleSpacesInDelivery",$this->getPossibleSpacesInDelivery($pId ));
+    self::dump("testPossibleSpacesInDelivery", $this->getPossibleSpacesInDelivery($pId));
   }
 
   /* Replace meeples in reserve : */
@@ -237,9 +240,9 @@ trait DebugTrait
     $workers = Meeples::getAll();
     $workersIds = array();
     foreach ($workers as $worker) {
-      if($worker->getType() == WORKER && $worker->getPId() == $pId ) $workersIds[] = $worker->getId();
+      if ($worker->getType() == WORKER && $worker->getPId() == $pId) $workersIds[] = $worker->getId();
     }
-    Meeples::move($workersIds,SPACE_RESERVE );
+    Meeples::move($workersIds, SPACE_RESERVE);
     $nbAv = count($workersIds);
     Notifications::message("$nbAv workers are available");
   }
@@ -274,20 +277,19 @@ trait DebugTrait
     $this->computeEndShiftScoring(3);
   }
 
-  
+
   function testSMW()
-  { 
+  {
     Globals::initAllMajorityWinners();
-    $gameRound =2;
-    $reward=5;
+    $gameRound = 2;
+    $reward = 5;
     $typeIndex = 2;
     $pIds = Players::getAll()->getIds();
-    Globals::saveMajorityWinners($pIds, $typeIndex, $gameRound,1 );
+    Globals::saveMajorityWinners($pIds, $typeIndex, $gameRound, 1);
   }
 
   function testEndGameScoring()
-  { 
+  {
     $this->computeEndGameScoring();
   }
-
 }

@@ -44,11 +44,11 @@ define([
         ['movePitCage', 800],
         ['moveCoal', 900],
         ['cardDelivered', null],
-        ['endShiftDeliveries', null],
+        ['startShiftScoring', null],
         ['startMajorityScoring', 700],
         ['endMajorityScoring', 700],
         ['endShiftMajority', 1300],
-        ['endShiftScoring', 1000],
+        ['endShiftScoring', 1200],
         // ["newTurn", 1000],
         // ["updateFirstPlayer", 500],
       ];
@@ -954,11 +954,11 @@ define([
       });
     },
 
-    notif_endShiftDeliveries(n) {
+    notif_startShiftScoring(n) {
       debug('Notif: reveal hidden cards for scoring', n);
       Promise.all(
         n.args.cards.map((card, i) => {
-          if ($(`card-${card.id}`)) return;
+          if ($(`card-${card.id}`) || this.gamedatas.optionCardsVisibility == 1) return;
 
           let pId = card.pId;
           let oCard = $(`completed-orders-${pId}`).querySelector('.coalbaron-card.back-card:not(.revealing)');
@@ -975,6 +975,17 @@ define([
     notif_endShiftScoring(n) {
       debug('Notif: end of shift scoring', n);
       $(`scoring-shift-${n.args.shift}`).classList.remove('active');
+
+      if (this.gamedatas.optionCardsVisibility == 0) {
+        n.args.cards.forEach((card) => {
+          let pId = card.pId;
+          if (pId == this.player_id) return;
+
+          let oCard = $(`card-${card.id}`);
+          this.flipAndReplace(oCard, `<div class="coalbaron-card back-card"></div>`);
+        });
+      }
+
       this.wait(700).then(() => this._scoresheetModal.hide());
     },
 
@@ -1165,6 +1176,23 @@ define([
           );
         }
       }
+
+      let majorities = this.gamedatas.majorities;
+      Object.keys(majorities).forEach((s) => {
+        if (majorities[s].length == 0) return;
+        let t = s.split('_');
+
+        let i = t[0];
+        let pos = t[1] == 1 ? 'first' : 'second';
+        let shift = t[2];
+        let container = $(`scoring-cell-${shift}-${i}`).querySelector(`.scoring-cell-${pos}`);
+        majorities[s].forEach((pId) =>
+          container.insertAdjacentHTML(
+            'beforeend',
+            `<div class='marker' style='background-color:#${this.gamedatas.players[pId].color}'></div>`
+          )
+        );
+      });
     },
 
     tplConfigPlayerBoard() {

@@ -252,7 +252,7 @@ class Notifications
   /**
    * Resend cards to UI to see cards during end shift, then the UI must hide them again
    */
-  public static function endShiftDeliveries($deliveredOrders, $shift)
+  public static function startShiftScoring($deliveredOrders, $shift)
   {
     $cards = $deliveredOrders
       ->map(function ($card) {
@@ -260,8 +260,15 @@ class Notifications
       })
       ->toArray();
 
-    self::notifyAll('endShiftDeliveries', '', [
+    self::notifyAll('startShiftScoring', '', [
       'cards' => $cards,
+      'shift' => $shift,
+    ]);
+  }
+  public static function endShiftScoring($deliveredOrders, $shift)
+  {
+    self::notifyAll('endShiftScoring', '', [
+      'cards' => $deliveredOrders->toArray(),
       'shift' => $shift,
     ]);
   }
@@ -278,12 +285,6 @@ class Notifications
     self::notifyAll('endMajorityScoring', '', [
       'shift' => $shift,
       'i' => $i,
-    ]);
-  }
-  public static function endShiftScoring($shift)
-  {
-    self::notifyAll('endShiftScoring', '', [
-      'shift' => $shift,
     ]);
   }
   public static function endShiftMajority($player, $points, $type, $majorityIndex, $nbElements, $position)

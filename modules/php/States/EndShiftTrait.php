@@ -29,7 +29,7 @@ trait EndShiftTrait
     $players = Players::getAll();
 
     $deliveredOrders = Cards::getInLocation(CARD_LOCATION_DELIVERED);
-    Notifications::endShiftDeliveries($deliveredOrders, $shift);
+    Notifications::startShiftScoring($deliveredOrders, $shift);
     /* In shift 3, deliveries are not required for scoring empty minecarts
     if(count($deliveredOrders) == 0){
       Notifications::noDeliveries();
@@ -64,7 +64,7 @@ trait EndShiftTrait
       }
     }
 
-    Notifications::endShiftScoring($shift);
+    Notifications::endShiftScoring($deliveredOrders, $shift);
   }
 
   function computeMajorities(&$majorities, $players, $deliveredOrders, $playersTiles)

@@ -44,6 +44,11 @@ define([
         ['movePitCage', 800],
         ['moveCoal', 900],
         ['cardDelivered', null],
+        ['endShiftDeliveries', null],
+        ['startMajorityScoring', 700],
+        ['endMajorityScoring', 700],
+        ['endShiftMajority', 1300],
+        ['endShiftScoring', 1000],
         // ["newTurn", 1000],
         // ["updateFirstPlayer", 500],
       ];
@@ -949,6 +954,69 @@ define([
       });
     },
 
+    notif_endShiftDeliveries(n) {
+      debug('Notif: reveal hidden cards for scoring', n);
+      Promise.all(
+        n.args.cards.map((card, i) => {
+          if ($(`card-${card.id}`)) return;
+
+          let pId = card.pId;
+          let oCard = $(`completed-orders-${pId}`).querySelector('.coalbaron-card.back-card:not(.revealing)');
+          oCard.classList.add('revealing');
+          return this.wait(100 * i).then(() => this.flipAndReplace(oCard, this.tplCard(card)));
+        })
+      ).then(() => {
+        this._scoresheetModal.show();
+        $(`scoring-shift-${n.args.shift}`).classList.add('active');
+        this.notifqueue.setSynchronousDuration(100);
+      });
+    },
+
+    notif_endShiftScoring(n) {
+      debug('Notif: end of shift scoring', n);
+      $(`scoring-shift-${n.args.shift}`).classList.remove('active');
+      this.wait(700).then(() => this._scoresheetModal.hide());
+    },
+
+    notif_startMajorityScoring(n) {
+      debug('Notif: start scoring a majority', n);
+      $(`scoring-cell-${n.args.shift}-${n.args.i}`).classList.add('active');
+      this.gamedatas.shift = n.args.shift;
+    },
+
+    notif_endShiftMajority(n) {
+      debug('Notif: scoring a majority', n);
+      let pId = n.args.player_id;
+
+      // Add meeple on the scoreboard
+      let pos = n.args.pos == 1 ? 'first' : 'second';
+      $(`scoring-cell-${this.gamedatas.shift}-${n.args.i}`)
+        .querySelector(`.scoring-cell-${pos}`)
+        .insertAdjacentHTML(
+          'beforeend',
+          `<div class='marker' style='background-color:#${this.gamedatas.players[pId].color}'></div>`
+        );
+
+      // Score animation
+      let score = n.args.p;
+      let elem = `<div id='score-animation'>
+        ${score}
+        <i class="fa fa-star" id="icon_point_2322021"></i>
+      </div>`;
+      $(`scoring-board-${pos}-${n.args.i}`).insertAdjacentHTML('beforeend', elem);
+
+      this.slide('score-animation', `player_score_${pId}`, {
+        destroy: true,
+        phantom: false,
+        duration: 1200,
+      }).then(() => this.scoreCtrl[pId].incValue(score));
+    },
+
+    notif_endMajorityScoring(n) {
+      debug('Notif: end scoring a majority', n);
+      $(`scoring-cell-${n.args.shift}-${n.args.i}`).classList.remove('active');
+    },
+
     ////////////////////////////////////////////////////////////
     // _____                          _   _   _
     // |  ___|__  _ __ _ __ ___   __ _| |_| |_(_)_ __   __ _
@@ -1042,11 +1110,61 @@ define([
         title: _('Scoring board'),
         closeAction: 'hide',
         verticalAlign: 'flex-start',
-        contentsTpl: `<div id='scoring-board'></div>`,
+        contentsTpl: `<div id='scoring-board'>
+          <div id='scoring-board-first'>
+            <div id='scoring-board-first-1'></div>
+            <div id='scoring-board-first-2'></div>
+            <div id='scoring-board-first-3'></div>
+            <div id='scoring-board-first-4'></div>
+            <div id='scoring-board-first-5'></div>
+            <div id='scoring-board-first-6'></div>
+            <div id='scoring-board-first-7'></div>
+            <div id='scoring-board-first-8'></div>
+            <div id='scoring-board-first-9'></div>
+            <div id='scoring-board-first-10'></div>
+            <div id='scoring-board-first-11'></div>
+            <div id='scoring-board-first-12'></div>
+          </div>
+          <div id='scoring-board-second'>
+            <div id='scoring-board-second-1'></div>
+            <div id='scoring-board-second-2'></div>
+            <div id='scoring-board-second-3'></div>
+            <div id='scoring-board-second-4'></div>
+            <div id='scoring-board-second-5'></div>
+            <div id='scoring-board-second-6'></div>
+            <div id='scoring-board-second-7'></div>
+            <div id='scoring-board-second-8'></div>
+            <div id='scoring-board-second-9'></div>
+            <div id='scoring-board-second-10'></div>
+            <div id='scoring-board-second-11'></div>
+            <div id='scoring-board-second-12'></div>
+          </div>
+          <div class='scoring-shift' id='scoring-shift-1'>
+            <div class='scoring-shift-header'></div>
+          </div>
+          <div class='scoring-shift' id='scoring-shift-2'>
+            <div class='scoring-shift-header'></div>
+          </div>
+          <div class='scoring-shift' id='scoring-shift-3'>
+            <div class='scoring-shift-header'></div>
+          </div>
+        </div>`,
         breakpoint: 905,
         scale: 0.9,
       });
       $('show-scoresheet').addEventListener('click', () => this._scoresheetModal.show());
+
+      for (let shift = 1; shift <= 3; shift++) {
+        for (let i = 1; i <= 4 * shift; i++) {
+          $(`scoring-shift-${shift}`).insertAdjacentHTML(
+            'beforeend',
+            `<div class='scoring-cell' id='scoring-cell-${shift}-${i}'>
+            <div class='scoring-cell-first'></div>
+            <div class='scoring-cell-second'></div>
+          </div>`
+          );
+        }
+      }
     },
 
     tplConfigPlayerBoard() {

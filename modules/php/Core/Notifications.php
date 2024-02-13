@@ -252,19 +252,41 @@ class Notifications
   /**
    * Resend cards to UI to see cards during end shift, then the UI must hide them again
    */
-  public static function endShiftDeliveries($deliveredOrders)
+  public static function endShiftDeliveries($deliveredOrders, $shift)
   {
     $cards = $deliveredOrders
       ->map(function ($card) {
         return $card->getUiData();
       })
-      ->toAssoc();
+      ->toArray();
 
     self::notifyAll('endShiftDeliveries', '', [
       'cards' => $cards,
+      'shift' => $shift,
     ]);
   }
-  public static function endShiftMajority($player, $points, $type, $majorityIndex, $nbElements)
+
+  public static function startMajorityScoring($shift, $i)
+  {
+    self::notifyAll('startMajorityScoring', '', [
+      'shift' => $shift,
+      'i' => $i,
+    ]);
+  }
+  public static function endMajorityScoring($shift, $i)
+  {
+    self::notifyAll('endMajorityScoring', '', [
+      'shift' => $shift,
+      'i' => $i,
+    ]);
+  }
+  public static function endShiftScoring($shift)
+  {
+    self::notifyAll('endShiftScoring', '', [
+      'shift' => $shift,
+    ]);
+  }
+  public static function endShiftMajority($player, $points, $type, $majorityIndex, $nbElements, $position)
   {
     self::notifyAll(
       'endShiftMajority',
@@ -274,11 +296,13 @@ class Notifications
         'p' => $points,
         'i' => $majorityIndex,
         'n' => $nbElements,
+        'pos' => $position,
         //TODO : see if useful for adding an icon :
         'type' => $type,
       ]
     );
   }
+
 
   public static function endGameScoring()
   {

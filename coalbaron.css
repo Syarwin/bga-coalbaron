@@ -735,6 +735,13 @@
   #money-animation .icon-container {
     font-size: 0.8em; }
 
+#score-animation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 22px; }
+
 #draft-container {
   display: flex;
   flex-wrap: wrap;
@@ -1500,7 +1507,130 @@
     background: url("img/scoring-board.jpg");
     background-size: 100% auto;
     border-radius: 0px 0px 8px 8px;
-    box-shadow: 2px 3px 5px 1px black; }
+    box-shadow: 2px 3px 5px 1px black;
+    position: relative; }
+    #popin_showScoresheet #scoring-board #scoring-board-first,
+    #popin_showScoresheet #scoring-board #scoring-board-second {
+      position: absolute;
+      width: 770px;
+      height: 39px;
+      opacity: 0.5;
+      top: 58px;
+      left: 110px;
+      display: flex; }
+      #popin_showScoresheet #scoring-board #scoring-board-first > div,
+      #popin_showScoresheet #scoring-board #scoring-board-second > div {
+        width: 45px;
+        height: 39px; }
+        #popin_showScoresheet #scoring-board #scoring-board-first > div:nth-child(1),
+        #popin_showScoresheet #scoring-board #scoring-board-second > div:nth-child(1) {
+          margin-right: 15px;
+          margin-left: 4px; }
+        #popin_showScoresheet #scoring-board #scoring-board-first > div:nth-child(2),
+        #popin_showScoresheet #scoring-board #scoring-board-second > div:nth-child(2) {
+          margin-right: 19px; }
+        #popin_showScoresheet #scoring-board #scoring-board-first > div:nth-child(3),
+        #popin_showScoresheet #scoring-board #scoring-board-second > div:nth-child(3) {
+          margin-right: 13px; }
+        #popin_showScoresheet #scoring-board #scoring-board-first > div:nth-child(4),
+        #popin_showScoresheet #scoring-board #scoring-board-second > div:nth-child(4) {
+          margin-right: 43px; }
+        #popin_showScoresheet #scoring-board #scoring-board-first > div:nth-child(5),
+        #popin_showScoresheet #scoring-board #scoring-board-second > div:nth-child(5) {
+          margin-right: 13px; }
+        #popin_showScoresheet #scoring-board #scoring-board-first > div:nth-child(6),
+        #popin_showScoresheet #scoring-board #scoring-board-second > div:nth-child(6) {
+          margin-right: 18px; }
+        #popin_showScoresheet #scoring-board #scoring-board-first > div:nth-child(7),
+        #popin_showScoresheet #scoring-board #scoring-board-second > div:nth-child(7) {
+          margin-right: 16px; }
+        #popin_showScoresheet #scoring-board #scoring-board-first > div:nth-child(8),
+        #popin_showScoresheet #scoring-board #scoring-board-second > div:nth-child(8) {
+          margin-right: 39px; }
+        #popin_showScoresheet #scoring-board #scoring-board-first > div:nth-child(9),
+        #popin_showScoresheet #scoring-board #scoring-board-second > div:nth-child(9) {
+          margin-right: 15px; }
+        #popin_showScoresheet #scoring-board #scoring-board-first > div:nth-child(10),
+        #popin_showScoresheet #scoring-board #scoring-board-second > div:nth-child(10) {
+          margin-right: 19px; }
+        #popin_showScoresheet #scoring-board #scoring-board-first > div:nth-child(11),
+        #popin_showScoresheet #scoring-board #scoring-board-second > div:nth-child(11) {
+          margin-right: 13px; }
+    #popin_showScoresheet #scoring-board #scoring-board-second {
+      top: 99px;
+      height: 32px; }
+      #popin_showScoresheet #scoring-board #scoring-board-second > div {
+        height: 32px; }
+    #popin_showScoresheet #scoring-board .scoring-shift {
+      position: absolute;
+      left: 20px;
+      height: 59px;
+      display: flex;
+      transition: background-color 0.4s; }
+      #popin_showScoresheet #scoring-board .scoring-shift.active {
+        background-color: #ffffff70; }
+      #popin_showScoresheet #scoring-board .scoring-shift#scoring-shift-1 {
+        top: 131px;
+        width: 322px; }
+        #popin_showScoresheet #scoring-board .scoring-shift#scoring-shift-1 > div:nth-child(5) {
+          margin-right: 0px; }
+      #popin_showScoresheet #scoring-board .scoring-shift#scoring-shift-2 {
+        top: 190px;
+        width: 590px; }
+        #popin_showScoresheet #scoring-board .scoring-shift#scoring-shift-2 > div:nth-child(9) {
+          margin-right: 0px; }
+      #popin_showScoresheet #scoring-board .scoring-shift#scoring-shift-3 {
+        top: 250px;
+        width: 860px; }
+      #popin_showScoresheet #scoring-board .scoring-shift .scoring-cell {
+        width: 50px;
+        height: 59px;
+        box-sizing: border-box;
+        transition: border 0.5s, box-shadow 0.5s;
+        border: 2px solid transparent; }
+        #popin_showScoresheet #scoring-board .scoring-shift .scoring-cell.active {
+          border: 2px solid red;
+          box-shadow: 0px 0px 5px red; }
+        #popin_showScoresheet #scoring-board .scoring-shift .scoring-cell .scoring-cell-first,
+        #popin_showScoresheet #scoring-board .scoring-shift .scoring-cell .scoring-cell-second {
+          height: 29px;
+          display: flex;
+          justify-content: center;
+          align-items: center; }
+          #popin_showScoresheet #scoring-board .scoring-shift .scoring-cell .scoring-cell-first .marker,
+          #popin_showScoresheet #scoring-board .scoring-shift .scoring-cell .scoring-cell-second .marker {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1px solid black;
+            margin: 1px; }
+        #popin_showScoresheet #scoring-board .scoring-shift .scoring-cell .scoring-cell-top {
+          margin-bottom: 1px; }
+        #popin_showScoresheet #scoring-board .scoring-shift .scoring-cell:nth-child(2) {
+          margin-right: 13px;
+          margin-left: 4px; }
+        #popin_showScoresheet #scoring-board .scoring-shift .scoring-cell:nth-child(3) {
+          margin-right: 9px; }
+        #popin_showScoresheet #scoring-board .scoring-shift .scoring-cell:nth-child(4) {
+          margin-right: 7px; }
+        #popin_showScoresheet #scoring-board .scoring-shift .scoring-cell:nth-child(5) {
+          margin-right: 40px; }
+        #popin_showScoresheet #scoring-board .scoring-shift .scoring-cell:nth-child(6) {
+          margin-right: 6px; }
+        #popin_showScoresheet #scoring-board .scoring-shift .scoring-cell:nth-child(7) {
+          margin-right: 13px; }
+        #popin_showScoresheet #scoring-board .scoring-shift .scoring-cell:nth-child(8) {
+          margin-right: 8px; }
+        #popin_showScoresheet #scoring-board .scoring-shift .scoring-cell:nth-child(9) {
+          margin-right: 46px; }
+        #popin_showScoresheet #scoring-board .scoring-shift .scoring-cell:nth-child(10) {
+          margin-right: 9px; }
+        #popin_showScoresheet #scoring-board .scoring-shift .scoring-cell:nth-child(11) {
+          margin-right: 6px; }
+        #popin_showScoresheet #scoring-board .scoring-shift .scoring-cell:nth-child(12) {
+          margin-right: 5px; }
+      #popin_showScoresheet #scoring-board .scoring-shift .scoring-shift-header {
+        width: 90px; }
 
 .phantom {
   visibility: hidden; }
@@ -1515,6 +1645,9 @@
   left: 50%;
   top: 0px;
   transform: translateX(-50%); }
+
+#page-title {
+  z-index: 948; }
 
 .bgabutton.selected,
 .bgabutton.selected:hover {

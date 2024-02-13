@@ -11,7 +11,7 @@ use COAL\Core\Stats;
  */
 
 class ScoringMajorityPlace
-{ 
+{
   /**
    * Array of tied Players ids
    */
@@ -28,14 +28,16 @@ class ScoringMajorityPlace
     $this->reward = $points;
   }
 
-  public function setPlayer($pId){
+  public function setPlayer($pId)
+  {
     //clear previous players + add that one
     $this->pIds = new Collection([$pId]);
   }
-  public function addPlayer($pId){
+  public function addPlayer($pId)
+  {
     $this->pIds[] = $pId;
   }
-  
+
   /**
    * @param Collection $players
    * @param string $type
@@ -43,13 +45,14 @@ class ScoringMajorityPlace
    * @param int $gameRound game round when this score is done
    * @return int the number of scored players at this place
    */
-  public function doScore($players,$type,$typeIndex, $gameRound = 1){
-    foreach($this->pIds as $pId){
+  public function doScore($players, $type, $typeIndex, $gameRound, $position)
+  {
+    foreach ($this->pIds as $pId) {
       $player = $players[$pId];
       $player->addPoints($this->reward);
-      Notifications::endShiftMajority($player, $this->reward, $type,$typeIndex, $this->nbElements);
-      $setterStatName = "setScoreMajority$typeIndex"."_$gameRound";
-      Stats::$setterStatName( $player, $this->reward );
+      Notifications::endShiftMajority($player, $this->reward, $type, $typeIndex, $this->nbElements, $position);
+      $setterStatName = "setScoreMajority$typeIndex" . "_$gameRound";
+      Stats::$setterStatName($player, $this->reward);
     }
     return count($this->pIds);
   }

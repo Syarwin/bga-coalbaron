@@ -51,6 +51,12 @@ define([
         ['endMajorityScoring', 700],
         ['endShiftMajority', 1300],
         ['endShiftScoring', 1200],
+
+        ['endGameScoring', 1200],
+        ['endGameScoringMoney', 1200],
+        ['endGameScoringCoals', 1200],
+        ['endGameScoringCards', 1200],
+        ['endGameScoringBalance', 1200],
       ];
 
       // Fix mobile viewport (remove CSS zoom)
@@ -367,18 +373,49 @@ define([
 
       if (n > 0) {
         return this.slide('money-animation', `counter-${pId}-money`, {
-          from: targetSource || 'page-title',
+          from: targetSource || this.getVisibleTitleContainer(),
           destroy: true,
           phantom: false,
           duration: 1200,
         }).then(() => this._counters[pId]['money'].incValue(n));
       } else {
         this._counters[pId]['money'].incValue(n);
-        return this.slide('money-animation', targetSource || 'page-title', {
+        return this.slide('money-animation', targetSource || this.getVisibleTitleContainer(), {
           from: `counter-${pId}-money`,
           destroy: true,
           phantom: false,
           duration: 1200,
+        });
+      }
+    },
+
+    gainLoseScore(pId, n, targetSource = null) {
+      if (this.isFastMode()) {
+        this.scoreCtrl[pId].incValue(n);
+        return Promise.resolve();
+      }
+
+      let elem = `<div id='score-animation'>
+        ${Math.abs(n)}
+        <i class="fa fa-star"></i>
+      </div>`;
+      $('page-content').insertAdjacentHTML('beforeend', elem);
+
+      // Score animation
+      if (n > 0) {
+        return this.slide('score-animation', `player_score_${pId}`, {
+          from: targetSource || this.getVisibleTitleContainer(),
+          destroy: true,
+          phantom: false,
+          duration: 1100,
+        }).then(() => this.scoreCtrl[pId].incValue(n));
+      } else {
+        this.scoreCtrl[pId].incValue(n);
+        return this.slide('score-animation', targetSource || this.getVisibleTitleContainer(), {
+          from: `player_score_${pId}`,
+          destroy: true,
+          phantom: false,
+          duration: 1100,
         });
       }
     },
@@ -1296,6 +1333,25 @@ define([
       heightScale = HEIGHT / PLAYER_BOARD_HEIGHT;
       scale = Math.min(widthScale, heightScale);
       ROOT.style.setProperty('--playerBoardScale', scale);
+    },
+
+    notif_endGameScoring(n) {},
+
+    notif_endGameScoringMoney(n) {
+      debug('Notif: gaining score from money', n);
+      this.gainLoseScore(n.args.player_id, n.args.p);
+    },
+    notif_endGameScoringCoals(n) {
+      debug('Notif: gaining score from coals', n);
+      this.gainLoseScore(n.args.player_id, n.args.p);
+    },
+    notif_endGameScoringCards(n) {
+      debug('Notif: gaining score from cards', n);
+      this.gainLoseScore(n.args.player_id, n.args.p);
+    },
+    notif_endGameScoringBalance(n) {
+      debug('Notif: losing score from money', n);
+      this.gainLoseScore(n.args.player_id, n.args.p);
     },
   });
 });

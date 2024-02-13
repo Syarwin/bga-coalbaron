@@ -43,7 +43,7 @@ define([
         ['returnCards', 1400],
         ['movePitCage', 800],
         ['moveCoal', 900],
-        ['cardDelivered', 1300],
+        ['cardDelivered', null],
         // ["newTurn", 1000],
         // ["updateFirstPlayer", 500],
       ];
@@ -242,8 +242,10 @@ define([
         nPlayers++;
         if (isCurrent) currentPlayerNo = player.no;
         else {
-          for (let i = 0; i < player.ordersDone; i++) {
-            $(`completed-orders-${player.id}`).insertAdjacentHTML(`beforeend`, `<div class="coalbaron-card back-card"></div>`);
+          if (this.gamedatas.optionCardsVisibility == 0) {
+            for (let i = 0; i < player.ordersDone; i++) {
+              $(`completed-orders-${player.id}`).insertAdjacentHTML(`beforeend`, `<div class="coalbaron-card back-card"></div>`);
+            }
           }
         }
       });
@@ -930,14 +932,20 @@ define([
 
     notif_cardDelivered(n) {
       debug('Notif: card delivered', n);
-      [...$(`card-${n.args.cardId}`).querySelectorAll('.coal-slot .coalbaron-meeple')].forEach((oMeeple) =>
-        this.slide(oMeeple, this.getVisibleTitleContainer(), { destroy: true })
-      );
-      let oCard = $(`card-${n.args.cardId}`);
-      this.slide(oCard, `completed-orders-${n.args.player_id}`).then(() => {
-        if (this.player_id != n.args.player_id) {
-          this.flipAndReplace(oCard, `<div class="coalbaron-card back-card"></div>`);
-        }
+      Promise.all(
+        [...$(`card-${n.args.cardId}`).querySelectorAll('.coal-slot .coalbaron-meeple')].map((oMeeple, i) =>
+          this.slide(oMeeple, this.getVisibleTitleContainer(), { destroy: true, delay: 100 * i })
+        )
+      ).then(() => {
+        this.scoreCtrl[n.args.player_id].incValue(n.args.n);
+        let oCard = $(`card-${n.args.cardId}`);
+        this.slide(oCard, `completed-orders-${n.args.player_id}`).then(() => {
+          if (this.player_id != n.args.player_id && this.gamedatas.optionCardsVisibility == 0) {
+            this.flipAndReplace(oCard, `<div class="coalbaron-card back-card"></div>`);
+          }
+
+          this.notifqueue.setSynchronousDuration(100);
+        });
       });
     },
 

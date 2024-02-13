@@ -36,8 +36,12 @@ html {
 #pagemaintitletext,
 #gameaction_status {
     .coalbaron-card,
-    .coalbaron-tile {
+    .coalbaron-tile,
+    .coalbaron-meeple {
         position: absolute;
+        left: 50%;
+        top: 0px;
+        transform: translateX(-50%);
     }
 }
 

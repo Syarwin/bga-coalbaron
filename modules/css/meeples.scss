@@ -4,6 +4,7 @@
     background: black;
     border-radius: 50%;
     box-shadow: 1px 1px 3px black;
+    flex-shrink: 0;
 
     &.icon-yellow_coal,
     &.icon-brown_coal,

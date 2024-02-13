@@ -47,7 +47,7 @@
 
         .board-space {
             width: 100px;
-            height: 100px;
+            height: 138px;
             // width: 160px;
             // height: 200px;
             margin: 10px;
@@ -94,6 +94,8 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                flex-wrap: wrap;
+                box-sizing: border-box;
             }
 
             &#factory_1,
@@ -127,6 +129,7 @@
 
                 .space-workers-container {
                     height: 109px;
+                    padding-bottom: 25px;
                 }
             }
             &#factory_5,
@@ -142,6 +145,11 @@
                 .space-tile-container {
                     border-bottom: none;
                     border-top: 1px solid black;
+                }
+
+                .space-workers-container {
+                    padding-bottom: 0px;
+                    padding-top: 25px;
                 }
             }
 
@@ -197,6 +205,7 @@
 
                 .space-workers-container {
                     height: 100%;
+                    padding-right: 10px;
                 }
             }
 
@@ -212,6 +221,7 @@
 
                 .space-workers-container {
                     height: 100%;
+                    padding-top: 25px;
                 }
             }
             &#mining_4 {
@@ -251,6 +261,7 @@
 
                 .space-workers-container {
                     height: 100%;
+                    padding-top: 25px;
                 }
             }
             &#bank_3 {
@@ -290,6 +301,7 @@
 
                 .space-workers-container {
                     height: 100%;
+                    padding-top: 25px;
                 }
             }
             &#delivery_1 {
@@ -321,7 +333,7 @@
             &#order_2,
             &#order_3,
             &#order_4 {
-                top: 450px;
+                top: 447px;
                 width: 120px;
                 height: 270px;
                 .space-title-container {
@@ -335,6 +347,7 @@
 
                 .space-workers-container {
                     height: 100px;
+                    padding-top: 25px;
                     border-bottom: 1px solid black;
                 }
 
@@ -379,6 +392,7 @@
 
                 .space-workers-container {
                     height: 100%;
+                    padding-top: 25px;
                 }
             }
 
@@ -404,10 +418,12 @@
                     justify-content: center;
                     align-items: center;
                     background: rgba(255, 255, 255, 0.6);
+                    border: 1px solid black;
                     border-radius: 5px;
 
                     &:empty {
                         background: none;
+                        border: none;
                     }
                 }
             }
@@ -415,6 +431,28 @@
             &#bank_1 {
                 top: 112px;
                 left: 1324px;
+
+                &.selectable {
+                    .space-workers-container {
+                        min-height: 58px;
+                        min-width: 50px;
+
+                        cursor: pointer;
+                        background: rgba(242, 125, 125, 0.55);
+                        border: 1px solid black;
+
+                        &:hover {
+                            background: rgba(242, 125, 125, 0.65);
+                        }
+                    }
+                }
+
+                &.selected,
+                &.selected:hover {
+                    .space-workers-container {
+                        background: rgba(122, 252, 62, 0.55);
+                    }
+                }
             }
 
             .space-title-container {

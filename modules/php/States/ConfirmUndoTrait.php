@@ -17,9 +17,9 @@ trait ConfirmUndoTrait
 
     public function addStep()
     {
-        Globals::incChoices();
         $stepId = Log::step($this->gamestate->state_id());
         Notifications::newUndoableStep(Players::getCurrent(), $stepId);
+        Globals::incChoices();
     }
 
     public function argsConfirmTurn()

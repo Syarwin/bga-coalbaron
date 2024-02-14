@@ -125,7 +125,7 @@ class Log extends \APP_DbObject
             throw new \BgaVisibleSystemException('Cant undo here');
         }
 
-        self::revertTo($stepId - 1);
+        self::revertTo($stepId);
     }
 
     /**
@@ -139,6 +139,7 @@ class Log extends \APP_DbObject
             ->get()
             ->first();
         $state = (int) json_decode($log['affected'], true);
+        $type = $log['type'];
 
         $query = new QueryBuilder('log', null, 'id');
         $logs = $query
@@ -185,7 +186,7 @@ class Log extends \APP_DbObject
         // Clear logs
         $query = new QueryBuilder('log', null, 'id');
         $query
-            ->where('id', '>', $id)
+            ->where('id', $type == 'step' ? '>=' : '>', $id)
             ->delete()
             ->run();
 

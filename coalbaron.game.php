@@ -52,6 +52,7 @@ class CoalBaron extends Table
   use COAL\States\ChooseCoalTrait;
   use COAL\States\EndGameScoringTrait;
   use COAL\States\EndShiftTrait;
+  use COAL\States\ConfirmUndoTrait;
 
   public static $instance = null;
   function __construct()
@@ -110,11 +111,11 @@ class CoalBaron extends Table
    */
   function getGameProgression()
   {
-    $shift = Globals::getShift();//FROM 1 to SHIFT_MAX
+    $shift = Globals::getShift(); //FROM 1 to SHIFT_MAX
     $nbWorkersInReserve = Meeples::countWorkers(SPACE_RESERVE);
     $nbWorkersTOTAL = Meeples::countWorkers();
     $currentShiftProgression = ($nbWorkersTOTAL - $nbWorkersInReserve) / $nbWorkersTOTAL;
-    $progress = ($shift-1)/SHIFT_MAX + 1/SHIFT_MAX * $currentShiftProgression;
+    $progress = ($shift - 1) / SHIFT_MAX + 1 / SHIFT_MAX * $currentShiftProgression;
     //die("debug getGameProgression : progress = ($shift-1)/SHIFT_MAX + 1/SHIFT_MAX * $currentShiftProgression => $progress ");
     return $progress * 100;
   }

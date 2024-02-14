@@ -55,6 +55,59 @@ html {
     background: #d97050;
 }
 
+#logs .log.notif_newUndoableStep {
+    margin-top: 0px;
+
+    .roundedbox {
+        display: none;
+        text-align: center;
+        cursor: pointer;
+        background-color: #c4c2c2;
+        font-size: 12px;
+        padding: 2px 5px;
+
+        &::before,
+        &::after {
+            content: "\f0e2";
+            font: normal normal normal 12px/1 FontAwesome;
+            margin: 0px 10px;
+        }
+    }
+
+    &.selectable .roundedbox {
+        display: block;
+    }
+}
+
+.chatwindowlogs_zone .log.notif_newUndoableStep {
+    margin-bottom: -4px;
+    padding: 0px;
+    display: none !important;
+
+    &.selectable {
+        display: block !important;
+
+        .roundedboxinner {
+            text-align: center;
+            cursor: pointer;
+            background-color: #c4c2c2;
+            font-size: 12px;
+            padding: 2px 5px;
+
+            &::before,
+            &::after {
+                content: "\f0e2";
+                font: normal normal normal 12px/1 FontAwesome;
+                margin: 0px 10px;
+            }
+
+            .msgtime {
+                display: none;
+            }
+        }
+    }
+}
+
 #box-reserve {
     position: absolute;
     top: 0%;

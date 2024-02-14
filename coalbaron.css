@@ -1672,6 +1672,41 @@
 .bgabutton.selected:hover {
   background: #d97050; }
 
+#logs .log.notif_newUndoableStep {
+  margin-top: 0px; }
+  #logs .log.notif_newUndoableStep .roundedbox {
+    display: none;
+    text-align: center;
+    cursor: pointer;
+    background-color: #c4c2c2;
+    font-size: 12px;
+    padding: 2px 5px; }
+    #logs .log.notif_newUndoableStep .roundedbox::before, #logs .log.notif_newUndoableStep .roundedbox::after {
+      content: "\f0e2";
+      font: normal normal normal 12px/1 FontAwesome;
+      margin: 0px 10px; }
+  #logs .log.notif_newUndoableStep.selectable .roundedbox {
+    display: block; }
+
+.chatwindowlogs_zone .log.notif_newUndoableStep {
+  margin-bottom: -4px;
+  padding: 0px;
+  display: none !important; }
+  .chatwindowlogs_zone .log.notif_newUndoableStep.selectable {
+    display: block !important; }
+    .chatwindowlogs_zone .log.notif_newUndoableStep.selectable .roundedboxinner {
+      text-align: center;
+      cursor: pointer;
+      background-color: #c4c2c2;
+      font-size: 12px;
+      padding: 2px 5px; }
+      .chatwindowlogs_zone .log.notif_newUndoableStep.selectable .roundedboxinner::before, .chatwindowlogs_zone .log.notif_newUndoableStep.selectable .roundedboxinner::after {
+        content: "\f0e2";
+        font: normal normal normal 12px/1 FontAwesome;
+        margin: 0px 10px; }
+      .chatwindowlogs_zone .log.notif_newUndoableStep.selectable .roundedboxinner .msgtime {
+        display: none; }
+
 #box-reserve {
   position: absolute;
   top: 0%;

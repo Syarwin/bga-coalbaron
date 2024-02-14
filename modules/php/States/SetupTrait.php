@@ -30,7 +30,7 @@ trait SetupTrait
     Cards::setupNewGame($players, $options);
     Meeples::setupNewGame($players, $options);
 
-    $this->setGameStateInitialValue('logging', false);
+    $this->setGameStateInitialValue('logging', true);
     $this->activeNextPlayer();
   }
 }

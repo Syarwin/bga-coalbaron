@@ -346,6 +346,38 @@ class Notifications
     );
   }
 
+  public static function refreshUI($datas)
+  {
+    // // Keep only the thing that matters
+    $fDatas = [
+      'players' => $datas['players'],
+      // 'cards' => $datas['cards'],
+    ];
+
+
+    self::notifyAll('refreshUI', '', [
+      'datas' => $fDatas,
+    ]);
+  }
+
+  public static function newUndoableStep($player, $stepId)
+  {
+    self::notify($player, 'newUndoableStep', clienttranslate('Undo here'), [
+      'stepId' => $stepId,
+      'preserve' => ['stepId'],
+    ]);
+  }
+
+  public static function clearTurn($player, $notifIds)
+  {
+    self::notifyAll('clearTurn', clienttranslate('${player_name} restarts their turn'), [
+      'player' => $player,
+      'notifIds' => $notifIds,
+    ]);
+  }
+
+
+
   /*************************
    **** GENERIC METHODS ****
    *************************/

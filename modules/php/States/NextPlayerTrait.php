@@ -1,4 +1,5 @@
 <?php
+
 namespace COAL\States;
 
 use COAL\Core\Globals;
@@ -7,10 +8,11 @@ use COAL\Core\Notifications;
 use COAL\Core\Stats;
 use COAL\Managers\Meeples;
 use COAL\Managers\Players;
+use COAL\Helpers\Log;
 
 trait NextPlayerTrait
 {
-  
+
   function stNextPlayer()
   {
     //END ROUND CoNDITIONS
@@ -24,20 +26,20 @@ trait NextPlayerTrait
     do {
       $player_id = self::activeNextPlayer();
       $nbAvailableWorkers = Meeples::getNbAvailableWorkers($player_id);
-      if($nbAvailableWorkers == 0) {
+      if ($nbAvailableWorkers == 0) {
         $player = Players::get($player_id);
         Notifications::skipTurn($player);
       }
     } while ($nbAvailableWorkers == 0);
 
-    self::giveExtraTime( $player_id );
+    self::giveExtraTime($player_id);
 
+    $this->addCheckpoint(ST_PLACE_WORKER);
     $this->gamestate->nextState('next');
   }
 
   function stConfirmChoices()
   {
-    Notifications::message("TODO JSA stConfirmChoices");
     $this->gamestate->nextState('');
   }
 }

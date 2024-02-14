@@ -24,6 +24,7 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
       this._registeredCustomTooltips = {};
 
       this._notif_uid_to_log_id = {};
+      this._notif_uid_to_mobile_log_id = {};
       this._last_notif = null;
       dojo.place('loader_mask', 'overall-content', 'before');
       dojo.style('loader_mask', {
@@ -162,11 +163,14 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
       if (this[methodName] !== undefined) this[methodName]();
     },
 
-    clearPossible() {
+    removeAllActionButtons() {
       this.removeActionButtons();
       dojo.empty('customActions');
       dojo.empty('restartAction');
+    },
 
+    clearPossible() {
+      this.removeAllActionButtons();
       this._connections.forEach(dojo.disconnect);
       this._connections = [];
       this._selectableNodes.forEach((node) => {
@@ -217,6 +221,7 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
           if (msg != '') {
             $('gameaction_status').innerHTML = msg;
             $('pagemaintitletext').innerHTML = msg;
+            this.removeAllActionButtons();
           }
           let timing = this[functionName](args);
           if (timing === undefined) {
@@ -1057,10 +1062,13 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
      */
     onPlaceLogOnChannel(msg) {
       var currentLogId = this.notifqueue.next_log_id;
+      var currentMobileLogId = this.next_log_id;
       var res = this.inherited(arguments);
       this._notif_uid_to_log_id[msg.uid] = currentLogId;
+      this._notif_uid_to_mobile_log_id[msg.uid] = currentMobileLogId;
       this._last_notif = {
         logId: currentLogId,
+        mobileLogId: currentMobileLogId,
         msg,
       };
       return res;
@@ -1082,17 +1090,28 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
           let logId = this._notif_uid_to_log_id[uid];
           if ($('log_' + logId)) dojo.addClass('log_' + logId, 'cancel');
         }
+        if (this._notif_uid_to_mobile_log_id.hasOwnProperty(uid)) {
+          let mobileLogId = this._notif_uid_to_mobile_log_id[uid];
+          if ($('dockedlog_' + mobileLogId)) dojo.addClass('dockedlog_' + mobileLogId, 'cancel');
+        }
       });
     },
 
     addLogClass() {
       if (this._last_notif == null) return;
-      let notif = this._last_notif;
-      if ($('log_' + notif.logId)) {
-        let type = notif.msg.type;
-        if (type == 'history_history') type = notif.msg.args.originalType;
 
+      let notif = this._last_notif;
+      let type = notif.msg.type;
+      if (type == 'history_history') type = notif.msg.args.originalType;
+
+      if ($('log_' + notif.logId)) {
         dojo.addClass('log_' + notif.logId, 'notif_' + type);
+
+        var methodName = 'onAdding' + type.charAt(0).toUpperCase() + type.slice(1) + 'ToLog';
+        if (this[methodName] !== undefined) this[methodName](notif);
+      }
+      if ($('dockedlog_' + notif.mobileLogId)) {
+        dojo.addClass('dockedlog_' + notif.mobileLogId, 'notif_' + type);
       }
     },
 

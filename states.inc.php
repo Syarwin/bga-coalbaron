@@ -61,7 +61,7 @@ $machinestates = [
     'action' => 'stGameSetup',
     'transitions' => ['' => ST_DRAFT_INIT],
   ],
-  
+
   ST_DRAFT_INIT => [
     'name' => 'newDraft',
     'description' => '',
@@ -83,7 +83,7 @@ $machinestates = [
       'next' => ST_DRAFT_NEXT_PLAYER,
     ],
   ],
-  
+
   ST_DRAFT_NEXT_PLAYER => [
     'name' => 'draftNextPlayer',
     'description' => '',
@@ -132,30 +132,20 @@ $machinestates = [
       'chooseCard' => ST_CHOOSE_CARD,
       'chooseTile' => ST_CHOOSE_TILE,
       'chooseCoal' => ST_CHOOSE_COAL,
-      'next' => ST_NEXT_PLAYER,
+      'next' => ST_CONFIRM_CHOICES,
     ],
   ],
-  
+
   ST_MINING => [
     'name' => 'miningSteps',
     'description' => clienttranslate('${actplayer} may perform ${moves}/${totalMoves} work steps'),
     'descriptionmyturn' => clienttranslate('${you} may perform ${moves}/${totalMoves} work steps'),
     'args' => 'argMiningSteps',
     'type' => 'activeplayer',
-    'possibleactions' => ['actMovePitCage', 'actMoveCoals', 'actStopMining'],
+    'possibleactions' => ['actMovePitCage', 'actMoveCoals', 'actStopMining', 'actRestart'],
     'transitions' => [
       'continue' => ST_MINING,
       'end' => ST_CONFIRM_CHOICES,
-    ],
-  ],
-
-  ST_CONFIRM_CHOICES => [
-    'name' => 'confirmChoices',
-    'description' => '',
-    'type' => 'game',
-    'action' => 'stConfirmChoices',
-    'transitions' => [
-      '' => ST_NEXT_PLAYER,
     ],
   ],
 
@@ -170,7 +160,7 @@ $machinestates = [
       'next' => ST_NEXT_PLAYER,
     ],
   ],
-  
+
   ST_CHOOSE_TILE => [
     'name' => 'chooseTile',
     'description' => clienttranslate('${actplayer} may choose to keep 1 tunnel tile from the deck'),
@@ -179,22 +169,45 @@ $machinestates = [
     'type' => 'activeplayer',
     'possibleactions' => ['actChooseTile'],
     'transitions' => [
-      'chooseCoal' => ST_CHOOSE_COAL,
+      'chooseCoal' => ST_CONFIRM_CHOICES,
       'next' => ST_NEXT_PLAYER,
     ],
   ],
-  
+
   ST_CHOOSE_COAL => [
     'name' => 'chooseCoal',
     'description' => clienttranslate('${actplayer} must choose the color of ${n} coals to get'),
     'descriptionmyturn' => clienttranslate('${you} must choose the color of ${n} coals to get'),
     'args' => 'argChooseCoal',
     'type' => 'activeplayer',
-    'possibleactions' => ['actChooseCoal'],
+    'possibleactions' => ['actChooseCoal', 'actRestart'],
     'transitions' => [
-      'next' => ST_CONFIRM_CHOICES,
+      'next' => ST_CONFIRM_TURN,
     ],
   ],
+
+
+  ST_CONFIRM_CHOICES => [
+    'name' => 'confirmChoices',
+    'description' => '',
+    'type' => 'game',
+    'action' => 'stConfirmChoices',
+    'transitions' => [
+      '' => ST_CONFIRM_TURN,
+    ],
+  ],
+
+  ST_CONFIRM_TURN => [
+    'name' => 'confirmTurn',
+    'description' => clienttranslate('${actplayer} must confirm or restart their turn'),
+    'descriptionmyturn' => clienttranslate('${you} must confirm or restart your turn'),
+    'type' => 'activeplayer',
+    'args' => 'argsConfirmTurn',
+    'action' => 'stConfirmTurn',
+    'possibleactions' => ['actConfirmTurn', 'actRestart'],
+    'transitions' => ['confirm' => ST_NEXT_PLAYER],
+  ],
+
 
   ST_END_SHIFT => [
     'name' => 'endShift',

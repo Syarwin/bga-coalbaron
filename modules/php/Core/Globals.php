@@ -21,6 +21,8 @@ class Globals extends \COAL\Helpers\DB_Manager
     'nbCoalsToChoose' => 'int',
     'tileCoalsToChoose' => 'int',
 
+    'choices' => 'int',
+
     // -- SHIFT 1
     'majorityWinners1_1_1'  => 'obj',
     'majorityWinners2_1_1'  => 'obj',

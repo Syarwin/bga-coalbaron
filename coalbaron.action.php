@@ -51,7 +51,7 @@ class action_coalbaron extends APP_GameAction
     $this->game->actPlaceWorker($spaceId);
     self::ajaxResponse();
   }
-  
+
   public function actMovePitCage()
   {
     self::setAjaxMode();
@@ -64,16 +64,16 @@ class action_coalbaron extends APP_GameAction
     self::setAjaxMode();
     $spaceId = self::getArg('spaceId', AT_alphanum, true);
     // ---------- ----------  array of COALS'ids  --------------------
-    $coal_ids_raw = self::getArg( "coalId", AT_numberlist, true );
+    $coal_ids_raw = self::getArg("coalId", AT_numberlist, true);
     // Removing last ';' if exists
-    if( substr( $coal_ids_raw, -1 ) == ';' )
-       $coal_ids_raw = substr( $coal_ids_raw, 0, -1 );
-    if( $coal_ids_raw == '' )
-        $coalIdArray = array();
+    if (substr($coal_ids_raw, -1) == ';')
+      $coal_ids_raw = substr($coal_ids_raw, 0, -1);
+    if ($coal_ids_raw == '')
+      $coalIdArray = array();
     else
-        $coalIdArray = explode( ';', $coal_ids_raw );
+      $coalIdArray = explode(';', $coal_ids_raw);
     // ---------- ---------- -------------------- --------------------
-    $this->game->actMoveCoals($coalIdArray,$spaceId);
+    $this->game->actMoveCoals($coalIdArray, $spaceId);
     self::ajaxResponse();
   }
 
@@ -89,53 +89,75 @@ class action_coalbaron extends APP_GameAction
     self::setAjaxMode();
     //Choosing a card is optionnal
     $cardId = self::getArg('cardId', AT_posint, false);
-    $returnDest = self::getArg( 'returnDest', AT_enum, true, null, [ 'TOP', 'BOTTOM' ] ); 
+    $returnDest = self::getArg('returnDest', AT_enum, true, null, ['TOP', 'BOTTOM']);
     // ---------- ---------- ORDERED array of Cards'ids  --------------------
-    $other_ids_raw = self::getArg( "otherIds", AT_numberlist, true );
+    $other_ids_raw = self::getArg("otherIds", AT_numberlist, true);
     // Removing last ';' if exists
-    if( substr( $other_ids_raw, -1 ) == ';' )
-       $other_ids_raw = substr( $other_ids_raw, 0, -1 );
-    if( $other_ids_raw == '' )
-        $otherCardsArray = array();
+    if (substr($other_ids_raw, -1) == ';')
+      $other_ids_raw = substr($other_ids_raw, 0, -1);
+    if ($other_ids_raw == '')
+      $otherCardsArray = array();
     else
-        $otherCardsArray = explode( ';', $other_ids_raw );
+      $otherCardsArray = explode(';', $other_ids_raw);
     // ---------- ---------- -------------------- --------------------
     $this->game->actChooseCard($cardId, $returnDest, $otherCardsArray);
     self::ajaxResponse();
   }
-  
+
   public function actChooseTile()
   {
     self::setAjaxMode();
     //Choosing a card is optionnal
     $tileId = self::getArg('tileId', AT_posint, false);
-    $returnDest = self::getArg( 'returnDest', AT_enum, true, null, [ 'TOP', 'BOTTOM' ] ); 
+    $returnDest = self::getArg('returnDest', AT_enum, true, null, ['TOP', 'BOTTOM']);
     // ---------- ---------- ORDERED array of Cards'ids  --------------------
-    $other_ids_raw = self::getArg( "otherIds", AT_numberlist, true );
+    $other_ids_raw = self::getArg("otherIds", AT_numberlist, true);
     // Removing last ';' if exists
-    if( substr( $other_ids_raw, -1 ) == ';' )
-       $other_ids_raw = substr( $other_ids_raw, 0, -1 );
-    if( $other_ids_raw == '' )
-        $otherTilesArray = array();
+    if (substr($other_ids_raw, -1) == ';')
+      $other_ids_raw = substr($other_ids_raw, 0, -1);
+    if ($other_ids_raw == '')
+      $otherTilesArray = array();
     else
-        $otherTilesArray = explode( ';', $other_ids_raw );
+      $otherTilesArray = explode(';', $other_ids_raw);
     // ---------- ---------- -------------------- --------------------
     $this->game->actChooseTile($tileId, $returnDest, $otherTilesArray);
     self::ajaxResponse();
   }
-  
+
   public function actChooseCoal()
   {
     self::setAjaxMode();
     // ---------- ---------- array of String  --------------------
-    $colors_raw = self::getArg( "colors", AT_alphanum, true );
+    $colors_raw = self::getArg("colors", AT_alphanum, true);
     $colors_raw = trim($colors_raw);
-    if( $colors_raw == '' )
-        $colorsArray = array();
+    if ($colors_raw == '')
+      $colorsArray = array();
     else
-        $colorsArray = explode( ' ', $colors_raw );
+      $colorsArray = explode(' ', $colors_raw);
     // ---------- ---------- -------------------- --------------------
     $this->game->actChooseCoal($colorsArray);
+    self::ajaxResponse();
+  }
+
+  public function actConfirmTurn()
+  {
+    self::setAjaxMode();
+    $this->game->actConfirmTurn();
+    self::ajaxResponse();
+  }
+
+  public function actRestart()
+  {
+    self::setAjaxMode();
+    $this->game->actRestart();
+    self::ajaxResponse();
+  }
+
+  public function actUndoToStep()
+  {
+    self::setAjaxMode();
+    $stepId = self::getArg('stepId', AT_posint, false);
+    $this->game->actUndoToStep($stepId);
     self::ajaxResponse();
   }
 

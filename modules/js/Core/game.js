@@ -33,6 +33,15 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
       });
     },
 
+    destroy(elem) {
+      if (this.tooltips[elem.id]) {
+        this.tooltips[elem.id].destroy();
+        delete this.tooltips[elem.id];
+      }
+
+      elem.remove();
+    },
+
     showMessage(msg, type) {
       if (type == 'error') {
         console.error(msg);

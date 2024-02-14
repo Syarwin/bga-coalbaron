@@ -351,9 +351,10 @@ class Notifications
     // // Keep only the thing that matters
     $fDatas = [
       'players' => $datas['players'],
-      // 'cards' => $datas['cards'],
+      'cards' => $datas['cards'],
+      'meeples' => $datas['meeples'],
+      'tiles' => $datas['tiles'],
     ];
-
 
     self::notifyAll('refreshUI', '', [
       'datas' => $fDatas,

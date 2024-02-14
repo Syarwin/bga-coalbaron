@@ -262,11 +262,21 @@ define([
 
     notif_refreshUI(n) {
       debug('Notif: refreshing UI', n);
-      debug('TODO');
-      // ['meeples', 'players', 'cards', 'buildings', 'break', 'conservationBonuses', 'endOfGame'].forEach((value) => {
-      //   this.gamedatas[value] = n.args.datas[value];
-      // });
-      // this.setupCards();
+      ['meeples', 'players', 'cards', 'tiles'].forEach((value) => {
+        this.gamedatas[value] = n.args.datas[value];
+      });
+
+      this.setupCards();
+      this.setupMeeples();
+      this.setupTiles();
+
+      this.forEachPlayer((player) => {
+        let pId = player.id;
+        this._counters[pId].worker.toValue(player.workers);
+        this._counters[pId].money.toValue(player.money);
+
+        $(`elevator-${player.id}`).dataset.y = player.cageLevel;
+      });
     },
 
     onEnteringStatePlaceWorker(args) {

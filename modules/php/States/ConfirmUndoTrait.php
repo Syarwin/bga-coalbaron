@@ -56,6 +56,6 @@ trait ConfirmUndoTrait
     public function actUndoToStep($stepId)
     {
         self::checkAction('actRestart');
-        Log::revertTo($stepId);
+        Log::undoToStep($stepId);
     }
 }

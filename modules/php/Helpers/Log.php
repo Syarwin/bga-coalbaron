@@ -185,7 +185,7 @@ class Log extends \APP_DbObject
         // Clear logs
         $query = new QueryBuilder('log', null, 'id');
         $query
-            ->where('id', '>=', $id)
+            ->where('id', '>', $id)
             ->delete()
             ->run();
 

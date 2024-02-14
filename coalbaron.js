@@ -30,6 +30,8 @@ define([
     constructor() {
       this._inactiveStates = ['draft'];
       this._notifications = [
+        ['clearTurn', 200],
+        ['refreshUI', 200],
         ['newShift', null],
         ['updateFirstPlayer', 1000],
         ['placeWorkers', null],

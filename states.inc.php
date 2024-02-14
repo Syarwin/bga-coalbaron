@@ -157,7 +157,7 @@ $machinestates = [
     'type' => 'activeplayer',
     'possibleactions' => ['actChooseCard'],
     'transitions' => [
-      'next' => ST_NEXT_PLAYER,
+      'next' => ST_CONFIRM_CHOICES,
     ],
   ],
 
@@ -170,7 +170,7 @@ $machinestates = [
     'possibleactions' => ['actChooseTile'],
     'transitions' => [
       'chooseCoal' => ST_CONFIRM_CHOICES,
-      'next' => ST_NEXT_PLAYER,
+      'next' => ST_CONFIRM_CHOICES,
     ],
   ],
 

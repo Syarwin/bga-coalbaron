@@ -33,9 +33,9 @@ trait ConfirmUndoTrait
 
     public function stConfirmTurn()
     {
-        // if (Globals::getChoices() == 0) {
-        //     $this->actConfirmTurn(true);
-        // }
+        if (Globals::getChoices() == 0) {
+            $this->actConfirmTurn(true);
+        }
     }
 
     public function actConfirmTurn($auto = false)
@@ -50,8 +50,7 @@ trait ConfirmUndoTrait
     public function actRestart()
     {
         self::checkAction('actRestart');
-        die("todo");
-        //   Engine::restart();
+        Log::undoTurn();
     }
 
     public function actUndoToStep($stepId)

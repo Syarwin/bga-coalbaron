@@ -8,7 +8,7 @@ use COAL\Managers\Players;
  * Statistics
  */
 
-class Stats extends \COAL\Helpers\DB_Manager
+class Stats extends \ALT\Helpers\DB_Manager
 {
   protected static $table = 'stats';
   protected static $primary = 'stats_id';
@@ -22,35 +22,10 @@ class Stats extends \COAL\Helpers\DB_Manager
     ];
   }
 
-  /*************************
-   **** GENERIC METHODS ****
-   *************************/
-  protected static function init($type, $name, $value = 0)
-  {
-    Game::get()->initStat($type, $name, $value);
-  }
-
-  public static function inc($name, $player = null, $value = 1, $log = true)
-  {
-    $pId = is_null($player) ? null : (is_int($player) ? $player : $player->getId());
-    Game::get()->incStat($value, $name, $pId);
-  }
-
-  protected static function get($name, $player = null)
-  {
-    Game::get()->getStat($name, $player);
-  }
-
-  protected static function set($value, $name, $player = null)
-  {
-    $pId = is_null($player) ? null : (is_int($player) ? $player : $player->getId());
-    Game::get()->setStat($value, $name, $pId);
-  }
-
   /*
-   * Create and store a stat declared but not present in DB yet
-   *  (only happens when adding stats while a game is running)
-   */
+    * Create and store a stat declared but not present in DB yet
+    *  (only happens when adding stats while a game is running)
+    */
   public static function checkExistence()
   {
     $default = [
@@ -110,16 +85,6 @@ class Stats extends \COAL\Helpers\DB_Manager
         ->values($values);
     }
   }
-  
-  protected static function getValue($id, $pId)
-  {
-    return self::getAll()
-      ->filter(function ($stat) use ($id, $pId) {
-        return $stat['type'] == $id &&
-          ((is_null($pId) && is_null($stat['pId'])) || (!is_null($pId) && $stat['pId'] == (is_int($pId) ? $pId : $pId->getId())));
-      })
-      ->first()['value'];
-  }
 
   protected static function getFilteredQuery($id, $pId)
   {
@@ -131,9 +96,10 @@ class Stats extends \COAL\Helpers\DB_Manager
     }
     return $query;
   }
+
   /*
-   * Magic method that intercept not defined static method and do the appropriate stuff
-   */
+    * Magic method that intercept not defined static method and do the appropriate stuff
+    */
   public static function __callStatic($method, $args)
   {
     if (preg_match('/^([gs]et|inc)([A-Z])(.*)$/', $method, $match)) {
@@ -161,7 +127,8 @@ class Stats extends \COAL\Helpers\DB_Manager
           $pId = $args[0];
         }
 
-        return self::getValue($id, $pId);
+        $row = self::getFilteredQuery($id, $pId)->get(true);
+        return $row['value'];
       } elseif ($match[1] == 'set') {
         // Setters in DB and update cache
         $id = null;
@@ -183,7 +150,6 @@ class Stats extends \COAL\Helpers\DB_Manager
         self::getFilteredQuery($id, $pId)
           ->update(['stats_value' => $value])
           ->run();
-        self::invalidate();
         return $value;
       } elseif ($match[1] == 'inc') {
         $id = null;
@@ -205,17 +171,14 @@ class Stats extends \COAL\Helpers\DB_Manager
         self::getFilteredQuery($id, $pId)
           ->inc(['stats_value' => $value])
           ->run();
-        self::invalidate();
         return $value;
       }
     }
     return null;
   }
 
-  /*********************
-   **********************
-   *********************/
-  public static function setupNewGame()
+  protected function getLabels()
   {
+    $labels = [];
   }
 }

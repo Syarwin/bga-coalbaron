@@ -40,6 +40,7 @@ trait WorkerAtOrderTrait
     function actChooseCard($cardId, $returnDest, $otherCardsOrder){
         self::checkAction( 'actChooseCard' ); 
         self::trace("actChooseCard($cardId, $returnDest)...");
+        $this->addStep();
 
         $player = Players::getActive();
         $cardsNb = 0;
@@ -140,7 +141,7 @@ trait WorkerAtOrderTrait
         Meeples::placeWorkersInSpace($player,SPACE_ORDER_DRAW);
 
         $cards = Cards::pickForLocation(CARDS_DRAW_NUMBER,CARD_LOCATION_DECK,CARD_LOCATION_DRAW);
-        
+        $this->addCheckpoint(ST_CHOOSE_CARD);
         Stats::inc( "nbActions5", $player );
 
         //Go to another state to manage selection of cards :

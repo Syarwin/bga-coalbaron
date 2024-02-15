@@ -22,6 +22,14 @@ class Stats extends \COAL\Helpers\DB_Manager
     ];
   }
 
+  /** Inc wrapper whith a 1 default increment */
+  public static function inc($name, $player = null, $value = 1)
+  {
+    $pId = is_null($player) ? null : (is_int($player) ? $player : $player->getId());
+    $incrementerName = "inc".ucfirst($name);
+    self::$incrementerName($pId,$value);
+  }
+
   /*
     * Create and store a stat declared but not present in DB yet
     *  (only happens when adding stats while a game is running)

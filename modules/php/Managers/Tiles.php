@@ -168,6 +168,8 @@ class Tiles extends \COAL\Helpers\Pieces
           ->whereNotNull('x')
           ->where('y', $row)
           ->func('MIN', 'x') ?? 0;
+      //negative X must start at -1 not 0 !
+      $xmin = min($xmin, 0);
       return $xmin - 1;
     } else {
       //DARK SIDE = RIGHT SIDE = POSITIVE X
@@ -177,6 +179,8 @@ class Tiles extends \COAL\Helpers\Pieces
           ->whereNotNull('x')
           ->where('y', $row)
           ->func('MAX', 'x') ?? 0;
+      //positive X must start at 1 not 0 !
+      $xmax = max($xmax, 0);
       return $xmax + 1;
     }
   }

@@ -272,6 +272,7 @@ define([
 
       this.forEachPlayer((player) => {
         let pId = player.id;
+        this.scoreCtrl[pId].toValue(player.score);
         this._counters[pId].worker.toValue(player.workers);
         this._counters[pId].money.toValue(player.money);
 

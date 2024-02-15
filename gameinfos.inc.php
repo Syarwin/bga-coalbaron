@@ -8,13 +8,13 @@ $gameinfos = [
   'game_name' => 'Coal Baron',
 
   // Game designer (or game designers, separated by commas)
-  'designer' => 'Michael Kiesling, Wolfgang Kramer',
+  //'designer' => 'Michael Kiesling, Wolfgang Kramer',
 
   // Game artist (or game artists, separated by commas)
-  'artist' => 'Frédéric Brogard, Dennis Lohausen',
+  //'artist' => 'Frédéric Brogard, Dennis Lohausen',
 
   // Year of FIRST publication of this game. Can be negative.
-  'year' => 2023,
+  //'year' => 2013,
 
   // Game publisher (use empty string if there is no publisher)
   'publisher' => 'C and C Publishing',
@@ -26,7 +26,7 @@ $gameinfos = [
   'publisher_bgg_id' => 51889,
 
   // Board game geek ID of the game
-  'bgg_id' => 371922,
+  'bgg_id' => 143515,
 
   // Players configuration that can be played (ex: 2 to 4 players)
   'players' => [2, 3, 4],
@@ -127,14 +127,14 @@ $gameinfos = [
   // Short game presentation text that will appear on the game description page, structured as an array of paragraphs.
   // Each paragraph must be wrapped with totranslate() for translation and should not contain html (plain text without formatting).
   // A good length for this text is between 100 and 150 words (about 6 to 9 lines on a standard display)
-  'presentation' => [
-    totranslate(
-      'Coal Baron – or Glück Auf in German, after a greeting German miners use when wishing one another luck – has players sending miners underground to dig tunnels and acquire coal, which comes in four levels of quality and is used to fulfill contracts.'
-    ),
-    totranslate(
-      'The game lasts three rounds, and in each round players take turns placing their workers on action spaces; you can place on a space occupied by another player, but you need to place additional workers in order to do so. Each player has an individual elevator shaft, and will need to use workers to extract coal and bring it to the surface, while also competing for contracts and scrounging for cash in order to do everything else that needs to be done!'
-    ),
-  ],
+  //'presentation' => [
+  //  totranslate(
+  //    'Coal Baron – or Glück Auf in German, after a greeting German miners use when wishing one another luck – has players sending miners underground to dig tunnels and acquire coal, which comes in four levels of quality and is used to fulfill contracts.'
+  //  ),
+  //  totranslate(
+  //    'The game lasts three rounds, and in each round players take turns placing their workers on action spaces; you can place on a space occupied by another player, but you need to place additional workers in order to do so. Each player has an individual elevator shaft, and will need to use workers to extract coal and bring it to the surface, while also competing for contracts and scrounging for cash in order to do everything else that needs to be done!'
+  //  ),
+  //],
 
   // Games categories
   //  You can attribute a maximum of FIVE "tags" for your game.
@@ -143,7 +143,7 @@ $gameinfos = [
   //  http://en.doc.boardgamearena.com/Game_meta-information:_gameinfos.inc.php
   //  IMPORTANT: this list should be ORDERED, with the most important tag first.
   //  IMPORTANT: it is mandatory that the FIRST tag is 1, 2, 3 and 4 (= game category)
-  'tags' => [3],
+  //'tags' => [3],
 
   //////// BGA SANDBOX ONLY PARAMETERS (DO NOT MODIFY)
 

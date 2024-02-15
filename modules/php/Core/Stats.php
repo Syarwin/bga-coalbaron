@@ -8,7 +8,7 @@ use COAL\Managers\Players;
  * Statistics
  */
 
-class Stats extends \ALT\Helpers\DB_Manager
+class Stats extends \COAL\Helpers\DB_Manager
 {
   protected static $table = 'stats';
   protected static $primary = 'stats_id';

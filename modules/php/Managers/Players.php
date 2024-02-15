@@ -27,13 +27,13 @@ class Players extends \COAL\Helpers\DB_Manager
     // Create players
     $gameInfos = Game::get()->getGameinfos();
     $colors = $gameInfos['player_colors'];
-    $query = self::DB()->multipleInsert(['player_id', 'player_color', 'player_canal', 'player_name', 'player_avatar', 'money']);
+    $query = self::DB()->multipleInsert(['player_id', 'player_color', 'player_canal', 'player_name', 'player_avatar', 'money', 'player_score_aux']);
 
     $values = [];
     $initialMoney = Players::getInitialMoney(count($players));
     foreach ($players as $pId => $player) {
       $color = array_shift($colors);
-      $values[] = [$pId, $color, $player['player_canal'], $player['player_name'], $player['player_avatar'], $initialMoney];
+      $values[] = [$pId, $color, $player['player_canal'], $player['player_name'], $player['player_avatar'], $initialMoney, $initialMoney];
     }
     $query->values($values);
 
@@ -140,6 +140,7 @@ class Players extends \COAL\Helpers\DB_Manager
   public static function giveMoney($player,$money){
     $pId = $player->getId();
     self::DB()->inc(['money' => $money], $pId);
+    $player->incScoreAux($money);
     Notifications::giveMoney($player,$money);
     Stats::inc("moneyReceived",$player,$money);
     Stats::inc("moneyLeft",$player,$money);
@@ -152,6 +153,7 @@ class Players extends \COAL\Helpers\DB_Manager
       throw new \BgaVisibleSystemException("Not enough money to spend");
     }
     self::DB()->inc(['money' => 0-$money], $pId);
+    $player->incScoreAux(0 - $money);
     Notifications::spendMoney($player,$money);
     Stats::inc("moneySpent",$player,$money);
     Stats::inc("moneyLeft",$player,-$money);

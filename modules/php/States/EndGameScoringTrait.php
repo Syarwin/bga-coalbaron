@@ -32,9 +32,10 @@ trait EndGameScoringTrait
       $money = $player->getMoney();
       $moneyExcess = $money % 5;
       $moneyPoints = ($money - $moneyExcess) / 5 ;
-      //TODO JSA Decrease money + update tiebreaker.
       if($moneyPoints != 0){
         $player->addPoints($moneyPoints);
+        //update tiebreaker.
+        $player->setScoreAux($moneyExcess);
         Notifications::endGameScoringMoney($player, $money, $moneyPoints);
       }
 

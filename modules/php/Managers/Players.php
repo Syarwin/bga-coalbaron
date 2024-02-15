@@ -39,11 +39,12 @@ class Players extends \COAL\Helpers\DB_Manager
 
     Game::get()->reattributeColorsBasedOnPreferences($players, $gameInfos['player_colors']);
     Game::get()->reloadPlayersBasicInfos();
-
+    /* MOVED, to be used with modified Stats module
     foreach ($players as $pId => $player) {
       Stats::inc( "moneyReceived", $pId, $initialMoney );
       Stats::inc( "moneyLeft", $pId, $initialMoney );
     }
+    */
   }
 
   public static function getInitialMoney($nbPlayers){

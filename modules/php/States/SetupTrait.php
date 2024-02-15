@@ -21,11 +21,12 @@ trait SetupTrait
     Players::setupNewGame($players, $options);
     Globals::setupNewGame($players, $options);
     Preferences::setupNewGame($players, $this->player_preferences);
-    //    Stats::checkExistence();
-    /*foreach ($players as $pId => $player) {
-      Players::get($player['id'])->initStats(count($players));
+    Stats::checkExistence();
+    $initialMoney = Players::getInitialMoney(count($players));
+    foreach ($players as $pId => $player) {
+      Stats::inc( "moneyReceived", $pId, $initialMoney );
+      Stats::inc( "moneyLeft", $pId, $initialMoney );
     }
-    */
     Tiles::setupNewGame($players, $options);
     Cards::setupNewGame($players, $options);
     Meeples::setupNewGame($players, $options);

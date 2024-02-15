@@ -82,6 +82,8 @@ class Meeples extends \COAL\Helpers\Pieces
           'player_id' => $pId,
           'nbr' => 1,
         ];
+        Stats::inc( "coalsLeft", $pId, 1 );
+        Stats::inc( $baseTileCard->getCoalColor()."Received", $pId, 1 );
       }
     }
     //Place all other Coal Cubes in reserve : 16 exist in each color

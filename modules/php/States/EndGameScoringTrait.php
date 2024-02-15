@@ -16,6 +16,11 @@ trait EndGameScoringTrait
     $this->gamestate->nextState( 'next' );
   }
   
+  function stPreEndOfGame(){
+    self::trace("stPreEndOfGame()...");
+    $this->gamestate->nextState( '' );
+  }
+  
   /**
    * FINAL Scoring, see rules at p.16
    */

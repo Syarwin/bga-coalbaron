@@ -92,6 +92,7 @@ class Cards extends \COAL\Helpers\Pieces
       if ($space == SPACE_ORDER_DRAW || $space == $exceptSpaceX) {
         continue;
       }
+      if(self::countInLocation($space) > 0) continue;
       $newCard = self::refillOrderSpace($space);
       Notifications::refillOrderSpace($newCard);
     }

@@ -128,10 +128,6 @@ trait WorkerAtOrderTrait
         Cards::giveCardTo($player,$card);
 
         Stats::inc( "nbActions5", $player );
-
-        //TODO JSA refillOrderSpace only when player confirmed the turn 
-        $newCard = Cards::refillOrderSpace($space);
-        Notifications::refillOrderSpace($newCard);
     }
      /**
      * FOLLOW THE RULES of ACTION 5 - SPECIAL CASE : drawing 5 cards

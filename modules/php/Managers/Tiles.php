@@ -2,6 +2,7 @@
 
 namespace COAL\Managers;
 
+use COAL\Core\Notifications;
 use COAL\Helpers\Collection;
 use COAL\Models\BaseTileCard;
 use COAL\Models\TileCard;
@@ -89,13 +90,26 @@ class Tiles extends \COAL\Helpers\Pieces
    */
   public static function drawTilesToFactory()
   {
+    self::refillEmptyFactorySpaces(false);
+  }
+  
+  /**
+   * Draw N new tiles and place them each unlocked EMPTY factory space
+   * @param bool $sendNotif (false = silent by default)
+   */
+  public static function refillEmptyFactorySpaces($sendNotif = false)
+  {
     //DRAW 6 or 8 tiles:
     $spaces = self::getUnlockedSpacesInFactory();
     foreach ($spaces as $space) {
       if ($space == SPACE_FACTORY_DRAW) {
         continue;
       }
-      self::refillFactorySpace($space);
+      if(self::countInLocation($space) > 0) continue;
+      $newTile = self::refillFactorySpace($space);
+      if (isset($newTile) && $sendNotif) {
+          Notifications::refillFactorySpace($newTile);
+      }
     }
   }
 

@@ -6,6 +6,8 @@ use COAL\Helpers\Log;
 use COAL\Managers\Players;
 use COAL\Core\Notifications;
 use COAL\Core\Globals;
+use COAL\Managers\Cards;
+use COAL\Managers\Tiles;
 
 trait ConfirmUndoTrait
 {
@@ -43,6 +45,9 @@ trait ConfirmUndoTrait
         if (!$auto) {
             self::checkAction('actConfirmTurn');
         }
+        Tiles::refillEmptyFactorySpaces(true);
+        Cards::refillOtherOrderSpaces(null);
+        
         $this->gamestate->nextState('confirm');
     }
 

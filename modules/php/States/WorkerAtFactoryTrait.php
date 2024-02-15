@@ -139,12 +139,6 @@ trait WorkerAtFactoryTrait
         $tile = Tiles::getTileInFactory($space);
         $this->giveTileToPlayer($player, $tile);
 
-        //TODO JSA refillFactorySpace only when player confirmed the turn 
-        $newTile = Tiles::refillFactorySpace($space);
-        if (isset($newTile)) {
-            //If deck was not empty
-            Notifications::refillFactorySpace($newTile);
-        }
         Stats::inc("nbActions1", $player);
     }
 

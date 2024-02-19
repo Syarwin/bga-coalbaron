@@ -9,12 +9,14 @@ use COAL\Core\Stats;
 use COAL\Managers\Meeples;
 use COAL\Managers\Players;
 use COAL\Helpers\Log;
+use COAL\Models\Player;
 
 trait NextPlayerTrait
 {
 
   function stNextPlayer()
   {
+    self::trace("stNextPlayer()");
     //END ROUND CoNDITIONS
     $nbAvailableWorkers = Meeples::getNbAvailableWorkers();
     if ($nbAvailableWorkers == 0) {
@@ -22,17 +24,37 @@ trait NextPlayerTrait
       return;
     }
 
-    //Active next player WITH WORKERS only !
+    //Active next player WITH WORKERS only ! and not zombie :
+    $activePlayer = Players::getActive();
+    $player_id = $activePlayer->id;
+    $nbPlayers = Players::count();
+    $k = 0;
+    $nextPlayer = null;
     do {
-      $player_id = self::activeNextPlayer();
+      $k++;
+      //! activeNextPlayer active zombies also !
+      //$player_id = self::activeNextPlayer();
+      $player_id = Players::getNextId($player_id);
+      $player = Players::get($player_id);
+      if($player->getZombie() == 1){
+        continue;
+      }
       $nbAvailableWorkers = Meeples::getNbAvailableWorkers($player_id);
       if ($nbAvailableWorkers == 0) {
-        $player = Players::get($player_id);
         Notifications::skipTurn($player);
+      } else {
+        $nextPlayer = $player;
       }
-    } while ($nbAvailableWorkers == 0);
+    } while (!isset($nextPlayer) && $k<=$nbPlayers && isset($player_id));
+    
+    if(!isset($nextPlayer) ){
+      //PREMATURE END IF only ZOMBIES left
+      $this->gamestate->nextState('end_shift');
+      return;
+    }
 
-    self::giveExtraTime($player_id);
+    Players::changeActive($nextPlayer->id);
+    self::giveExtraTime($nextPlayer->id);
 
     $this->addCheckpoint(ST_PLACE_WORKER);
     $this->gamestate->nextState('next');

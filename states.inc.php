@@ -81,6 +81,7 @@ $machinestates = [
     'type' => 'activeplayer',
     'transitions' => [
       'next' => ST_DRAFT_NEXT_PLAYER,
+      'zombiePass'=>ST_DRAFT_NEXT_PLAYER,
     ],
   ],
 
@@ -133,6 +134,7 @@ $machinestates = [
       'chooseTile' => ST_CHOOSE_TILE,
       'chooseCoal' => ST_CHOOSE_COAL,
       'next' => ST_CONFIRM_CHOICES,
+      'zombiePass'=>ST_CONFIRM_CHOICES,
     ],
   ],
 
@@ -146,6 +148,7 @@ $machinestates = [
     'transitions' => [
       'continue' => ST_MINING,
       'end' => ST_CONFIRM_CHOICES,
+      'zombiePass'=>ST_CONFIRM_CHOICES,
     ],
   ],
 
@@ -158,6 +161,7 @@ $machinestates = [
     'possibleactions' => ['actChooseCard'],
     'transitions' => [
       'next' => ST_CONFIRM_CHOICES,
+      'zombiePass'=>ST_CONFIRM_CHOICES,
     ],
   ],
 
@@ -171,6 +175,7 @@ $machinestates = [
     'transitions' => [
       'chooseCoal' => ST_CONFIRM_CHOICES,
       'next' => ST_CONFIRM_CHOICES,
+      'zombiePass'=>ST_CONFIRM_CHOICES,
     ],
   ],
 
@@ -183,6 +188,7 @@ $machinestates = [
     'possibleactions' => ['actChooseCoal', 'actRestart'],
     'transitions' => [
       'next' => ST_CONFIRM_TURN,
+      'zombiePass'=>ST_CONFIRM_TURN,
     ],
   ],
 
@@ -205,7 +211,10 @@ $machinestates = [
     'args' => 'argsConfirmTurn',
     'action' => 'stConfirmTurn',
     'possibleactions' => ['actConfirmTurn', 'actRestart'],
-    'transitions' => ['confirm' => ST_NEXT_PLAYER],
+    'transitions' => [
+      'confirm' => ST_NEXT_PLAYER,
+      'zombiePass'=>ST_NEXT_PLAYER,
+    ],
   ],
 
 

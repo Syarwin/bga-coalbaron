@@ -137,6 +137,15 @@ class CoalBaron extends Table
   {
     $statename = $state['name'];
 
+    if ($state['type'] === "activeplayer") {
+      switch ($statename) {
+          default:
+            $this->gamestate->nextState( "zombiePass" );
+            break;
+      }
+      return;
+    }
+
     switch ($statename) {
       default:
         throw new feException('Zombie mode not supported at this game state: ' . $statename);

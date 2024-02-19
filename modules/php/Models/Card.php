@@ -38,7 +38,7 @@ class Card extends \COAL\Helpers\DB_Model
   public function getUiData()
   {
     $data = parent::getUiData();
-    $data['coalsStatus'] = Cards::getCardCoalsStatus($this->getId());
+    //$data['coalsStatus'] = Cards::getCardCoalsStatus($this->getId());
     $data['isCompleted'] = $this->isCompleted();
     return $data;
   }

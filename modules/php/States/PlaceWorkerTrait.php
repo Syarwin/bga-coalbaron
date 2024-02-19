@@ -184,11 +184,11 @@ trait PlaceWorkerTrait
      */
     static function hasEnoughWorkers($space, $nbAvailableWorkers, $nbrWorkersNeeded)
     {
-        self::trace("hasEnoughWorkers($space,$nbAvailableWorkers,$nbrWorkersNeeded) ");
+        //self::trace("hasEnoughWorkers($space,$nbAvailableWorkers,$nbrWorkersNeeded) ");
         if ($space == SPACE_BANK_1) return true; //don't remove default space SPACE_BANK_1
 
         if ($nbAvailableWorkers < $nbrWorkersNeeded) {
-            self::trace("hasEnoughWorkers($nbAvailableWorkers)... Impossible $space because $nbrWorkersNeeded workers are needed");
+            //self::trace("hasEnoughWorkers($nbAvailableWorkers)... Impossible $space because $nbrWorkersNeeded workers are needed");
             return false;
         }
         return true;

@@ -292,4 +292,37 @@ trait DebugTrait
   {
     $this->computeEndGameScoring();
   }
+
+  function testEmptyMinecarts()
+  {
+    $player = Players::getCurrent();
+    $player->money = 55;
+
+    //Test about like id% => test 1 and 11
+    $tilesToTest = [1,11,12,13];
+    $tilesToEmpty = [11,13];
+    foreach($tilesToTest as $tileId){
+      $tile = Tiles::get($tileId);
+      $this->giveTileToPlayer($player, $tile);
+      if(in_array($tileId,$tilesToEmpty)){
+        $filledCoals = Meeples::getPlayerTileCoals($player->id, $tile->getId())->getIds();
+        Meeples::move($filledCoals, SPACE_RESERVE);
+      }
+    }
+    
+    $tiles = Tiles::getPlayersTiles();
+    foreach($tiles as $tileId => $tile){
+      $filledCoals = Meeples::getPlayerTileCoals($player->id, $tile->getId())->count();
+      $nbEmpty = $tile->countEmptyMinecarts();
+      $max = $tile->getNumber();
+      Notifications::message("testEmptyMinecarts tile $tileId : $nbEmpty / $max ($filledCoals filled)");
+    }
+
+    $this->testRefreshUI();
+  }
+  
+  //----------------------------------------------------------------
+  function testRefreshUI(){
+    Notifications::refreshUI($this->getAllDatas());
+  }
 }

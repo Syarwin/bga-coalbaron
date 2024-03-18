@@ -308,7 +308,7 @@ class Meeples extends \COAL\Helpers\Pieces
    */
   public static function getPlayerTileCoals($pId, $tileId)
   {
-    return self::getFilteredQuery($pId, COAL_LOCATION_TILE . $tileId . '%', '%\_coal')->get();
+    return self::getFilteredQuery($pId, COAL_LOCATION_TILE . $tileId, '%\_coal')->get();
   }
   /**
    * @return number of coal cubes on specified location AND player

@@ -40,7 +40,7 @@ class Cards extends \COAL\Helpers\Pieces
     }
 
     return self::getInLocation(CARD_LOCATION_OUTSTANDING)
-      ->merge(self::getInLocation(SPACE_ORDER . '_%'))
+      ->merge(self::getFilteredQuery(null,SPACE_ORDER . '\_%',null)->get())
       ->merge($privateCards)
       ->map(function ($card) {
         return $card->getUiData();

@@ -154,7 +154,7 @@ define([
         order_draw: ['title', 'workers'],
         canteen: ['workers'],
       };
-      const SPACES_NO_3P = ['factory_4', 'mining_8', 'bank_5', 'order_1'];
+      const SPACES_NO_3P = ['factory_8', 'mining_4', 'bank_3'];
       const SPACES_NO_2P = ['factory_4', 'factory_8', 'bank_3', 'bank_5', 'mining_4', 'mining_8', 'order_1'];
 
       let nPlayers = Object.keys(this.gamedatas.players).length;

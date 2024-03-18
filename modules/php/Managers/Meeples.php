@@ -87,7 +87,7 @@ class Meeples extends \COAL\Helpers\Pieces
       }
     }
     //Place all other Coal Cubes in reserve : 16 exist in each color
-    $nbCubesOfEach = 16 - count($players);
+    $nbCubesOfEach = 32; //16 - count($players);
     $meeples[] = [
       'type' => YELLOW_COAL,
       'location' => SPACE_RESERVE,

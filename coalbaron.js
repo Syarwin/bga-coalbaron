@@ -1461,6 +1461,10 @@ define([
       this.updateLayout();
     },
 
+    onChangePlayerBoardWidthSetting(val) {
+      this.updateLayout();
+    },
+
     onLoadingComplete() {
       this.updateLayout();
       this.inherited(arguments);

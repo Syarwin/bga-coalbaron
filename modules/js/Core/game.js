@@ -773,11 +773,11 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
             dojo.removeClass(mobileElt, 'phantom');
             mobile = mobileElt;
           }
-          if (config.changeParent) {
+          if (config.destroy) dojo.destroy(mobile);
+          else if (config.changeParent) {
             if (config.phantomEnd) dojo.place(mobile, targetId, 'replace');
             else this.changeParent(mobile, newParent);
           }
-          if (config.destroy) dojo.destroy(mobile);
           if (config.clearPos && !config.destroy) dojo.style(mobile, { top: null, left: null, position: null });
           resolve();
         });

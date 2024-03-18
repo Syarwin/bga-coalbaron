@@ -270,6 +270,12 @@ define([
       this.setupMeeples();
       this.setupTiles();
 
+      if (this.gamedatas.optionCardsVisibility == 0) {
+        document.querySelectorAll('.completed-orders .coalbaron-card.back-card').forEach((oCard) => {
+          this.destroy(oCard);
+        });
+      }
+
       this.forEachPlayer((player) => {
         let pId = player.id;
         this.scoreCtrl[pId].toValue(player.score);
@@ -277,6 +283,12 @@ define([
         this._counters[pId].money.toValue(player.money);
 
         $(`elevator-${player.id}`).dataset.y = player.cageLevel;
+
+        if (this.gamedatas.optionCardsVisibility == 0) {
+          for (let i = 0; i < player.ordersDone; i++) {
+            $(`completed-orders-${player.id}`).insertAdjacentHTML(`beforeend`, `<div class="coalbaron-card back-card"></div>`);
+          }
+        }
       });
     },
 
@@ -813,6 +825,10 @@ define([
         let o = $(`card-${card.id}`);
         if (!o) return null;
 
+        if (card.location == 'delivered' && card.pId != this.player_id && this.gamedatas.optionCardsVisibility == 0) {
+          o.remove();
+          return;
+        }
         let container = this.getCardContainer(card);
         if (o.parentNode != $(container)) {
           dojo.place(o, container);

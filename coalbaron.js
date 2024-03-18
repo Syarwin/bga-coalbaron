@@ -1119,7 +1119,7 @@ define([
       debug('Notif: card delivered', n);
       Promise.all(
         [...$(`card-${n.args.cardId}`).querySelectorAll('.coal-slot .coalbaron-meeple')].map((oMeeple, i) =>
-          this.slide(oMeeple, this.getVisibleTitleContainer(), { destroy: true, delay: 100 * i })
+          this.slide(oMeeple, $('box-reserve'), { delay: 100 * i })
         )
       ).then(() => {
         this.scoreCtrl[n.args.player_id].incValue(n.args.n);

@@ -411,6 +411,7 @@ define([
             <div class='elevator-level level-3' id='elevator-${player.id}-level-3'></div>
             <div class='elevator-level level-4' id='elevator-${player.id}-level-4'></div>
             <div class='storage' id='storage-${player.id}'></div>
+            <div class='joker-double-cubes' id='joker-${player.id}'></div>
           </div>
           <div class='board-right-side'>
               <div class='pending-orders' id='pending-orders-${player.id}'></div>
@@ -999,11 +1000,16 @@ define([
         this.onClick(`elevator-${this.player_id}-level-${level}`, () => this.takeAction('actMovePitCage', { level }));
       });
 
+      let movableToDuo = [];
       let allLocations = [];
       Object.keys(args.movableCoals.solo).forEach((meepleId) => {
         let locations = args.movableCoals.solo[meepleId];
         if (locations.length == 0) return;
         locations.forEach((loc) => {
+          if (loc == 'duo') {
+            movableToDuo.push(meepleId);
+          }
+
           if (allLocations[loc]) allLocations[loc].push(meepleId);
           else allLocations[loc] = [meepleId];
         });
@@ -1030,6 +1036,16 @@ define([
         }
       });
 
+      // At least two meeple movable to duo
+      if (movableToDuo.length >= 2) {
+        this.onClick(`joker-${this.player_id}`, () => {
+          this.clientState('miningStepsChooseDuo', _('Choose two coals'), {
+            meepleIds: movableToDuo,
+            locations: args.movableCoals.duo,
+          });
+        });
+      }
+
       this.addDangerActionButton('btnStopMining', _('Stop mining'), () => this.takeAction('actStopMining', {}));
     },
 
@@ -1052,6 +1068,34 @@ define([
         if (location == 'storage') {
           this.onClick(`storage-${this.player_id}`, () => {
             this.takeAction('actMoveCoals', { spaceId: location, coalId: meepleId });
+          });
+        }
+      });
+    },
+
+    onEnteringStateMiningStepsChooseDuo(args) {
+      this.addCancelStateBtn(_('Go back'));
+      let elements = [];
+      args.meepleIds.forEach((meepleId) => (elements[meepleId] = $(`meeple-${meepleId}`)));
+      this.onSelectN(elements, 2, (selectedMeeples) => {
+        this.clientState('miningStepsChooseDuoTarget', _('Where do you want to move these coals?'), {
+          selectedMeeples,
+          locations: args.locations,
+        });
+      });
+    },
+    onEnteringStateMiningStepsChooseDuoTarget(args) {
+      this.addCancelStateBtn(_('Go back'));
+      let meepleId1 = args.selectedMeeples[0];
+      let meepleId2 = args.selectedMeeples[1];
+      $(`meeple-${meepleId1}`).classList.add('selected');
+      $(`meeple-${meepleId2}`).classList.add('selected');
+
+      args.locations.forEach((location) => {
+        let t = location.split('_');
+        if (t[0] == 'card') {
+          this.onClick(`coal-slot-${t[1]}-${t[2]}`, () => {
+            this.takeAction('actMoveCoals', { spaceId: location, coalId: args.selectedMeeples.join(';') });
           });
         }
       });

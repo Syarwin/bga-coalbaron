@@ -80,6 +80,11 @@
                 background: #ffd70033;
             }
         }
+
+        .coalbaron-meeple ~ .coalbaron-meeple {
+            margin-top: -122%;
+            margin-left: 1%;
+        }
     }
 
     &[data-n="1"] .coal-slot {

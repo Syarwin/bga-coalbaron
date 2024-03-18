@@ -205,6 +205,22 @@
           border-image-repeat: stretch stretch;
           border-image-source: url("img/frame.png");
           pointer-events: none; }
+      #coalbaron-main-container .coalbaron-board .player-board-fixed-size .board-elevator .joker-double-cubes {
+        position: absolute;
+        text-align: center;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 15px;
+        padding: 6px 20px;
+        top: 45px;
+        width: 60px;
+        height: 18px; }
+        #coalbaron-main-container .coalbaron-board .player-board-fixed-size .board-elevator .joker-double-cubes.selectable {
+          background-color: #ffd7004f;
+          box-shadow: 0px 0px 10px 5px gold;
+          cursor: pointer; }
+          #coalbaron-main-container .coalbaron-board .player-board-fixed-size .board-elevator .joker-double-cubes.selectable:hover {
+            background-color: #ffd70077; }
       #coalbaron-main-container .coalbaron-board .player-board-fixed-size .board-elevator .storage {
         position: absolute;
         right: 2px;
@@ -951,6 +967,8 @@
       cursor: pointer; }
       .coalbaron-card .coal-slot.selectable:hover {
         background: #ffd70033; }
+    .coalbaron-card .coal-slot .coalbaron-meeple ~ .coalbaron-meeple {
+      margin-top: -100%; }
   .coalbaron-card[data-n="1"] .coal-slot:nth-child(1) {
     top: 88px;
     left: 42px; }

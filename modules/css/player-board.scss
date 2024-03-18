@@ -144,6 +144,28 @@
                     }
                 }
 
+                .joker-double-cubes {
+                    position: absolute;
+                    text-align: center;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    border-radius: 15px;
+                    padding: 6px 20px;
+                    top: 45px;
+                    width: 60px;
+                    height: 18px;
+
+                    &.selectable {
+                        background-color: #ffd7004f;
+                        box-shadow: 0px 0px 10px 5px gold;
+                        cursor: pointer;
+
+                        &:hover {
+                            background-color: #ffd70077;
+                        }
+                    }
+                }
+
                 .storage {
                     position: absolute;
                     right: 2px;

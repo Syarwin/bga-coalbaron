@@ -612,6 +612,8 @@ define([
       let tiles = args._private.tiles;
       Object.values(tiles).forEach((tile) => {
         this.addTile(tile, $('draft-container'));
+        if (!tile.buyable) return;
+
         this.onClick(`tile-${tile.id}`, () =>
           this.clientState('chooseTileRemaining', _('Select where and in which order you want to place the other tiles'), {
             tileId: tile.id,

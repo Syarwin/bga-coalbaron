@@ -11,13 +11,13 @@ $gameinfos = [
   //'designer' => 'Michael Kiesling, Wolfgang Kramer',
 
   // Game artist (or game artists, separated by commas)
-  //'artist' => 'Frédéric Brogard, Dennis Lohausen',
+  //'artist' => 'Frédéric Brogard',
 
   // Year of FIRST publication of this game. Can be negative.
-  //'year' => 2013,
+  //'year' => 2023,
 
   // Game publisher (use empty string if there is no publisher)
-  'publisher' => 'C and C Publishing',
+  'publisher' => 'Passe Ton Tour Games',
 
   // Url of game publisher website
   'publisher_website' => 'https://creative-and-cool.com/',

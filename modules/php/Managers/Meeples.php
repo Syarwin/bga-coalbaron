@@ -82,8 +82,8 @@ class Meeples extends \COAL\Helpers\Pieces
           'player_id' => $pId,
           'nbr' => 1,
         ];
-        Stats::inc( "coalsLeft", $pId, 1 );
-        Stats::inc( $baseTileCard->getCoalColor()."Received", $pId, 1 );
+        Stats::inc("coalsLeft", $pId, 1);
+        Stats::inc($baseTileCard->getCoalColor() . "Received", $pId, 1);
       }
     }
     //Place all other Coal Cubes in reserve : 16 exist in each color
@@ -149,24 +149,23 @@ class Meeples extends \COAL\Helpers\Pieces
     //SELECT count(1), player_id FROM `meeples` 
     //WHERE `meeple_location` like 'factory%' group by `player_id`
     $sql = "SELECT player_id, count(1) 'nb'";
-    $sql.= " FROM `$meeples`";
-    $sql.= " WHERE `$meeple_location` like '$factorySpace'";
-    $sql.= " group by `player_id` ";
-    $countPerPlayers = new Collection(self::getCollectionFromDB($sql,true));
-    
+    $sql .= " FROM `$meeples`";
+    $sql .= " WHERE `$meeple_location` like '$factorySpace'";
+    $sql .= " group by `player_id` ";
+    $countPerPlayers = new Collection(self::getCollectionFromDB($sql, true));
+
     $maxCount = 0;
     $maxPlayers = array();
-    
-    foreach($countPerPlayers as $pId => $countPerPlayer){
-      if($maxCount < $countPerPlayer){
+
+    foreach ($countPerPlayers as $pId => $countPerPlayer) {
+      if ($maxCount < $countPerPlayer) {
         $maxCount = $countPerPlayer;
         $maxPlayers = array($pId);
-      }
-      else if($maxCount == $countPerPlayer){
+      } else if ($maxCount == $countPerPlayer) {
         $maxPlayers[] = $pId;
       }
     }
-    
+
     return $maxPlayers;
   }
   /**
@@ -174,13 +173,13 @@ class Meeples extends \COAL\Helpers\Pieces
    */
   public static function countWorkers($location = null)
   {
-    $query = self::getSelectQuery()->where('type','=',WORKER);
+    $query = self::getSelectQuery()->where('type', '=', WORKER);
     if ($location != null) {
-        $query = $query->where(
-            static::$prefix . 'location',
-            strpos($location, '%') === false ? '=' : 'LIKE',
-            $location
-        );
+      $query = $query->where(
+        static::$prefix . 'location',
+        strpos($location, '%') === false ? '=' : 'LIKE',
+        $location
+      );
     }
     return $query->count();
   }
@@ -222,16 +221,15 @@ class Meeples extends \COAL\Helpers\Pieces
   public static function placeWorkersInSpace($player, $toLocation, $fixedNbNeededWorkers = null)
   {
     $pId = $player->getId();
-    if(isset($fixedNbNeededWorkers)){
+    if (isset($fixedNbNeededWorkers)) {
       $nbNeededWorkers = $fixedNbNeededWorkers;
-    }
-    else{
+    } else {
       $nbWorkersAtWork = Meeples::countInLocation($toLocation);
       $nbNeededWorkers = $nbWorkersAtWork + 1;
       //MOVE PREVIOUS WORKERS to the CANTEEN before placing new workers !
       self::moveAllInLocation($toLocation, SPACE_CANTEEN);
-      if ($nbWorkersAtWork > 0){
-        Notifications::moveToCanteen($toLocation,$nbWorkersAtWork);
+      if ($nbWorkersAtWork > 0) {
+        Notifications::moveToCanteen($toLocation, $nbWorkersAtWork);
       }
     }
     //pickForLocation is good for location but doesnt filter pid...
@@ -256,7 +254,7 @@ class Meeples extends \COAL\Helpers\Pieces
       ->limit($number)
       ->get();
   }
-  
+
   /**
    * @return int number of ALL COALS in reserve of that color
    */
@@ -282,42 +280,42 @@ class Meeples extends \COAL\Helpers\Pieces
    */
   public static function countPlayerCoals($pId, $location = null)
   {
-    return self::getFilteredQuery($pId, $location, '%_coal')->count();
+    return self::getFilteredQuery($pId, $location, '%\_coal')->count();
   }
   /**
    * Return all coals currently owned by this player
    */
   public static function getPlayerCoals($pId)
   {
-    return self::getFilteredQuery($pId, null, '%_coal')->get();
+    return self::getFilteredQuery($pId, null, '%\_coal')->get();
   }
   /**
    * Return all coals currently in cage of this player
    */
   public static function getPlayerCageCoals($pId)
   {
-    return self::getFilteredQuery($pId, SPACE_PIT_CAGE, '%_coal')->get();
+    return self::getFilteredQuery($pId, SPACE_PIT_CAGE, '%\_coal')->get();
   }
   /**
    * Return all coals currently on a card of this player
    */
   public static function getPlayerCardCoals($pId, $cardId)
   {
-    return self::getFilteredQuery($pId, COAL_LOCATION_CARD . $cardId . '%', '%_coal')->get();
+    return self::getFilteredQuery($pId, COAL_LOCATION_CARD . $cardId . '\_%', '%\_coal')->get();
   }
   /**
    * Return all coals currently on a tile of this player
    */
   public static function getPlayerTileCoals($pId, $tileId)
   {
-    return self::getFilteredQuery($pId, COAL_LOCATION_TILE . $tileId . '%', '%_coal')->get();
+    return self::getFilteredQuery($pId, COAL_LOCATION_TILE . $tileId . '%', '%\_coal')->get();
   }
   /**
    * @return number of coal cubes on specified location AND player
    */
   public static function countPlayerCoalsOnLocation($pId, $location)
   {
-    return self::getFilteredQuery($pId, $location, '%_coal')->count();
+    return self::getFilteredQuery($pId, $location, '%\_coal')->count();
   }
   /**
    * ADD 1 COAL in each minecart on the tile
@@ -330,7 +328,7 @@ class Meeples extends \COAL\Helpers\Pieces
     $nb = $tile->getNumber();
     $color = $tile->getColor();
     Game::get()->trace("placeCoalsOnTile( $tileId, $color,$nb)");
-    $coals = Meeples::placeAnyCoalOnTile($player, $tile, $color,$nb);
+    $coals = Meeples::placeAnyCoalOnTile($player, $tile, $color, $nb);
 
     $missingCoals = $nb - count($coals);
     if ($missingCoals > 0) {
@@ -366,10 +364,10 @@ class Meeples extends \COAL\Helpers\Pieces
     $coals = self::getFirstAvailableCoals($color, $number);
     foreach ($coals as $coal) {
       $coal->moveToTile($player, $tile);
-      Stats::inc( $coal->getType()."Received", $player );
+      Stats::inc($coal->getType() . "Received", $player);
     }
-    Stats::inc( "coalsReceived", $player, count($coals) );
-    Stats::inc( "coalsLeft", $player, count($coals) );
+    Stats::inc("coalsReceived", $player, count($coals));
+    Stats::inc("coalsLeft", $player, count($coals));
     return $coals;
   }
 }

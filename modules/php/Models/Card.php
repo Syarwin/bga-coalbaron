@@ -19,7 +19,7 @@ class Card extends \COAL\Helpers\DB_Model
     'location' => 'card_location',
     'pId' => ['player_id', 'int'],
   ];
-  
+
   protected $staticAttributes = [
     ['type', 'int'],
     'transport',
@@ -48,31 +48,31 @@ class Card extends \COAL\Helpers\DB_Model
     $this->setLocation(CARD_LOCATION_OUTSTANDING);
     $this->setPId($player->getId());
   }
-  
+
   public function moveToDelivered()
   {
     $this->removeCoalCubes();
     $this->setLocation(CARD_LOCATION_DELIVERED);
     //PID must be already known
   }
-  
+
   public function removeCoalCubes()
   {
     $nbCoals = count($this->getCoals());
-    Stats::inc( "coalsDelivered", $this->getPId(), $nbCoals );
-    Stats::inc( "coalsLeft", $this->getPId(), -$nbCoals );
+    Stats::inc("coalsDelivered", $this->getPId(), $nbCoals);
+    Stats::inc("coalsLeft", $this->getPId(), -$nbCoals);
     Cards::removeCoalCubesOnCard($this);
   }
- 
+
   /**
    * Return true if all coals spots are occupied
    */
   public function isCompleted()
   {
     $coalsStatus = Cards::getCardCoalsStatus($this->getId());
-    foreach( $coalsStatus as $coalStatus){
-      foreach( $coalStatus as $color => $status){
-        if($status == COAL_EMPTY_SPOT) return false;
+    foreach ($coalsStatus as $coalStatus) {
+      foreach ($coalStatus as $color => $status) {
+        if ($status == COAL_EMPTY_SPOT) return false;
       }
     }
     return true;

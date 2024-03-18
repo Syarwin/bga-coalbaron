@@ -32,7 +32,7 @@ class Cards extends \COAL\Helpers\Pieces
   public static function getUiData($currentPlayerId)
   {
     $visibilityOption = Globals::getCardsVisibility();
-    if($visibilityOption == OPTION_VISIBLE_ALL){
+    if ($visibilityOption == OPTION_VISIBLE_ALL) {
       $privateCards = self::getInLocation(CARD_LOCATION_DELIVERED);
     } else {
       //DEFAULT OPTION_VISIBLE_PLAYER_ONLY
@@ -92,7 +92,7 @@ class Cards extends \COAL\Helpers\Pieces
       if ($space == SPACE_ORDER_DRAW || $space == $exceptSpaceX) {
         continue;
       }
-      if(self::countInLocation($space) > 0) continue;
+      if (self::countInLocation($space) > 0) continue;
       $newCard = self::refillOrderSpace($space);
       Notifications::refillOrderSpace($newCard);
     }
@@ -152,7 +152,7 @@ class Cards extends \COAL\Helpers\Pieces
   {
     $card->moveToOutstanding($player);
     Notifications::giveCardTo($player, $card);
-    Stats::inc( "cardsReceived", $player );
+    Stats::inc("cardsReceived", $player);
   }
 
   /**

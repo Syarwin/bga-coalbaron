@@ -275,6 +275,7 @@ trait WorkerAtMiningTrait
         $coalsInCage = Meeples::getPlayerCageCoals($pId);
         $nbCoalsInCage = count($coalsInCage);
         $pendingOrders = Cards::getPlayerPendingOrders($pId);
+        $cardCoalsStatusArray = [];
         foreach ($pendingOrders as $cardId => $card) {
             $cardCoalsStatusArray[$cardId] = Cards::getCardCoalsStatus($cardId);
         }

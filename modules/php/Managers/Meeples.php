@@ -339,9 +339,10 @@ class Meeples extends \COAL\Helpers\Pieces
       */
       $coalsInReserve = Meeples::countAvailableCoalsColorArray();
 
-      //TODO JSA SPECIAL CASE : only 1 color in reserve : auto choose with confirmation ?
-      //TODO JSA SPECIAL CASE : $missingCoals coals in reserve : auto choose with confirmation ?
-      //TODO JSA SPECIAL CASE : 0 coal in reserve -> confirm user empty choice ?
+      // SHOULD NOT HAPPEN anymore with increased coals limits in reserve...
+      //TODO SPECIAL CASE : only 1 color in reserve : auto choose with confirmation ?
+      //TODO SPECIAL CASE : $missingCoals coals in reserve : auto choose with confirmation ?
+      //TODO SPECIAL CASE : 0 coal in reserve -> confirm user empty choice ?
 
       Globals::setNbCoalsToChoose($missingCoals);
       Globals::setTileCoalsToChoose($tileId);

@@ -14,6 +14,8 @@ use COAL\Models\CoalCube;
 
 trait DebugTrait
 {
+
+  /*
   function testGoToNextPlayer()
   {
     $this->gamestate->nextState('next');
@@ -232,7 +234,7 @@ trait DebugTrait
     self::dump("testPossibleSpacesInDelivery", $this->getPossibleSpacesInDelivery($pId));
   }
 
-  /* Replace meeples in reserve : */
+  // Replace meeples in reserve :
   function testReplaceMeeplesInReserve()
   {
     $player = Players::getCurrent();
@@ -259,21 +261,21 @@ trait DebugTrait
   {
     //COMMENT NExt line to test the same deliveries
     //$this->testSimulateDeliveries();
-    /*
-    //SIMULATE MOVING certain COALS :
-    $player = Players::getCurrent();
-    $coals = Meeples::getPlayerCoals($player->getId());
-    $coalIds = array( );
-    foreach($coals as $coal){
-      if($coal->getLocation() == ( SPACE_PIT_TILE . '_3_-1' ) 
-       || str_starts_with($coal->getLocation(),COAL_LOCATION_TILE)  ){
-        $coalIds[] = $coal->getId();
-        $coal->setLocation("FAKE_FOR_TEST_".$coal->getLocation());
-      }
-    }
-    Meeples::moveAllInLocation(SPACE_PIT_TILE . "_1_1","FAKE_FOR_TEST_1_1");
-    Meeples::moveAllInLocation(SPACE_PIT_TILE . "_4_1","FAKE_FOR_TEST_1_4");
-    */
+    //
+    ////SIMULATE MOVING certain COALS :
+    //$player = Players::getCurrent();
+    //$coals = Meeples::getPlayerCoals($player->getId());
+    //$coalIds = array( );
+    //foreach($coals as $coal){
+    //  if($coal->getLocation() == ( SPACE_PIT_TILE . '_3_-1' ) 
+    //   || str_starts_with($coal->getLocation(),COAL_LOCATION_TILE)  ){
+    //    $coalIds[] = $coal->getId();
+    //    $coal->setLocation("FAKE_FOR_TEST_".$coal->getLocation());
+    //  }
+    //}
+    //Meeples::moveAllInLocation(SPACE_PIT_TILE . "_1_1","FAKE_FOR_TEST_1_1");
+    //Meeples::moveAllInLocation(SPACE_PIT_TILE . "_4_1","FAKE_FOR_TEST_1_4");
+    //
     $this->computeEndShiftScoring(3);
   }
 
@@ -320,9 +322,11 @@ trait DebugTrait
 
     $this->testRefreshUI();
   }
+  */
   
   //----------------------------------------------------------------
   function testRefreshUI(){
     Notifications::refreshUI($this->getAllDatas());
   }
+
 }

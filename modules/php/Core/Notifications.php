@@ -228,7 +228,7 @@ class Notifications
   }
   public static function stopMining($player, $moves, $movesTotal)
   {
-    self::notifyAll('movePitCage', clienttranslate('${player_name} stops with ${a}/${b} moves remaining'), [
+    self::notifyAll('mediumMessage', clienttranslate('${player_name} stops with ${a}/${b} moves remaining'), [
       'player' => $player,
       'a' => $moves,
       'b' => $movesTotal,

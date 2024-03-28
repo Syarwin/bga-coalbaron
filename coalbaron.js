@@ -30,6 +30,7 @@ define([
     constructor() {
       this._inactiveStates = ['draft'];
       this._notifications = [
+        ['mediumMessage', 1200],
         ['clearTurn', 200],
         ['refreshUI', 200],
         ['newShift', null],
@@ -64,6 +65,8 @@ define([
       // Fix mobile viewport (remove CSS zoom)
       this.default_viewport = 'width=800';
     },
+
+    notif_mediumMessage(n) {},
 
     getSettingsConfig() {
       return {

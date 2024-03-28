@@ -1,15 +1,15 @@
 /**
  *------
  * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
- * CoalBaron implementation : Timothée Pecatte <tim.pecatte@gmail.com>
+ * fiverealms implementation : Timothée Pecatte <tim.pecatte@gmail.com>
  *
  * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
  *
- * coalbaron.scss
+ * fiverealms.scss
  *
- * CoalBaron stylesheet
+ * fiverealms stylesheet
  *
  */
 
@@ -36,9 +36,9 @@ html {
 
 #pagemaintitletext,
 #gameaction_status {
-    .coalbaron-card,
-    .coalbaron-tile,
-    .coalbaron-meeple {
+    .fiverealms-card,
+    .fiverealms-tile,
+    .fiverealms-meeple {
         position: absolute;
         left: 50%;
         top: 0px;
@@ -129,7 +129,7 @@ html {
     top: 0%;
     left: 0%;
 
-    & > div.coalbaron-meeple:not(.moving) {
+    & > div.fiverealms-meeple:not(.moving) {
         position: absolute;
         top: 0;
         visibility: hidden;

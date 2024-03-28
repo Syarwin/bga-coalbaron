@@ -3,6 +3,8 @@
 namespace COAL\Core;
 
 use COAL\Core\Game;
+use COAL\Managers\Players;
+
 /*
  * Globals
  */
@@ -115,8 +117,10 @@ class Globals extends \COAL\Helpers\DB_Manager
 
     self::setCardsVisibility($options[OPTION_CARDS_VISIBILITY]);
 
+    $playersData = Players::getAll();
     foreach ($players as $pId => $player) {
-      if ($player['player_table_order'] == 1) {
+      //if ($player['player_table_order'] == 1) {
+      if ($playersData[$pId]->getNo() == 1) {
         self::setFirstPlayer($pId);
         break;
       }

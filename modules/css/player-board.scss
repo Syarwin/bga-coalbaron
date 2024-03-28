@@ -23,13 +23,16 @@
                 flex-grow: 1;
                 display: flex;
                 flex-flow: column;
+                max-width: 600px;
 
                 .completed-orders {
                     height: 223px;
+                    max-width: 600px;
                     display: flex;
                     flex-flow: row;
                     align-items: center;
                     padding: 0px 5px;
+                    padding-right: 100px;
                     .coalbaron-card {
                         margin: 2px 5px;
                     }
@@ -72,6 +75,7 @@
             }
             .board-right-side {
                 flex-grow: 1;
+                max-width: 800px;
                 display: flex;
                 flex-flow: column;
                 .pending-orders {

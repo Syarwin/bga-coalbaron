@@ -12,137 +12,152 @@
 .coalbaron-card {
     width: 130px;
     height: 200px;
-    background-image: url("img/orders.jpg");
-    background-size: 900% 500%;
-    border: 1px solid black;
-    box-shadow: 1px 1px 5px black;
-    border-radius: 5px;
-
-    @for $i from 1 through 46 {
-        &[data-type="#{$i}"] {
-            background-position-x: ($i % 9) * 100% / 8;
-            background-position-y: (($i - ($i % 9)) / 9) * 100% / 4;
-        }
-    }
-
     position: relative;
-    // .coalbaron-meeple {
-    //     position: absolute;
-    //     top: 30px;
-    //     left: 70px;
 
-    //     &:nth-child(2) {
-    //         left: 17px;
-    //     }
-    // }
-
-    &.selectable {
-        box-shadow: 0px 0px 7px 2px red;
-        cursor: pointer;
-        &:hover {
-            transform: scale(1.1);
+    &:hover {
+        .coalbaron-card-inner {
+            z-index: 100;
         }
     }
 
-    &.selected,
-    &.selected:hover {
-        box-shadow: 0px 0px 7px 2px green;
-        transform: scale(1.1);
-    }
-
-    &[data-order]::before {
-        content: attr(data-order);
-        display: block;
+    .coalbaron-card-inner {
         position: absolute;
-        width: 30px;
-        height: 30px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: white;
-        border-radius: 50%;
+        top: 0;
+        left: 0;
+        width: 130px;
+        height: 200px;
+        flex-shrink: 0;
+        background-image: url("img/orders.jpg");
+        background-size: 900% 500%;
         border: 1px solid black;
-        top: 5px;
-        left: 45px;
-        font-size: 21px;
-        font-weight: bold;
-    }
+        box-shadow: 1px 1px 5px black;
+        border-radius: 5px;
 
-    .coal-slot {
-        width: 42px;
-        height: 42px;
-        position: absolute;
-        &.selectable {
-            background: #ffd7001c;
-            box-shadow: 0px 0px 7px 6px gold;
-            cursor: pointer;
-            &:hover {
-                background: #ffd70033;
+        @for $i from 1 through 46 {
+            &[data-type="#{$i}"] {
+                background-position-x: ($i % 9) * 100% / 8;
+                background-position-y: (($i - ($i % 9)) / 9) * 100% / 4;
             }
         }
 
-        .coalbaron-meeple ~ .coalbaron-meeple {
-            margin-top: -122%;
-            margin-left: 1%;
-        }
-    }
+        // .coalbaron-meeple {
+        //     position: absolute;
+        //     top: 30px;
+        //     left: 70px;
 
-    &[data-n="1"] .coal-slot {
-        &:nth-child(1) {
-            top: 88px;
-            left: 42px;
-        }
-    }
+        //     &:nth-child(2) {
+        //         left: 17px;
+        //     }
+        // }
 
-    &[data-n="2"] .coal-slot {
-        &:nth-child(1) {
-            top: 88px;
-            left: 21px;
+        &.selectable {
+            box-shadow: 0px 0px 7px 2px red;
+            cursor: pointer;
+            &:hover {
+                transform: scale(1.1);
+            }
         }
 
-        &:nth-child(2) {
-            top: 88px;
-            left: 67px;
+        &.selected,
+        &.selected:hover {
+            box-shadow: 0px 0px 7px 2px green;
+            transform: scale(1.1);
         }
-    }
 
-    &[data-n="3"] .coal-slot {
-        width: 36px;
-        height: 36px;
+        &[data-order]::before {
+            content: attr(data-order);
+            display: block;
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: white;
+            border-radius: 50%;
+            border: 1px solid black;
+            top: 5px;
+            left: 45px;
+            font-size: 21px;
+            font-weight: bold;
+        }
 
-        &:nth-child(1) {
-            top: 72px;
-            left: 46px;
-        }
-        &:nth-child(2) {
-            top: 107px;
-            left: 30px;
-        }
-        &:nth-child(3) {
-            top: 107px;
-            left: 66px;
-        }
-    }
+        .coal-slot {
+            width: 42px;
+            height: 42px;
+            position: absolute;
+            &.selectable {
+                background: #ffd7001c;
+                box-shadow: 0px 0px 7px 6px gold;
+                cursor: pointer;
+                &:hover {
+                    background: #ffd70033;
+                }
+            }
 
-    &[data-n="4"] .coal-slot {
-        width: 36px;
-        height: 36px;
+            .coalbaron-meeple ~ .coalbaron-meeple {
+                margin-top: -122%;
+                margin-left: 1%;
+            }
+        }
 
-        &:nth-child(1) {
-            top: 72px;
-            left: 30px;
+        &[data-n="1"] .coal-slot {
+            &:nth-child(1) {
+                top: 88px;
+                left: 42px;
+            }
         }
-        &:nth-child(2) {
-            top: 72px;
-            left: 66px;
+
+        &[data-n="2"] .coal-slot {
+            &:nth-child(1) {
+                top: 88px;
+                left: 21px;
+            }
+
+            &:nth-child(2) {
+                top: 88px;
+                left: 67px;
+            }
         }
-        &:nth-child(3) {
-            top: 107px;
-            left: 30px;
+
+        &[data-n="3"] .coal-slot {
+            width: 36px;
+            height: 36px;
+
+            &:nth-child(1) {
+                top: 72px;
+                left: 46px;
+            }
+            &:nth-child(2) {
+                top: 107px;
+                left: 30px;
+            }
+            &:nth-child(3) {
+                top: 107px;
+                left: 66px;
+            }
         }
-        &:nth-child(4) {
-            top: 107px;
-            left: 66px;
+
+        &[data-n="4"] .coal-slot {
+            width: 36px;
+            height: 36px;
+
+            &:nth-child(1) {
+                top: 72px;
+                left: 30px;
+            }
+            &:nth-child(2) {
+                top: 72px;
+                left: 66px;
+            }
+            &:nth-child(3) {
+                top: 107px;
+                left: 30px;
+            }
+            &:nth-child(4) {
+                top: 107px;
+                left: 66px;
+            }
         }
     }
 }

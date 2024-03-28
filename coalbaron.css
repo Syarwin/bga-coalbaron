@@ -113,13 +113,16 @@
     #coalbaron-main-container .coalbaron-board .player-board-fixed-size .board-left-side {
       flex-grow: 1;
       display: flex;
-      flex-flow: column; }
+      flex-flow: column;
+      max-width: 600px; }
       #coalbaron-main-container .coalbaron-board .player-board-fixed-size .board-left-side .completed-orders {
         height: 223px;
+        max-width: 600px;
         display: flex;
         flex-flow: row;
         align-items: center;
-        padding: 0px 5px; }
+        padding: 0px 5px;
+        padding-right: 100px; }
         #coalbaron-main-container .coalbaron-board .player-board-fixed-size .board-left-side .completed-orders .coalbaron-card {
           margin: 2px 5px; }
         #coalbaron-main-container .coalbaron-board .player-board-fixed-size .board-left-side .completed-orders .flip-container {
@@ -148,6 +151,7 @@
           flex-shrink: 0; }
     #coalbaron-main-container .coalbaron-board .player-board-fixed-size .board-right-side {
       flex-grow: 1;
+      max-width: 800px;
       display: flex;
       flex-flow: column; }
       #coalbaron-main-container .coalbaron-board .player-board-fixed-size .board-right-side .pending-orders {
@@ -524,6 +528,9 @@
         #coalbaron-main-container #coalbaron-board .board-space#order_1 .coalbaron-card, #coalbaron-main-container #coalbaron-board .board-space#order_2 .coalbaron-card, #coalbaron-main-container #coalbaron-board .board-space#order_3 .coalbaron-card, #coalbaron-main-container #coalbaron-board .board-space#order_4 .coalbaron-card {
           width: 100px;
           height: 154px; }
+          #coalbaron-main-container #coalbaron-board .board-space#order_1 .coalbaron-card .coalbaron-card-inner, #coalbaron-main-container #coalbaron-board .board-space#order_2 .coalbaron-card .coalbaron-card-inner, #coalbaron-main-container #coalbaron-board .board-space#order_3 .coalbaron-card .coalbaron-card-inner, #coalbaron-main-container #coalbaron-board .board-space#order_4 .coalbaron-card .coalbaron-card-inner {
+            width: 100px;
+            height: 154px; }
       #coalbaron-main-container #coalbaron-board .board-space#order_1 {
         left: 1101px; }
       #coalbaron-main-container #coalbaron-board .board-space#order_2 {
@@ -789,223 +796,232 @@
 .coalbaron-card {
   width: 130px;
   height: 200px;
-  background-image: url("img/orders.jpg");
-  background-size: 900% 500%;
-  border: 1px solid black;
-  box-shadow: 1px 1px 5px black;
-  border-radius: 5px;
   position: relative; }
-  .coalbaron-card[data-type="1"] {
-    background-position-x: 12.5%;
-    background-position-y: 0%; }
-  .coalbaron-card[data-type="2"] {
-    background-position-x: 25%;
-    background-position-y: 0%; }
-  .coalbaron-card[data-type="3"] {
-    background-position-x: 37.5%;
-    background-position-y: 0%; }
-  .coalbaron-card[data-type="4"] {
-    background-position-x: 50%;
-    background-position-y: 0%; }
-  .coalbaron-card[data-type="5"] {
-    background-position-x: 62.5%;
-    background-position-y: 0%; }
-  .coalbaron-card[data-type="6"] {
-    background-position-x: 75%;
-    background-position-y: 0%; }
-  .coalbaron-card[data-type="7"] {
-    background-position-x: 87.5%;
-    background-position-y: 0%; }
-  .coalbaron-card[data-type="8"] {
-    background-position-x: 100%;
-    background-position-y: 0%; }
-  .coalbaron-card[data-type="9"] {
-    background-position-x: 0%;
-    background-position-y: 25%; }
-  .coalbaron-card[data-type="10"] {
-    background-position-x: 12.5%;
-    background-position-y: 25%; }
-  .coalbaron-card[data-type="11"] {
-    background-position-x: 25%;
-    background-position-y: 25%; }
-  .coalbaron-card[data-type="12"] {
-    background-position-x: 37.5%;
-    background-position-y: 25%; }
-  .coalbaron-card[data-type="13"] {
-    background-position-x: 50%;
-    background-position-y: 25%; }
-  .coalbaron-card[data-type="14"] {
-    background-position-x: 62.5%;
-    background-position-y: 25%; }
-  .coalbaron-card[data-type="15"] {
-    background-position-x: 75%;
-    background-position-y: 25%; }
-  .coalbaron-card[data-type="16"] {
-    background-position-x: 87.5%;
-    background-position-y: 25%; }
-  .coalbaron-card[data-type="17"] {
-    background-position-x: 100%;
-    background-position-y: 25%; }
-  .coalbaron-card[data-type="18"] {
-    background-position-x: 0%;
-    background-position-y: 50%; }
-  .coalbaron-card[data-type="19"] {
-    background-position-x: 12.5%;
-    background-position-y: 50%; }
-  .coalbaron-card[data-type="20"] {
-    background-position-x: 25%;
-    background-position-y: 50%; }
-  .coalbaron-card[data-type="21"] {
-    background-position-x: 37.5%;
-    background-position-y: 50%; }
-  .coalbaron-card[data-type="22"] {
-    background-position-x: 50%;
-    background-position-y: 50%; }
-  .coalbaron-card[data-type="23"] {
-    background-position-x: 62.5%;
-    background-position-y: 50%; }
-  .coalbaron-card[data-type="24"] {
-    background-position-x: 75%;
-    background-position-y: 50%; }
-  .coalbaron-card[data-type="25"] {
-    background-position-x: 87.5%;
-    background-position-y: 50%; }
-  .coalbaron-card[data-type="26"] {
-    background-position-x: 100%;
-    background-position-y: 50%; }
-  .coalbaron-card[data-type="27"] {
-    background-position-x: 0%;
-    background-position-y: 75%; }
-  .coalbaron-card[data-type="28"] {
-    background-position-x: 12.5%;
-    background-position-y: 75%; }
-  .coalbaron-card[data-type="29"] {
-    background-position-x: 25%;
-    background-position-y: 75%; }
-  .coalbaron-card[data-type="30"] {
-    background-position-x: 37.5%;
-    background-position-y: 75%; }
-  .coalbaron-card[data-type="31"] {
-    background-position-x: 50%;
-    background-position-y: 75%; }
-  .coalbaron-card[data-type="32"] {
-    background-position-x: 62.5%;
-    background-position-y: 75%; }
-  .coalbaron-card[data-type="33"] {
-    background-position-x: 75%;
-    background-position-y: 75%; }
-  .coalbaron-card[data-type="34"] {
-    background-position-x: 87.5%;
-    background-position-y: 75%; }
-  .coalbaron-card[data-type="35"] {
-    background-position-x: 100%;
-    background-position-y: 75%; }
-  .coalbaron-card[data-type="36"] {
-    background-position-x: 0%;
-    background-position-y: 100%; }
-  .coalbaron-card[data-type="37"] {
-    background-position-x: 12.5%;
-    background-position-y: 100%; }
-  .coalbaron-card[data-type="38"] {
-    background-position-x: 25%;
-    background-position-y: 100%; }
-  .coalbaron-card[data-type="39"] {
-    background-position-x: 37.5%;
-    background-position-y: 100%; }
-  .coalbaron-card[data-type="40"] {
-    background-position-x: 50%;
-    background-position-y: 100%; }
-  .coalbaron-card[data-type="41"] {
-    background-position-x: 62.5%;
-    background-position-y: 100%; }
-  .coalbaron-card[data-type="42"] {
-    background-position-x: 75%;
-    background-position-y: 100%; }
-  .coalbaron-card[data-type="43"] {
-    background-position-x: 87.5%;
-    background-position-y: 100%; }
-  .coalbaron-card[data-type="44"] {
-    background-position-x: 100%;
-    background-position-y: 100%; }
-  .coalbaron-card[data-type="45"] {
-    background-position-x: 0%;
-    background-position-y: 125%; }
-  .coalbaron-card[data-type="46"] {
-    background-position-x: 12.5%;
-    background-position-y: 125%; }
-  .coalbaron-card.selectable {
-    box-shadow: 0px 0px 7px 2px red;
-    cursor: pointer; }
-    .coalbaron-card.selectable:hover {
-      transform: scale(1.1); }
-  .coalbaron-card.selected, .coalbaron-card.selected:hover {
-    box-shadow: 0px 0px 7px 2px green;
-    transform: scale(1.1); }
-  .coalbaron-card[data-order]::before {
-    content: attr(data-order);
-    display: block;
+  .coalbaron-card:hover .coalbaron-card-inner {
+    z-index: 100; }
+  .coalbaron-card .coalbaron-card-inner {
     position: absolute;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: white;
-    border-radius: 50%;
+    top: 0;
+    left: 0;
+    width: 130px;
+    height: 200px;
+    flex-shrink: 0;
+    background-image: url("img/orders.jpg");
+    background-size: 900% 500%;
     border: 1px solid black;
-    top: 5px;
-    left: 45px;
-    font-size: 21px;
-    font-weight: bold; }
-  .coalbaron-card .coal-slot {
-    width: 42px;
-    height: 42px;
-    position: absolute; }
-    .coalbaron-card .coal-slot.selectable {
-      background: #ffd7001c;
-      box-shadow: 0px 0px 7px 6px gold;
+    box-shadow: 1px 1px 5px black;
+    border-radius: 5px; }
+    .coalbaron-card .coalbaron-card-inner[data-type="1"] {
+      background-position-x: 12.5%;
+      background-position-y: 0%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="2"] {
+      background-position-x: 25%;
+      background-position-y: 0%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="3"] {
+      background-position-x: 37.5%;
+      background-position-y: 0%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="4"] {
+      background-position-x: 50%;
+      background-position-y: 0%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="5"] {
+      background-position-x: 62.5%;
+      background-position-y: 0%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="6"] {
+      background-position-x: 75%;
+      background-position-y: 0%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="7"] {
+      background-position-x: 87.5%;
+      background-position-y: 0%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="8"] {
+      background-position-x: 100%;
+      background-position-y: 0%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="9"] {
+      background-position-x: 0%;
+      background-position-y: 25%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="10"] {
+      background-position-x: 12.5%;
+      background-position-y: 25%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="11"] {
+      background-position-x: 25%;
+      background-position-y: 25%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="12"] {
+      background-position-x: 37.5%;
+      background-position-y: 25%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="13"] {
+      background-position-x: 50%;
+      background-position-y: 25%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="14"] {
+      background-position-x: 62.5%;
+      background-position-y: 25%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="15"] {
+      background-position-x: 75%;
+      background-position-y: 25%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="16"] {
+      background-position-x: 87.5%;
+      background-position-y: 25%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="17"] {
+      background-position-x: 100%;
+      background-position-y: 25%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="18"] {
+      background-position-x: 0%;
+      background-position-y: 50%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="19"] {
+      background-position-x: 12.5%;
+      background-position-y: 50%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="20"] {
+      background-position-x: 25%;
+      background-position-y: 50%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="21"] {
+      background-position-x: 37.5%;
+      background-position-y: 50%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="22"] {
+      background-position-x: 50%;
+      background-position-y: 50%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="23"] {
+      background-position-x: 62.5%;
+      background-position-y: 50%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="24"] {
+      background-position-x: 75%;
+      background-position-y: 50%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="25"] {
+      background-position-x: 87.5%;
+      background-position-y: 50%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="26"] {
+      background-position-x: 100%;
+      background-position-y: 50%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="27"] {
+      background-position-x: 0%;
+      background-position-y: 75%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="28"] {
+      background-position-x: 12.5%;
+      background-position-y: 75%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="29"] {
+      background-position-x: 25%;
+      background-position-y: 75%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="30"] {
+      background-position-x: 37.5%;
+      background-position-y: 75%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="31"] {
+      background-position-x: 50%;
+      background-position-y: 75%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="32"] {
+      background-position-x: 62.5%;
+      background-position-y: 75%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="33"] {
+      background-position-x: 75%;
+      background-position-y: 75%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="34"] {
+      background-position-x: 87.5%;
+      background-position-y: 75%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="35"] {
+      background-position-x: 100%;
+      background-position-y: 75%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="36"] {
+      background-position-x: 0%;
+      background-position-y: 100%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="37"] {
+      background-position-x: 12.5%;
+      background-position-y: 100%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="38"] {
+      background-position-x: 25%;
+      background-position-y: 100%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="39"] {
+      background-position-x: 37.5%;
+      background-position-y: 100%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="40"] {
+      background-position-x: 50%;
+      background-position-y: 100%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="41"] {
+      background-position-x: 62.5%;
+      background-position-y: 100%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="42"] {
+      background-position-x: 75%;
+      background-position-y: 100%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="43"] {
+      background-position-x: 87.5%;
+      background-position-y: 100%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="44"] {
+      background-position-x: 100%;
+      background-position-y: 100%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="45"] {
+      background-position-x: 0%;
+      background-position-y: 125%; }
+    .coalbaron-card .coalbaron-card-inner[data-type="46"] {
+      background-position-x: 12.5%;
+      background-position-y: 125%; }
+    .coalbaron-card .coalbaron-card-inner.selectable {
+      box-shadow: 0px 0px 7px 2px red;
       cursor: pointer; }
-      .coalbaron-card .coal-slot.selectable:hover {
-        background: #ffd70033; }
-    .coalbaron-card .coal-slot .coalbaron-meeple ~ .coalbaron-meeple {
-      margin-top: -122%;
-      margin-left: 1%; }
-  .coalbaron-card[data-n="1"] .coal-slot:nth-child(1) {
-    top: 88px;
-    left: 42px; }
-  .coalbaron-card[data-n="2"] .coal-slot:nth-child(1) {
-    top: 88px;
-    left: 21px; }
-  .coalbaron-card[data-n="2"] .coal-slot:nth-child(2) {
-    top: 88px;
-    left: 67px; }
-  .coalbaron-card[data-n="3"] .coal-slot {
-    width: 36px;
-    height: 36px; }
-    .coalbaron-card[data-n="3"] .coal-slot:nth-child(1) {
-      top: 72px;
-      left: 46px; }
-    .coalbaron-card[data-n="3"] .coal-slot:nth-child(2) {
-      top: 107px;
-      left: 30px; }
-    .coalbaron-card[data-n="3"] .coal-slot:nth-child(3) {
-      top: 107px;
-      left: 66px; }
-  .coalbaron-card[data-n="4"] .coal-slot {
-    width: 36px;
-    height: 36px; }
-    .coalbaron-card[data-n="4"] .coal-slot:nth-child(1) {
-      top: 72px;
-      left: 30px; }
-    .coalbaron-card[data-n="4"] .coal-slot:nth-child(2) {
-      top: 72px;
-      left: 66px; }
-    .coalbaron-card[data-n="4"] .coal-slot:nth-child(3) {
-      top: 107px;
-      left: 30px; }
-    .coalbaron-card[data-n="4"] .coal-slot:nth-child(4) {
-      top: 107px;
-      left: 66px; }
+      .coalbaron-card .coalbaron-card-inner.selectable:hover {
+        transform: scale(1.1); }
+    .coalbaron-card .coalbaron-card-inner.selected, .coalbaron-card .coalbaron-card-inner.selected:hover {
+      box-shadow: 0px 0px 7px 2px green;
+      transform: scale(1.1); }
+    .coalbaron-card .coalbaron-card-inner[data-order]::before {
+      content: attr(data-order);
+      display: block;
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: white;
+      border-radius: 50%;
+      border: 1px solid black;
+      top: 5px;
+      left: 45px;
+      font-size: 21px;
+      font-weight: bold; }
+    .coalbaron-card .coalbaron-card-inner .coal-slot {
+      width: 42px;
+      height: 42px;
+      position: absolute; }
+      .coalbaron-card .coalbaron-card-inner .coal-slot.selectable {
+        background: #ffd7001c;
+        box-shadow: 0px 0px 7px 6px gold;
+        cursor: pointer; }
+        .coalbaron-card .coalbaron-card-inner .coal-slot.selectable:hover {
+          background: #ffd70033; }
+      .coalbaron-card .coalbaron-card-inner .coal-slot .coalbaron-meeple ~ .coalbaron-meeple {
+        margin-top: -122%;
+        margin-left: 1%; }
+    .coalbaron-card .coalbaron-card-inner[data-n="1"] .coal-slot:nth-child(1) {
+      top: 88px;
+      left: 42px; }
+    .coalbaron-card .coalbaron-card-inner[data-n="2"] .coal-slot:nth-child(1) {
+      top: 88px;
+      left: 21px; }
+    .coalbaron-card .coalbaron-card-inner[data-n="2"] .coal-slot:nth-child(2) {
+      top: 88px;
+      left: 67px; }
+    .coalbaron-card .coalbaron-card-inner[data-n="3"] .coal-slot {
+      width: 36px;
+      height: 36px; }
+      .coalbaron-card .coalbaron-card-inner[data-n="3"] .coal-slot:nth-child(1) {
+        top: 72px;
+        left: 46px; }
+      .coalbaron-card .coalbaron-card-inner[data-n="3"] .coal-slot:nth-child(2) {
+        top: 107px;
+        left: 30px; }
+      .coalbaron-card .coalbaron-card-inner[data-n="3"] .coal-slot:nth-child(3) {
+        top: 107px;
+        left: 66px; }
+    .coalbaron-card .coalbaron-card-inner[data-n="4"] .coal-slot {
+      width: 36px;
+      height: 36px; }
+      .coalbaron-card .coalbaron-card-inner[data-n="4"] .coal-slot:nth-child(1) {
+        top: 72px;
+        left: 30px; }
+      .coalbaron-card .coalbaron-card-inner[data-n="4"] .coal-slot:nth-child(2) {
+        top: 72px;
+        left: 66px; }
+      .coalbaron-card .coalbaron-card-inner[data-n="4"] .coal-slot:nth-child(3) {
+        top: 107px;
+        left: 30px; }
+      .coalbaron-card .coalbaron-card-inner[data-n="4"] .coal-slot:nth-child(4) {
+        top: 107px;
+        left: 66px; }
 
 #player_board_config {
   position: relative;

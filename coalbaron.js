@@ -287,9 +287,12 @@ define([
 
         $(`elevator-${player.id}`).dataset.y = player.cageLevel;
 
-        if (this.gamedatas.optionCardsVisibility == 0) {
+        if (this.gamedatas.optionCardsVisibility == 0 && pId != this.player_id) {
           for (let i = 0; i < player.ordersDone; i++) {
-            $(`completed-orders-${player.id}`).insertAdjacentHTML(`beforeend`, `<div class="coalbaron-card back-card"></div>`);
+            $(`completed-orders-${player.id}`).insertAdjacentHTML(
+              `beforeend`,
+              `<div class="coalbaron-card back-card"><div class="coalbaron-card-inner"></div></div>`
+            );
           }
         }
       });
@@ -365,7 +368,10 @@ define([
         else {
           if (this.gamedatas.optionCardsVisibility == 0) {
             for (let i = 0; i < player.ordersDone; i++) {
-              $(`completed-orders-${player.id}`).insertAdjacentHTML(`beforeend`, `<div class="coalbaron-card back-card"></div>`);
+              $(`completed-orders-${player.id}`).insertAdjacentHTML(
+                `beforeend`,
+                `<div class="coalbaron-card back-card"><div class="coalbaron-card-inner"></div></div>`
+              );
             }
           }
         }
@@ -870,8 +876,10 @@ define([
         slots += `<div class='coal-slot' id='coal-slot-${card.id}-${i}'></div>`;
       }
 
-      return `<div class="coalbaron-card" id="card-${card.id}" data-id="${card.id}" data-type="${card.type}" data-n="${nCoals}">
-        ${slots}
+      return `<div class="coalbaron-card" id="card-${card.id}" data-id="${card.id}">
+        <div class="coalbaron-card-inner" data-id="${card.id}" data-type="${card.type}" data-n="${nCoals}">
+          ${slots}
+        </div>
       </div>`;
     },
 
@@ -1145,7 +1153,7 @@ define([
         let oCard = $(`card-${n.args.cardId}`);
         this.slide(oCard, `completed-orders-${n.args.player_id}`).then(() => {
           if (this.player_id != n.args.player_id && this.gamedatas.optionCardsVisibility == 0) {
-            this.flipAndReplace(oCard, `<div class="coalbaron-card back-card"></div>`);
+            this.flipAndReplace(oCard, `<div class="coalbaron-card back-card"><div class="coalbaron-card-inner"></div></div>`);
           }
 
           this.notifqueue.setSynchronousDuration(100);
@@ -1181,7 +1189,7 @@ define([
           if (pId == this.player_id) return;
 
           let oCard = $(`card-${card.id}`);
-          this.flipAndReplace(oCard, `<div class="coalbaron-card back-card"></div>`);
+          this.flipAndReplace(oCard, `<div class="coalbaron-card back-card"><div class="coalbaron-card-inner"></div></div>`);
         });
       }
 

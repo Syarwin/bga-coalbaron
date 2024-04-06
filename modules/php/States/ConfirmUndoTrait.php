@@ -35,7 +35,8 @@ trait ConfirmUndoTrait
 
     public function stConfirmTurn()
     {
-        if (Globals::getChoices() == 0) {
+        $player = Players::getActive();
+        if (Globals::getChoices() == 0 || $player->getPref(OPTION_CONFIRM) == OPTION_CONFIRM_DISABLED) {
             $this->actConfirmTurn(true);
         }
     }
@@ -47,7 +48,7 @@ trait ConfirmUndoTrait
         }
         Tiles::refillEmptyFactorySpaces(true);
         Cards::refillOtherOrderSpaces(null);
-        
+
         $this->gamestate->nextState('confirm');
     }
 

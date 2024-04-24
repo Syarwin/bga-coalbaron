@@ -51,7 +51,7 @@ class QueryBuilder extends \APP_DbObject
         $this->multipleInsert(array_keys($fields), $overwriteIfExists)->values([
             array_values($fields),
         ]);
-        return self::DbGetLastId();
+        return $this->DbGetLastId();
     }
 
     /*
@@ -73,7 +73,7 @@ class QueryBuilder extends \APP_DbObject
         // Fetch starting index if not provided
         $startingId = null;
         if ($this->insertPrimaryIndex === false) {
-            $startingId = (int) self::getUniqueValueFromDB(
+            $startingId = (int) $this->getUniqueValueFromDB(
                 "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = '{$this->table}';"
             );
         }
@@ -97,7 +97,7 @@ class QueryBuilder extends \APP_DbObject
         }
 
         $this->sql .= implode(',', $vals);
-        self::DbQuery($this->sql);
+        $this->DbQuery($this->sql);
         if ($this->log) {
             Log::addEntry([
                 'table' => $this->table,
@@ -180,7 +180,7 @@ class QueryBuilder extends \APP_DbObject
             }
 
             $this->assembleQueryClauses();
-            $objList = self::getObjectListFromDB($this->sql);
+            $objList = $this->getObjectListFromDB($this->sql);
             Log::addEntry([
                 'table' => $this->table,
                 'primary' => $this->primary,
@@ -191,8 +191,8 @@ class QueryBuilder extends \APP_DbObject
         }
 
         $this->assembleQueryClauses();
-        self::DbQuery($this->sql);
-        return self::DbAffectedRow();
+        $this->DbQuery($this->sql);
+        return $this->DbAffectedRow();
     }
 
     /*********************************
@@ -233,7 +233,7 @@ class QueryBuilder extends \APP_DbObject
         if ($debug) {
             throw new \feException($this->sql);
         }
-        $res = self::getObjectListFromDB($this->sql);
+        $res = $this->getObjectListFromDB($this->sql);
         $oRes = [];
         foreach ($res as $row) {
             $id = $row['result_associative_index'];
@@ -278,22 +278,22 @@ class QueryBuilder extends \APP_DbObject
         $field = is_null($field) ? '*' : "`$field`";
         $this->sql = "SELECT $func($field) FROM `$this->table`";
         $this->assembleQueryClauses();
-        return (int) self::getUniqueValueFromDB($this->sql);
+        return (int) $this->getUniqueValueFromDB($this->sql);
     }
 
     public function count($field = null)
     {
-        return self::func('COUNT', $field);
+        return $this->func('COUNT', $field);
     }
 
     public function min($field)
     {
-        return self::func('MIN', $field);
+        return $this->func('MIN', $field);
     }
 
     public function max($field)
     {
-        return self::func('MAX', $field);
+        return $this->func('MAX', $field);
     }
 
     /****************************
@@ -348,7 +348,7 @@ class QueryBuilder extends \APP_DbObject
         }
 
         if (!empty($arg)) {
-            self::computeWhereClause($arg);
+            $this->computeWhereClause($arg);
         }
     }
 

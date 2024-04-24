@@ -21,12 +21,12 @@ use COAL\Managers\Players;
 
 class Log extends \APP_DbObject
 {
-    public function enable()
+    public static function enable()
     {
         Game::get()->setGameStateValue('logging', 1);
     }
 
-    public function disable()
+    public static function disable()
     {
         Game::get()->setGameStateValue('logging', 0);
     }
@@ -35,7 +35,7 @@ class Log extends \APP_DbObject
      * Add an entry
      */
     static $moveId = null;
-    public function addEntry($entry)
+    public static function addEntry($entry)
     {
         if (isset($entry['affected'])) {
             $entry['affected'] = \json_encode($entry['affected']);
@@ -56,20 +56,20 @@ class Log extends \APP_DbObject
     }
 
     // Create a new checkpoint : anything before that checkpoint cannot be undo (unless in studio)
-    public function checkpoint($state)
+    public static function checkpoint($state)
     {
         self::clearUndoableStepNotifications();
         return self::addEntry(['type' => 'checkpoint', 'affected' => $state]);
     }
 
     // Create a new step to allow undo step-by-step
-    public function step($state)
+    public static function step($state)
     {
         return self::addEntry(['type' => 'step', 'affected' => $state]);
     }
 
     // Find the last checkpoint
-    public function getLastCheckpoint($includeEngineStarts = false)
+    public static function getLastCheckpoint($includeEngineStarts = false)
     {
         $query = new QueryBuilder('log', null, 'id');
         $query = $query->select(['id']);
@@ -89,7 +89,7 @@ class Log extends \APP_DbObject
     }
 
     // Find all the moments available to undo
-    public function getUndoableSteps($onlyIds = true)
+    public static function getUndoableSteps($onlyIds = true)
     {
         $checkpoint = self::getLastCheckpoint();
         $query = new QueryBuilder('log', null, 'id');
@@ -105,7 +105,7 @@ class Log extends \APP_DbObject
     /**
      * Revert all the way to the last checkpoint or the last start of turn
      */
-    public function undoTurn()
+    public static function undoTurn()
     {
         $checkpoint = static::getLastCheckpoint(true);
         return self::revertTo($checkpoint);
@@ -114,7 +114,7 @@ class Log extends \APP_DbObject
     /**
      * Revert to a given step (checking first that it exists)
      */
-    public function undoToStep($stepId)
+    public static function undoToStep($stepId)
     {
         $query = new QueryBuilder('log', null, 'id');
         $step = $query
@@ -131,7 +131,7 @@ class Log extends \APP_DbObject
     /**
      * Revert all the logged changes up to an id
      */
-    public function revertTo($id)
+    public static function revertTo($id)
     {
         $query = new QueryBuilder('log', null, 'id');
         $log = $query
@@ -226,7 +226,7 @@ class Log extends \APP_DbObject
     /**
      * getCancelMoveIds : get all cancelled notifs IDs from BGA gamelog, used for styling the notifications on page reload
      */
-    protected function extractNotifIds($notifications)
+    protected static function extractNotifIds($notifications)
     {
         $notificationUIds = [];
         foreach ($notifications as $packet) {
@@ -241,7 +241,7 @@ class Log extends \APP_DbObject
     /**
      * clearUndoableStepNotifications : extract and remove all notifications of type 'newUndoableStep' in the gamelog
      */
-    public function clearUndoableStepNotifications($clearAll = false)
+    public static function clearUndoableStepNotifications($clearAll = false)
     {
         // Get move ids corresponding to last step
         if ($clearAll) {

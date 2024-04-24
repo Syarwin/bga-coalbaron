@@ -124,7 +124,7 @@ trait WorkerAtMiningTrait
      */
     function prepareMoveCoalsToCage($player, $coalIdArray)
     {
-        self::trace("prepareMoveCoalsToCage()...");
+        Game::get()->trace("prepareMoveCoalsToCage()...");
         $coalsInCage = Meeples::getPlayerCageCoals($player->getId());
         if (count($coalIdArray) > 1) {
             throw new \BgaVisibleSystemException("Only 1 coal cube at a time can be moved to the pit cage");
@@ -255,7 +255,7 @@ trait WorkerAtMiningTrait
      */
     static function getPossiblesMovesForPitCage($currentCageLevel)
     {
-        self::trace("getPossiblesMovesForPitCage($currentCageLevel)...");
+        Game::get()->trace("getPossiblesMovesForPitCage($currentCageLevel)...");
         $cageLevelsPossibles = range(LEVEL_SURFACE, LEVEL_TUNNEL_MAX);
         Utils::filter($cageLevelsPossibles, fn ($m) => $m != $currentCageLevel);
         return $cageLevelsPossibles;
@@ -346,8 +346,8 @@ trait WorkerAtMiningTrait
             return false;
         }
         $row = null;
-        $test = SPACE_PIT_TILE;
-        if (preg_match("/^${test}_(?P<row>\d+)_(?P<col>[-]*\d+)$/", $location, $matches) == 1) {
+        $test = SPACE_PIT_TILE."_";
+        if (preg_match("/^$test(?P<row>\d+)_(?P<col>[-]*\d+)$/", $location, $matches) == 1) {
             $row = $matches['row'];
         } else if (preg_match("/^" . COAL_LOCATION_TILE . "(?P<tile>\d+)$/", $location, $matches) == 1) {
             $tileId = $matches['tile'];

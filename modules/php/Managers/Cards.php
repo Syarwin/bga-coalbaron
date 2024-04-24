@@ -286,7 +286,7 @@ class Cards extends \COAL\Helpers\Pieces
     self::shuffle(CARD_LOCATION_DECK);
   }
 
-  public function getCards()
+  public static function getCards()
   {
     $f = function ($t) {
       return [

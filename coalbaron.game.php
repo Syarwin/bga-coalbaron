@@ -83,7 +83,7 @@ class CoalBaron extends Table
    */
   public function getAllDatas()
   {
-    $pId = self::getCurrentPId();
+    $pId = $this->getCurrentPId();
     $nbPlayers = Players::count();
     return [
       'prefs' => Preferences::getUiData($pId),
@@ -174,14 +174,14 @@ class CoalBaron extends Table
   /////////////////////////////////////////////////////////////
 
   // Exposing protected method getCurrentPlayerId
-  public static function getCurrentPId()
+  public function getCurrentPId()
   {
-    return self::getCurrentPlayerId();
+    return $this->getCurrentPlayerId();
   }
 
   // Exposing protected method translation
-  public static function translate($text)
+  public function translate($text)
   {
-    return self::_($text);
+    return $this->_($text);
   }
 }

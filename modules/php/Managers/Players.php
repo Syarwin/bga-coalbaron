@@ -22,7 +22,7 @@ class Players extends \COAL\Helpers\DB_Manager
     return new \COAL\Models\Player($row);
   }
 
-  public function setupNewGame($players, $options)
+  public static function setupNewGame($players, $options)
   {
     // Create players
     $gameInfos = Game::get()->getGameinfos();
@@ -51,17 +51,17 @@ class Players extends \COAL\Helpers\DB_Manager
     return 12 - $nbPlayers;
   }
 
-  public function getActiveId()
+  public static function getActiveId()
   {
     return Game::get()->getActivePlayerId();
   }
 
-  public function getCurrentId()
+  public static function getCurrentId()
   {
     return (int) Game::get()->getCurrentPId();
   }
 
-  public function getAll()
+  public static function getAll()
   {
     return self::DB()->get(false);
   }
@@ -69,7 +69,7 @@ class Players extends \COAL\Helpers\DB_Manager
   /*
    * get : returns the Player object for the given player ID
    */
-  public function get($pId = null)
+  public static function get($pId = null)
   {
     $pId = $pId ?: self::getActiveId();
     return self::DB()
@@ -87,7 +87,7 @@ class Players extends \COAL\Helpers\DB_Manager
     return self::get(self::getCurrentId());
   }
 
-  public function getNextId($player = null)
+  public static function getNextId($player = null)
   {
     $player = $player ?? Players::getCurrent();
     $pId = is_int($player) ? $player : $player->getId();
@@ -106,7 +106,7 @@ class Players extends \COAL\Helpers\DB_Manager
   /*
    * getUiData : get all ui data of all players
    */
-  public function getUiData($pId)
+  public static function getUiData($pId)
   {
     return self::getAll()
       ->map(function ($player) use ($pId) {

@@ -288,7 +288,7 @@ class Tiles extends \COAL\Helpers\Pieces
     return $lightTypes;
   }
 
-  public function getTiles()
+  public static function getTiles()
   {
     $f = function ($t) {
       return [

@@ -39,10 +39,10 @@ trait EndGameScoringTrait
       $moneyPoints = ($money - $moneyExcess) / 5 ;
       if($moneyPoints != 0){
         $player->addPoints($moneyPoints);
-        //update tiebreaker.
-        $player->setScoreAux($moneyExcess);
         Notifications::endGameScoringMoney($player, $money, $moneyPoints);
       }
+      //update tiebreaker.
+      $player->setScoreAux($moneyExcess);
 
       /*
         RULE 2

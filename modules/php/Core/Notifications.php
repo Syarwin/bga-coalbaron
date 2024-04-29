@@ -61,13 +61,16 @@ class Notifications
   public static function placeWorkersInSpace($player, $toLocation, $workerIds)
   {
     $spaceName = $toLocation;
-    $prefix = explode('_', $spaceName);
-    if ($prefix == 'factory') {
-      $spaceName = clienttranslate('factory');
-    }
-    // TODO
+    $prefix = explode('_', $spaceName)[0];
+    $msgs = [
+      'factory' => clienttranslate('${player_name} places ${n} workers to the minecrafts factory'),
+      'mining' => clienttranslate('${player_name} places ${n} workers to go mining'),
+      'delivery' => clienttranslate('${player_name} places ${n} workers to deliver order(s)'),
+      'bank' => clienttranslate('${player_name} places ${n} workers to gain money'),
+      'order' => clienttranslate('${player_name} places ${n} workers to take a new order card'),
+    ];
 
-    self::notifyAll('placeWorkers', clienttranslate('${player_name} places ${n} workers in ${space_name}'), [
+    self::notifyAll('placeWorkers', $msgs[$prefix], [
       'player' => $player,
       'space' => $toLocation,
       'n' => count($workerIds),
@@ -78,7 +81,7 @@ class Notifications
   }
   public static function moveToCanteen($space, $nbWorkers)
   {
-    self::notifyAll('moveToCanteen', clienttranslate('All workers in space ${space} are moved to the canteen'), [
+    self::notifyAll('moveToCanteen', clienttranslate('All workers in corresponding space are moved to the canteen'), [
       'n' => $nbWorkers,
       'space' => $space,
     ]);

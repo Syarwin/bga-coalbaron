@@ -476,7 +476,7 @@ define([
 
     gainPayMoney(pId, n, targetSource = null) {
       if (this.isFastMode()) {
-        this._crystalCounters[pId].incValue(n);
+        this._counters[pId]['money'].incValue(n);
         return Promise.resolve();
       }
 
@@ -1170,6 +1170,20 @@ define([
 
     notif_startShiftScoring(n) {
       debug('Notif: reveal hidden cards for scoring', n);
+      if (this.isFastMode()) {
+        n.args.cards.map((card, i) => {
+          if ($(`card-${card.id}`) || this.gamedatas.optionCardsVisibility == 1) return;
+
+          let pId = card.pId;
+          let oCard = $(`completed-orders-${pId}`).querySelector('.coalbaron-card.back-card:not(.revealing)');
+          oCard.classList.add('revealing');
+          this.flipAndReplace(oCard, this.tplCard(card));
+        });
+        this._scoresheetModal.show();
+        $(`scoring-shift-${n.args.shift}`).classList.add('active');
+        return;
+      }
+
       Promise.all(
         n.args.cards.map((card, i) => {
           if ($(`card-${card.id}`) || this.gamedatas.optionCardsVisibility == 1) return;

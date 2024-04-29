@@ -1036,19 +1036,23 @@ define([
       let allLocations = [];
       Object.keys(args.movableCoals.solo).forEach((meepleId) => {
         let locations = args.movableCoals.solo[meepleId];
+        let nonDuoLocation = [];
         if (locations.length == 0) return;
         locations.forEach((loc) => {
           if (loc == 'duo') {
             movableToDuo.push(meepleId);
+          } else {
+            nonDuoLocation.push(loc);
           }
 
           if (allLocations[loc]) allLocations[loc].push(meepleId);
           else allLocations[loc] = [meepleId];
         });
+        if (nonDuoLocation.length == 0) return;
 
         this.onClick(`meeple-${meepleId}`, () => {
-          if (locations.length == 1) {
-            this.takeAction('actMoveCoals', { spaceId: locations[0], coalId: meepleId });
+          if (nonDuoLocation.length == 1) {
+            this.takeAction('actMoveCoals', { spaceId: nonDuoLocation[0], coalId: meepleId });
           } else {
             this.clientState('miningStepsChooseTarget', _('Where do you want to move that coal?'), {
               meepleId,

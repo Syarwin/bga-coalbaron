@@ -847,7 +847,10 @@ define([
         return card.id;
       });
       document.querySelectorAll('.coalbaron-card[id^="card-"]').forEach((oCard) => {
-        if (!cardIds.includes(parseInt(oCard.getAttribute('data-id')))) {
+        if (
+          !cardIds.includes(parseInt(oCard.getAttribute('data-id'))) &&
+          !oCard.parentNode.classList.contains('completed-orders')
+        ) {
           this.destroy(oCard);
         }
       });

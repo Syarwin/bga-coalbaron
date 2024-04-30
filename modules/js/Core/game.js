@@ -115,6 +115,7 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
      * Make an AJAX call with automatic lock
      */
     takeAction(action, data, check = true, checkLock = true) {
+      debug("takeAction",action, data, check, checkLock);
       if (check && !this.checkAction(action)) return false;
       if (!check && checkLock && !this.checkLock()) return false;
 

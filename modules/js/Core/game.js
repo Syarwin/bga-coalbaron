@@ -115,7 +115,7 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
      * Make an AJAX call with automatic lock
      */
     takeAction(action, data, check = true, checkLock = true) {
-      debug("takeAction",action, data, check, checkLock);
+      debug('takeAction', action, data, check, checkLock);
       if (check && !this.checkAction(action)) return false;
       if (!check && checkLock && !this.checkLock()) return false;
 
@@ -179,8 +179,7 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
       dojo.empty('restartAction');
     },
 
-    clearPossible() {
-      this.removeAllActionButtons();
+    clearPreAnimation() {
       this._connections.forEach(dojo.disconnect);
       this._connections = [];
       this._selectableNodes.forEach((node) => {
@@ -190,6 +189,11 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
       dojo.query('.unselectable').removeClass('unselectable');
       dojo.query('.selectable').removeClass('selectable');
       dojo.query('.selected').removeClass('selected');
+    },
+
+    clearPossible() {
+      this.clearPreAnimation();
+      this.removeAllActionButtons();
     },
 
     /**
@@ -234,6 +238,7 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
             $('pagemaintitletext').innerHTML = msg;
             this.removeAllActionButtons();
           }
+          this.clearPreAnimation();
           let timing = this[functionName](args);
           if (timing === undefined) {
             if (notif[1] === undefined) {

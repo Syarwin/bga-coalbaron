@@ -67,6 +67,7 @@ define(['dojo', 'dojo/_base/declare', g_gamethemeurl + 'modules/js/vendor/nouisl
         this.instantaneousMode = false;
         dojo.style('leftright_page_wrapper', 'display', 'block');
         dojo.style('loader_mask', 'display', 'none');
+        this.updateLayout();
       }
     },
 

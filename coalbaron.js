@@ -586,14 +586,43 @@ define([
       let o = this.place('tplTile', tile, location == null ? this.getTileContainer(tile) : location);
       let tooltipDesc = this.getTileTooltip(tile);
       if (tooltipDesc != null) {
-        this.addCustomTooltip(o.id, tooltipDesc.map((t) => this.formatString(t)).join('<br/>'));
+        this.addCustomTooltip(o.id, tooltipDesc);
       }
 
       return o;
     },
 
     getTileTooltip(tile) {
-      return null;
+      let type = tile.type.charAt(0).toLowerCase() + tile.type.substr(1);
+      let infos = {
+        black_coal: {
+          cost: 4,
+          names: [_('1 black piece'), _('2 black pieces')],
+        },
+        yellow_coal: {
+          cost: 1,
+          names: [_('1 yellow piece'), _('2 yellow pieces')],
+        },
+        grey_coal: {
+          cost: 3,
+          names: [_('1 grey piece'), _('2 grey pieces')],
+        },
+        brown_coal: {
+          cost: 2,
+          names: [_('1 brown piece'), _('2 brown pieces')],
+        },
+      };
+
+      let info = infos[tile.color];
+      let n = type % 2 == 0 ? 2 : 1;
+
+      return `<div class='tile-tooltip'>
+        <h3>Minecart tile:</h3>
+        <ul>
+          <li>Coal: ${info.names[n - 1]}</li>
+          <li>Cost: ${n * info.cost}$</li>
+        </ul>
+      </div>`;
     },
 
     tplTile(tile) {
@@ -862,14 +891,35 @@ define([
       let o = this.place('tplCard', card, location == null ? this.getCardContainer(card) : location);
       let tooltipDesc = this.getCardTooltip(card);
       if (tooltipDesc != null) {
-        this.addCustomTooltip(o.id, tooltipDesc.map((t) => this.formatString(t)).join('<br/>'));
+        this.addCustomTooltip(o.id, tooltipDesc);
       }
 
       return o;
     },
 
     getCardTooltip(card) {
-      return null;
+      let n = card.coals.length;
+      let types = {
+        black_coal: _('black coal(s)'),
+        yellow_coal: _('yellow coal(s)'),
+        grey_coal: _('grey coal(s)'),
+        brown_coal: _('brown coal(s)'),
+      };
+      let vehicles = {
+        barrow: _('Barrow'),
+        carriage: _('Carriage'),
+        motorcar: _('Motorcar'),
+        engine: _('Engine'),
+      };
+
+      return `<div class='order-tooltip'>
+        <h3>Order card:</h3>
+        <ul>
+          <li>Order: ${n} ${types[card.coals[0]]}</li>
+          <li>Vehicle: ${vehicles[card.transport]}</li>
+          <li>Reward: ${card.points} <i class='fa fa-star'></i></li>
+        </ul>
+      </div>`;
     },
 
     tplCard(card) {

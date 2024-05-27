@@ -166,3 +166,25 @@
         }
     }
 }
+
+
+.order-tooltip {
+    padding:10px;
+
+    h3 {
+        margin-top:0px;
+        font-size:19px;
+        text-decoration: underline;
+        margin-bottom:5px;
+    }
+
+    ul {
+        padding-left:20px;
+
+        li {
+            list-style-type: circle;
+            font-size:16px;
+            margin:5px 0px;
+        }
+    }
+}

@@ -57,3 +57,26 @@
         font-weight: bold;
     }
 }
+
+
+
+.tile-tooltip {
+    padding:10px;
+
+    h3 {
+        font-size:19px;
+        text-decoration: underline;
+        margin-bottom:5px;
+        margin-top:0px;
+    }
+
+    ul {
+        padding-left:20px;
+
+        li {
+            list-style-type: circle;
+            font-size:16px;
+            margin:5px 0px;
+        }
+    }
+}

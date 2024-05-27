@@ -695,6 +695,20 @@
     font-size: 21px;
     font-weight: bold; }
 
+.tile-tooltip {
+  padding: 10px; }
+  .tile-tooltip h3 {
+    font-size: 19px;
+    text-decoration: underline;
+    margin-bottom: 5px;
+    margin-top: 0px; }
+  .tile-tooltip ul {
+    padding-left: 20px; }
+    .tile-tooltip ul li {
+      list-style-type: circle;
+      font-size: 16px;
+      margin: 5px 0px; }
+
 .coalbaron-meeple {
   width: 20px;
   height: 20px;
@@ -1023,6 +1037,20 @@
       .coalbaron-card .coalbaron-card-inner[data-n="4"] .coal-slot:nth-child(4) {
         top: 107px;
         left: 66px; }
+
+.order-tooltip {
+  padding: 10px; }
+  .order-tooltip h3 {
+    margin-top: 0px;
+    font-size: 19px;
+    text-decoration: underline;
+    margin-bottom: 5px; }
+  .order-tooltip ul {
+    padding-left: 20px; }
+    .order-tooltip ul li {
+      list-style-type: circle;
+      font-size: 16px;
+      margin: 5px 0px; }
 
 #player_board_config {
   position: relative;

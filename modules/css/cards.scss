@@ -100,6 +100,19 @@
                 }
             }
 
+            .coalbaron-meeple {
+                position:relative;
+                z-index: 10;
+                background-color: rgba(16, 201, 16, 0.2);
+                box-shadow: 0px 0px 6px 3px rgba(10, 243, 10, 0.15);
+            }
+
+            &:not(:empty){
+                background: #16b016;
+                border-radius: 4px;
+                box-shadow: 0px 0px 7px 4px #16b016;
+            }
+
             .coalbaron-meeple ~ .coalbaron-meeple {
                 margin-top: -122%;
                 margin-left: 1%;

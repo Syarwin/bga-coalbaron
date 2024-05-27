@@ -620,7 +620,7 @@ define([
         <h3>Minecart tile:</h3>
         <ul>
           <li>Coal: ${info.names[n - 1]}</li>
-          <li>Cost: ${n * info.cost}$</li>
+          <li>Cost: ${n * info.cost} ${_('Franc(s)')}</li>
         </ul>
       </div>`;
     },

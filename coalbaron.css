@@ -722,7 +722,10 @@
     border-radius: 0;
     box-shadow: none;
     width: 40px;
-    height: 40px; }
+    height: 40px;
+    border-radius: 7px;
+    background-color: #ffffff7d;
+    box-shadow: 0px 0px 7px 3px #ffffff9e; }
     .coalbaron-meeple.icon-yellow_coal.icon-brown_coal, .coalbaron-meeple.icon-brown_coal.icon-brown_coal, .coalbaron-meeple.icon-grey_coal.icon-brown_coal, .coalbaron-meeple.icon-black_coal.icon-brown_coal {
       background-position-x: 33.3333%; }
     .coalbaron-meeple.icon-yellow_coal.icon-grey_coal, .coalbaron-meeple.icon-brown_coal.icon-grey_coal, .coalbaron-meeple.icon-grey_coal.icon-grey_coal, .coalbaron-meeple.icon-black_coal.icon-grey_coal {

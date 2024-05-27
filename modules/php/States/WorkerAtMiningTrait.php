@@ -332,7 +332,7 @@ trait WorkerAtMiningTrait
      */
     static function canMoveToPitCage($coal, $player, $nbCoalsInCage, $throwErrors = false)
     {
-        if ($nbCoalsInCage > SPACE_PIT_CAGE_MAX) {
+        if ($nbCoalsInCage >= SPACE_PIT_CAGE_MAX) {
             if ($throwErrors) throw new \BgaVisibleSystemException("The pit cage is full");
             return false;
         }

@@ -617,7 +617,7 @@ define([
       let n = type % 2 == 0 ? 2 : 1;
 
       return `<div class='tile-tooltip'>
-        <h3>Minecart tile:</h3>
+        <h3>Lorry tile:</h3>
         <ul>
           <li>Coal: ${info.names[n - 1]}</li>
           <li>Cost: ${n * info.cost} ${_('Franc(s)')}</li>
@@ -911,11 +911,13 @@ define([
         motorcar: _('Motorcar'),
         engine: _('Engine'),
       };
+      let order = `${n} ${types[card.coals[0]]}`;
+      if (n > 1 && card.coals[0] != card.coals[1]) order = _('one coal of each color');
 
       return `<div class='order-tooltip'>
         <h3>Order card:</h3>
         <ul>
-          <li>Order: ${n} ${types[card.coals[0]]}</li>
+          <li>Order: ${order}</li>
           <li>Vehicle: ${vehicles[card.transport]}</li>
           <li>Reward: ${card.points} <i class='fa fa-star'></i></li>
         </ul>

@@ -152,7 +152,7 @@ class Meeples extends \COAL\Helpers\Pieces
     $sql .= " FROM `$meeples`";
     $sql .= " WHERE `$meeple_location` like '$factorySpace'";
     $sql .= " group by `player_id` ";
-    $countPerPlayers = new Collection(self::getCollectionFromDB($sql, true));
+    $countPerPlayers = new Collection(Game::get()->getCollectionFromDB($sql, true));
 
     $maxCount = 0;
     $maxPlayers = array();

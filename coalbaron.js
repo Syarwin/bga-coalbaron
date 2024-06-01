@@ -418,8 +418,8 @@ define([
               <div class='completed-orders' id='completed-orders-${player.id}'></div>
               <div class='left-pit'>
                 <div class='pit-level' id='left-pit-${player.id}-1'></div>
-                <div class='pit-level' id='left-pit-${player.id}-2'><div class='pit-tile'></div></div>
-                <div class='pit-level' id='left-pit-${player.id}-3'><div class='pit-tile'></div></div>
+                <div class='pit-level' id='left-pit-${player.id}-2'></div>
+                <div class='pit-level' id='left-pit-${player.id}-3'></div>
                 <div class='pit-level' id='left-pit-${player.id}-4'></div>
               </div>
           </div>
@@ -433,14 +433,19 @@ define([
             <div class='elevator-level level-4' id='elevator-${player.id}-level-4'></div>
             <div class='storage' id='storage-${player.id}'></div>
             <div class='joker-double-cubes' id='joker-${player.id}'></div>
+
+            <div class='pit-tile yellow_coal'></div>
+            <div class='pit-tile brown_coal'></div>
+            <div class='pit-tile grey_coal'></div>
+            <div class='pit-tile black_coal'></div>
           </div>
           <div class='board-right-side'>
               <div class='pending-orders' id='pending-orders-${player.id}'></div>
               <div class='right-pit'>
-                <div class='pit-level' id='right-pit-${player.id}-1'><div class='pit-tile'></div></div>
+                <div class='pit-level' id='right-pit-${player.id}-1'></div>
                 <div class='pit-level' id='right-pit-${player.id}-2'></div>
                 <div class='pit-level' id='right-pit-${player.id}-3'></div>
-                <div class='pit-level' id='right-pit-${player.id}-4'><div class='pit-tile'></div></div>
+                <div class='pit-level' id='right-pit-${player.id}-4'></div>
               </div>
           </div>
         </div>
@@ -817,8 +822,7 @@ define([
       }
       // Coal on pit tile
       if (t[0] == 'pit' && t[1] == 'tile') {
-        let side = t[3] == '-1' ? 'left' : 'right';
-        return $(`${side}-pit-${meeple.pId}-${t[2]}`).querySelector('.pit-tile');
+        return $(`board-${meeple.pId}`).querySelector(`.pit-tile.${meeple.type}`);
       }
       // Coal on pit cage
       if (meeple.location == 'pit_cage') {

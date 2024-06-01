@@ -137,13 +137,6 @@
         display: flex;
         justify-content: flex-end;
         position: relative; }
-        #coalbaron-main-container .coalbaron-board .player-board-fixed-size .board-left-side .left-pit .pit-level .pit-tile {
-          position: absolute;
-          width: 40px;
-          height: 40px;
-          right: -69px;
-          top: 20px;
-          z-index: 2; }
         #coalbaron-main-container .coalbaron-board .player-board-fixed-size .board-left-side .left-pit .pit-level .coalbaron-tile {
           width: 123px;
           height: 136px;
@@ -169,12 +162,6 @@
         height: 136px;
         display: flex;
         position: relative; }
-        #coalbaron-main-container .coalbaron-board .player-board-fixed-size .board-right-side .right-pit .pit-level .pit-tile {
-          position: absolute;
-          width: 40px;
-          height: 40px;
-          left: -63px;
-          top: 22px; }
         #coalbaron-main-container .coalbaron-board .player-board-fixed-size .board-right-side .right-pit .pit-level .coalbaron-tile {
           width: 123px;
           height: 136px;
@@ -189,6 +176,23 @@
       background-size: 100% auto;
       background-repeat: no-repeat;
       position: relative; }
+      #coalbaron-main-container .coalbaron-board .player-board-fixed-size .board-elevator .pit-tile {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        z-index: 2; }
+        #coalbaron-main-container .coalbaron-board .player-board-fixed-size .board-elevator .pit-tile.yellow_coal {
+          right: 23px;
+          top: 245px; }
+        #coalbaron-main-container .coalbaron-board .player-board-fixed-size .board-elevator .pit-tile.brown_coal {
+          left: 28px;
+          top: 374px; }
+        #coalbaron-main-container .coalbaron-board .player-board-fixed-size .board-elevator .pit-tile.grey_coal {
+          left: 26px;
+          top: 512px; }
+        #coalbaron-main-container .coalbaron-board .player-board-fixed-size .board-elevator .pit-tile.black_coal {
+          right: 23px;
+          top: 647px; }
       #coalbaron-main-container .coalbaron-board .player-board-fixed-size .board-elevator .player-name {
         position: absolute;
         text-align: center;

@@ -26,7 +26,6 @@
                 max-width: 600px;
                 overflow: auto;
 
-
                 .completed-orders {
                     height: 223px;
                     max-width: 600px;
@@ -55,15 +54,6 @@
                         display: flex;
                         justify-content: flex-end;
                         position: relative;
-
-                        .pit-tile {
-                            position: absolute;
-                            width: 40px;
-                            height: 40px;
-                            right: -69px;
-                            top: 20px;
-                            z-index: 2;
-                        }
 
                         .coalbaron-tile {
                             width: 123px;
@@ -98,14 +88,6 @@
                         display: flex;
                         position: relative;
 
-                        .pit-tile {
-                            position: absolute;
-                            width: 40px;
-                            height: 40px;
-                            left: -63px;
-                            top: 22px;
-                        }
-
                         .coalbaron-tile {
                             width: 123px;
                             height: 136px;
@@ -124,6 +106,30 @@
                 background-size: 100% auto;
                 background-repeat: no-repeat;
                 position: relative;
+
+                .pit-tile {
+                    position: absolute;
+                    width: 40px;
+                    height: 40px;
+                    z-index: 2;
+
+                    &.yellow_coal {
+                        right: 23px;
+                        top: 245px;
+                    }
+                    &.brown_coal {
+                        left: 28px;
+                        top: 374px;
+                    }
+                    &.grey_coal {
+                        left: 26px;
+                        top: 512px;
+                    }
+                    &.black_coal {
+                        right: 23px;
+                        top: 647px;
+                    }
+                }
 
                 .player-name {
                     position: absolute;

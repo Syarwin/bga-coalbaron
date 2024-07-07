@@ -52,7 +52,7 @@ class ScoringMajority
   public function doScore($players)
   {
     $counter = $this->firstPlace->doScore($players, $this->elementType, $this->elementTypeIndex, $this->gameRound, 1);
-    if ($counter <= 2 && count($players) > 2) {
+    if ($counter < 2 && count($players) > 2) {
       //IF >2 players : 2nd majority gives points
       //SECOND PLACE is not scored if first place has 2+ players
       $counter += $this->secondPlace->doScore($players, $this->elementType, $this->elementTypeIndex, $this->gameRound, 2);

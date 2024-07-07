@@ -14,6 +14,46 @@ use COAL\Models\CoalCube;
 
 trait DebugTrait
 {
+  
+   /**
+   * STUDIO : Get the database matching a bug report (when not empty)
+   */
+  public function loadBugReportSQL(int $reportId, array $studioPlayersIds): void {
+    $this->trace("loadBugReportSQL($reportId, ".json_encode($studioPlayersIds));
+    $players = $this->getObjectListFromDb('SELECT player_id FROM player', true);
+  
+    $sql = [];
+    //This table is modified with boilerplate
+    $sql[] = "ALTER TABLE `gamelog` ADD `cancel` TINYINT(1) NOT NULL DEFAULT 0;";
+
+    // Change for your game
+    // We are setting the current state to match the start of a player's turn if it's already game over
+    $state = ST_PLACE_WORKER;
+    $sql[] = "UPDATE global SET global_value=$state WHERE global_id=1 AND global_value=99";
+    foreach ($players as $index => $pId) {
+      $studioPlayer = $studioPlayersIds[$index];
+  
+      // All games can keep this SQL
+      $sql[] = "UPDATE player SET player_id=$studioPlayer WHERE player_id=$pId";
+      $sql[] = "UPDATE global SET global_value=$studioPlayer WHERE global_value=$pId";
+      $sql[] = "UPDATE stats SET stats_player_id=$studioPlayer WHERE stats_player_id=$pId";
+  
+      // Add game-specific SQL update the tables for your game
+      $sql[] = "UPDATE meeples SET player_id=$studioPlayer WHERE player_id = $pId";
+      $sql[] = "UPDATE cards SET player_id=$studioPlayer WHERE player_id = $pId";
+      $sql[] = "UPDATE tiles SET player_id=$studioPlayer WHERE player_id = $pId";
+      $sql[] = "UPDATE global_variables SET `value` = REPLACE(`value`,'$pId','$studioPlayer')";
+      
+      $sql[] = "UPDATE user_preferences SET player_id=$studioPlayer WHERE player_id = $pId";
+    }
+  
+    foreach ($sql as $q) {
+      $this->DbQuery($q);
+    }
+  
+    $this->reloadPlayersBasicInfos();
+  }
+
 
   /*
   function testGoToNextPlayer()
@@ -257,7 +297,7 @@ trait DebugTrait
     $this->testSimulateDraft();
     Cards::moveAllInLocation(CARD_LOCATION_OUTSTANDING, CARD_LOCATION_DELIVERED);
   }
-  function testEndShiftScoring()
+  function debug_EndShiftScoring()
   {
     //COMMENT NExt line to test the same deliveries
     //$this->testSimulateDeliveries();

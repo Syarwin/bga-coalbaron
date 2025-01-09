@@ -76,18 +76,6 @@ $gameinfos = [
   // NB: the default will be the first language in this list spoken by the player, so you should list them by popularity/preference.
   'language_dependency' => false,
 
-  // Complexity of the game, from 0 (extremely simple) to 5 (extremely complex)
-  'complexity' => 2,
-
-  // Luck of the game, from 0 (absolutely no luck in this game) to 5 (totally luck driven)
-  'luck' => 1,
-
-  // Strategy of the game, from 0 (no strategy can be setup) to 5 (totally based on strategy)
-  'strategy' => 5,
-
-  // Diplomacy of the game, from 0 (no interaction in this game) to 5 (totally based on interaction and discussion between players)
-  'diplomacy' => 2,
-
   // Colors attributed to players
   'player_colors' => [
     'd22725', // RED
@@ -122,36 +110,6 @@ $gameinfos = [
     //  minimum possible value: 740
     'max' => null,
   ],
-
-  // Game presentation
-  // Short game presentation text that will appear on the game description page, structured as an array of paragraphs.
-  // Each paragraph must be wrapped with totranslate() for translation and should not contain html (plain text without formatting).
-  // A good length for this text is between 100 and 150 words (about 6 to 9 lines on a standard display)
-  //'presentation' => [
-  //  totranslate(
-  //    'Coal Baron – or Glück Auf in German, after a greeting German miners use when wishing one another luck – has players sending miners underground to dig tunnels and acquire coal, which comes in four levels of quality and is used to fulfill contracts.'
-  //  ),
-  //  totranslate(
-  //    'The game lasts three rounds, and in each round players take turns placing their workers on action spaces; you can place on a space occupied by another player, but you need to place additional workers in order to do so. Each player has an individual elevator shaft, and will need to use workers to extract coal and bring it to the surface, while also competing for contracts and scrounging for cash in order to do everything else that needs to be done!'
-  //  ),
-  //],
-
-  // Games categories
-  //  You can attribute a maximum of FIVE "tags" for your game.
-  //  Each tag has a specific ID (ex: 22 for the category "Prototype", 101 for the tag "Science-fiction theme game")
-  //  Please see the "Game meta information" entry in the BGA Studio documentation for a full list of available tags:
-  //  http://en.doc.boardgamearena.com/Game_meta-information:_gameinfos.inc.php
-  //  IMPORTANT: this list should be ORDERED, with the most important tag first.
-  //  IMPORTANT: it is mandatory that the FIRST tag is 1, 2, 3 and 4 (= game category)
-  //'tags' => [3],
-
-  //////// BGA SANDBOX ONLY PARAMETERS (DO NOT MODIFY)
-
-  // simple : A plays, B plays, C plays, A plays, B plays, ...
-  // circuit : A plays and choose the next player C, C plays and choose the next player D, ...
-  // complex : A+B+C plays and says that the next player is A+B
-  'is_sandbox' => false,
-  'turnControl' => 'simple',
 
   ////////
 ];

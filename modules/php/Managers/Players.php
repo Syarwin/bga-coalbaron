@@ -27,13 +27,25 @@ class Players extends \COAL\Helpers\DB_Manager
     // Create players
     $gameInfos = Game::get()->getGameinfos();
     $colors = $gameInfos['player_colors'];
-    $query = self::DB()->multipleInsert(['player_id', 'player_color', 'player_canal', 'player_name', 'player_avatar', 'money', 'player_score_aux']);
+    $query = self::DB()->multipleInsert([
+      'player_id', 
+      'player_color', 
+      'player_name', 
+      'money', 
+      'player_score_aux'
+    ]);
 
     $values = [];
     $initialMoney = Players::getInitialMoney(count($players));
     foreach ($players as $pId => $player) {
       $color = array_shift($colors);
-      $values[] = [$pId, $color, $player['player_canal'], $player['player_name'], $player['player_avatar'], $initialMoney, $initialMoney];
+      $values[] = [
+        $pId, 
+        $color, 
+        $player['player_name'], 
+        $initialMoney, 
+        $initialMoney
+      ];
     }
     $query->values($values);
 

@@ -5,6 +5,9 @@ namespace COAL;
 use COAL\Core\Globals;
 use COAL\Core\Game;
 use COAL\Core\Notifications;
+use COAL\Core\Stats;
+use COAL\Helpers\Log;
+use COAL\Helpers\QueryBuilder;
 use COAL\Managers\Players;
 use COAL\Managers\Tiles;
 use COAL\Helpers\Utils;
@@ -54,7 +57,39 @@ trait DebugTrait
     $this->reloadPlayersBasicInfos();
   }
 
+  /**
+   * Clean everything to go to game setup, and saves space on server (don't recreate new tables)
+   */
+  function debug_Setup(){
+    $player = Players::getCurrent();
+    Game::get()->trace("debug_Setup - START ////////////////////////////////////////////////////");
+    $this->debug_ClearLogs();
+    Log::disable();
+    $options = [
+      "DEBUG_SETUP"=> true, 
+      OPTION_CARDS_VISIBILITY => OPTION_VISIBLE_ALL,
+     ];
+    $players = self::loadPlayersBasicInfos();
+    
+    Stats::DB()->delete()->run();
+    Cards::DB()->delete()->run();
+    Meeples::DB()->delete()->run();
+    Globals::DB()->delete()->run();
+    Notifications::refreshUI($this->getAllDatas());
 
+    Players::DB()->delete()->run();
+    Game::get()->setupNewGame($players,$options);
+
+    Log::enable();
+
+    $players = self::loadPlayersBasicInfos();
+    Notifications::refreshUI($this->getAllDatas());
+
+    $this->addCheckpoint(ST_DRAFT_INIT);
+    $this->gamestate->jumpToState(ST_DRAFT_INIT);
+    
+    Game::get()->trace("debug_Setup - END ////////////////////////////////////////////////////");
+  }
   /*
   function testGoToNextPlayer()
   {
@@ -367,6 +402,19 @@ trait DebugTrait
   //----------------------------------------------------------------
   function testRefreshUI(){
     Notifications::refreshUI($this->getAllDatas());
+  }
+  
+  //Clear logs
+  function debug_ClearLogs(){
+    $query = new QueryBuilder('gamelog', null, 'gamelog_packet_id');
+    $query->delete()->run();
+  }
+  
+  /**
+   * Another example of debug function, to easily test the zombie code.
+   */
+  public function debug_playOneMove(int $nbMoves = 1) {
+      $this->debug->playUntil(fn(int $count) => $count == $nbMoves);
   }
 
 }

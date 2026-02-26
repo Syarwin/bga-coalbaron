@@ -32,6 +32,9 @@ trait SetupTrait
     Meeples::setupNewGame($players, $options);
 
     $this->setGameStateInitialValue('logging', true);
-    $this->activeNextPlayer();
+    
+    if(!array_key_exists("DEBUG_SETUP",$options)){
+      $this->activeNextPlayer();
+    }
   }
 }

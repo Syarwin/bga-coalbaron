@@ -125,6 +125,11 @@ class Globals extends \COAL\Helpers\DB_Manager
         break;
       }
     }
+    if(Globals::getFirstPlayer() == 0){
+      //Randomize first player selection
+      $randomPId = array_rand($players);
+      Globals::setFirstPlayer($randomPId);
+    }
     self::initAllMajorityWinners();
   }
 

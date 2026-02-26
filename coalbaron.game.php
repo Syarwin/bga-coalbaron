@@ -177,9 +177,4 @@ class CoalBaron extends Bga\GameFramework\Table
     return $this->getCurrentPlayerId();
   }
 
-  // Exposing protected method translation
-  public function translate($text)
-  {
-    return $this->_($text);
-  }
 }

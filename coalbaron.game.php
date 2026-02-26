@@ -31,8 +31,6 @@ $swdNamespaceAutoload = function ($class) {
 };
 spl_autoload_register($swdNamespaceAutoload, true, true);
 
-require_once APP_GAMEMODULE_PATH . 'module/table/table.game.php';
-
 use COAL\Managers\Players;
 use COAL\Managers\Tiles;
 use COAL\Managers\Cards;
@@ -41,7 +39,7 @@ use COAL\Core\Globals;
 use COAL\Core\Preferences;
 use COAL\Core\Stats;
 
-class CoalBaron extends Table
+class CoalBaron extends Bga\GameFramework\Table
 {
   use COAL\DebugTrait;
   use COAL\States\SetupTrait;

@@ -2,6 +2,7 @@
 
 namespace COAL\Helpers;
 
+use Bga\GameFramework\Table;
 use COAL\Core\Game;
 use COAL\Core\Globals;
 use COAL\Core\Notifications;
@@ -19,7 +20,7 @@ use COAL\Managers\Players;
  *  `affected` JSON,
  */
 
-class Log extends \APP_DbObject
+class Log
 {
     public static function enable()
     {
@@ -48,7 +49,7 @@ class Log extends \APP_DbObject
         }
 
         if (is_null(static::$moveId)) {
-            static::$moveId = self::getUniqueValueFromDB('SELECT global_value FROM global WHERE global_id = 3');
+            static::$moveId = Table::getUniqueValueFromDB('SELECT global_value FROM global WHERE global_id = 3');
         }
         $entry['move_id'] = static::$moveId;
         $query = new QueryBuilder('log', null, 'id');

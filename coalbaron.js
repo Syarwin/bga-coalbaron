@@ -383,7 +383,8 @@ define([
         $(`board-${player.id}`).style.order = order;
 
         if (player.id == this.gamedatas.firstPlayer) {
-          $(`overall_player_board_${player.id}`)
+          let divPanel = this.bga.playerPanels.getElement(player.id).parentNode.parentNode.parentNode;
+          divPanel
             .querySelector('.first-player-holder')
             .insertAdjacentHTML('beforeend', '<div id="coalbaron-first-player"></div>');
           this.addCustomTooltip('coalbaron-first-player', _('First player'));
@@ -395,7 +396,7 @@ define([
 
     updateFirstPlayer() {
       let pId = this.gamedatas.firstPlayer;
-      let container = $(`overall_player_board_${pId}`);
+      let container = this.bga.playerPanels.getElement(pId).parentNode.parentNode.parentNode;
       this.slide('coalbaron-first-player', container.querySelector('.first-player-holder'), {
         phantom: false,
       });

@@ -69,13 +69,6 @@ class CoalBaron extends Bga\GameFramework\Table
     return self::$instance;
   }
 
-  protected function getGameName()
-  {
-    // Used for translations and stuff. Please do not modify.
-    return 'coalbaron';
-  }
-
-
   /*
    * getAllDatas:
    */

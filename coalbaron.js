@@ -281,7 +281,7 @@ define([
 
       this.forEachPlayer((player) => {
         let pId = player.id;
-        this.scoreCtrl[pId].toValue(player.score);
+        this.bga.playerPanels.getScoreCounter(pId).toValue(player.score);
         this._counters[pId].worker.toValue(player.workers);
         this._counters[pId].money.toValue(player.money);
 
@@ -513,7 +513,7 @@ define([
 
     gainLoseScore(pId, n, targetSource = null) {
       if (this.isFastMode()) {
-        this.scoreCtrl[pId].incValue(n);
+        this.bga.playerPanels.getScoreCounter(pId).incValue(n);
         return Promise.resolve();
       }
 
@@ -530,9 +530,9 @@ define([
           destroy: true,
           phantom: false,
           duration: 1100,
-        }).then(() => this.scoreCtrl[pId].incValue(n));
+        }).then(() => bga.playerPanels.getScoreCounter(pId).incValue(n));
       } else {
-        this.scoreCtrl[pId].incValue(n);
+        this.bga.playerPanels.getScoreCounter(pId).incValue(n);
         return this.slide('score-animation', targetSource || this.getVisibleTitleContainer(), {
           from: `player_score_${pId}`,
           destroy: true,
@@ -1212,7 +1212,7 @@ define([
           this.slide(oMeeple, $('box-reserve'), { delay: 100 * i })
         )
       ).then(() => {
-        this.scoreCtrl[n.args.player_id].incValue(n.args.n);
+        this.bga.playerPanels.getScoreCounter(n.args.player_id).incValue(n.args.n);
         let oCard = $(`card-${n.args.cardId}`);
         this.slide(oCard, `completed-orders-${n.args.player_id}`).then(() => {
           if (this.player_id != n.args.player_id && this.gamedatas.optionCardsVisibility == 0) {
@@ -1304,7 +1304,7 @@ define([
         destroy: true,
         phantom: false,
         duration: 1200,
-      }).then(() => this.scoreCtrl[pId].incValue(score));
+      }).then(() => this.bga.playerPanels.getScoreCounter(pId).incValue(score));
     },
 
     notif_endMajorityScoring(n) {

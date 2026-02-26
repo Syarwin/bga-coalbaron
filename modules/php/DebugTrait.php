@@ -332,6 +332,7 @@ trait DebugTrait
     $this->testSimulateDraft();
     Cards::moveAllInLocation(CARD_LOCATION_OUTSTANDING, CARD_LOCATION_DELIVERED);
   }
+  */
   function debug_EndShiftScoring()
   {
     //COMMENT NExt line to test the same deliveries
@@ -353,6 +354,7 @@ trait DebugTrait
     //
     $this->computeEndShiftScoring(3);
   }
+  /*
 
 
   function testSMW()

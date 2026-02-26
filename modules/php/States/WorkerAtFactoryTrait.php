@@ -78,7 +78,7 @@ trait WorkerAtFactoryTrait
             Notifications::returnTilesToBottom($player, count($othersTilesOrder));
         }
 
-        if (ST_CHOOSE_TILE == $this->gamestate->state_id()) {
+        if (ST_CHOOSE_TILE == $this->gamestate->getCurrentMainStateId()) {
             //GO TO NEXT STATE ONLY IF not already changed by a previous method
             $this->gamestate->nextState('next');
         }

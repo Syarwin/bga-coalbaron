@@ -49,7 +49,7 @@ trait PlaceWorkerTrait
         $this->placeWorker($player, $space);
         Stats::inc("nbActions", $player);
 
-        if (ST_PLACE_WORKER == $this->gamestate->state_id()) {
+        if (ST_PLACE_WORKER == $this->gamestate->getCurrentMainStateId()) {
             //GO TO NEXT STATE ONLY IF not already changed by the previous method
             $this->gamestate->nextState('next');
         }
